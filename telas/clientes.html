@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexo - Clientes</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Folha de Estilos CSS -->
+    <link rel="stylesheet" href="CSSclientes.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Barra Lateral (Sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="logoNexo.png" alt="Nexo Logo" class="brand-logo-img">
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-building"></i>
+                    <span>Empresa</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Produtos</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Fornecedores</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Cabeçalho Superior -->
+            <header class="top-header">
+                <div class="header-title-wrapper">
+                    <h1>Clientes</h1>
+                    <p>Gerencie e acompanhe os clientes da sua empresa.</p>
+                </div>
+                <button class="btn-primary" id="btnCadastrar">
+                    <i class="fa-solid fa-plus"></i> Cadastrar Cliente
+                </button>
+            </header>
+
+            <!-- Secção de Filtros -->
+            <section class="filters-card">
+                <div class="filters-header">
+                    <div class="filters-title">
+                        <i class="fa-solid fa-filter"></i> Filtros
+                    </div>
+                    <button class="btn-clear" id="btnLimparFiltros">
+                        <i class="fa-solid fa-rotate-right"></i> Limpar Filtros
+                    </button>
+                </div>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="searchCliente">Buscar cliente</label>
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="searchCliente" placeholder="Digite o nome, e-mail ou telefone">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterStatus">Status</label>
+                        <select id="filterStatus">
+                            <option value="">Todos</option>
+                            <option value="Ativo">Ativo</option>
+                            <option value="Inativo">Inativo</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterCidade">Cidade</label>
+                        <select id="filterCidade">
+                            <option value="">Todas</option>
+                            <option value="São Paulo - SP">São Paulo - SP</option>
+                            <option value="Guarulhos - SP">Guarulhos - SP</option>
+                            <option value="Osasco - SP">Osasco - SP</option>
+                            <option value="São Bernardo do Campo - SP">São Bernardo do Campo - SP</option>
+                            <option value="Santo André - SP">Santo André - SP</option>
+                            <option value="Campinas - SP">Campinas - SP</option>
+                            <option value="Mauá - SP">Mauá - SP</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterTipo">Tipo de cliente</label>
+                        <select id="filterTipo">
+                            <option value="">Todos</option>
+                            <option value="Pessoa Física">Pessoa Física</option>
+                            <option value="Pessoa Jurídica">Pessoa Jurídica</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cards de Métricas / Resumo -->
+            <section class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon purple">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Total de Clientes</span>
+                        <span class="metric-value" id="totalClientesCount">128</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon green">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Clientes Ativos</span>
+                        <span class="metric-value" id="clientesAtivosCount">118</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon yellow">
+                        <i class="fa-solid fa-user-slash"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Clientes Inativos</span>
+                        <span class="metric-value" id="clientesInativosCount">8</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon gray">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Novos este mês</span>
+                        <span class="metric-value">12</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabela de Clientes -->
+            <section class="table-card">
+                <div class="table-responsive">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Tipo</th>
+                                <th>Contato</th>
+                                <th>Cidade</th>
+                                <th>Última Compra</th>
+                                <th>Status</th>
+                                <th class="text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientsTableBody">
+                            <!-- Os dados serão injetados dinamicamente via script.js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginação -->
+                <div class="table-footer">
+                    <span class="pagination-info" id="paginationInfo">Mostrando 1 a 8 de 128 clientes</span>
+                    <div class="pagination-controls">
+                        <button class="page-btn" id="prevPage"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-dots">...</span>
+                        <button class="page-btn">16</button>
+                        <button class="page-btn" id="nextPage"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal / Janela Pop-up para Detalhes / Ações -->
+    <div class="modal-overlay" id="clientModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Detalhes do Cliente</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+                <!-- Conteúdo injetado via JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modalCloseAction">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script src="JSclientes.js"></script>
+</body>
+</html>
