@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexo ERP - Relatórios</title>
+    <!-- Importando a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Importando ícones do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Link para o CSS específico da página -->
+    <link rel="stylesheet" href="../css/relatorios.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ================= BARRA LATERAL (SIDEBAR) ================= -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-n fa-2x" style="color: var(--primary-color);"></i>
+                <span>nexo</span>
+            </div>
+
+            <nav class="menu">
+                <ul>
+                    <li><a href="#"><i class="fa-solid fa-house"></i> Início</a></li>
+                    <li><a href="#"><i class="fa-solid fa-building"></i> Empresa</a></li>
+                    <li><a href="#"><i class="fa-solid fa-clipboard-list"></i> Pedidos</a></li>
+                    <li><a href="#"><i class="fa-solid fa-box-open"></i> Produtos</a></li>
+                    <li><a href="#"><i class="fa-solid fa-boxes-stacked"></i> Estoque</a></li>
+                    <li><a href="#"><i class="fa-solid fa-truck"></i> Fornecedores</a></li>
+                    <li><a href="#"><i class="fa-solid fa-users"></i> Clientes</a></li>
+                    <li><a href="#"><i class="fa-solid fa-user-tie"></i> Revendedores</a></li>
+                    <li><a href="#"><i class="fa-solid fa-dollar-sign"></i> Financeiro</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-chart-simple"></i> Relatórios</a></li>
+                </ul>
+            </nav>
+
+            <div class="bottom-menu">
+                <ul>
+                    <li><a href="#"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+                    <li><a href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ================= ÁREA PRINCIPAL ================= -->
+        <main class="main-content">
+            
+            <!-- Cabeçalho da Página -->
+            <header class="page-header">
+                <div>
+                    <h1><i class="fa-solid fa-chart-simple header-icon"></i> Relatórios</h1>
+                    <p>Acesse análises e indicadores importantes para a gestão do seu negócio.</p>
+                </div>
+                <button class="btn btn-outline" id="btnExport">
+                    <i class="fa-solid fa-download"></i> Exportar Relatório
+                </button>
+            </header>
+
+            <!-- Seção de Filtros -->
+            <section class="filters-card card">
+                <div class="filters-header">
+                    <h2><i class="fa-solid fa-filter"></i> Filtros</h2>
+                </div>
+                <div class="filters-body">
+                    <div class="input-group">
+                        <label>Período</label>
+                        <div class="input-with-icon">
+                            <input type="text" value="01/05/2026 - 31/05/2026">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Comparar com</label>
+                        <select>
+                            <option>Período anterior</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Categoria</label>
+                        <select>
+                            <option>Todas</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Vendedor</label>
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Aplicar Filtros</button>
+                        <button class="btn btn-outline"><i class="fa-solid fa-rotate"></i> Limpar Filtros</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de KPIs (Indicadores) -->
+            <section class="kpi-grid">
+                <div class="kpi-card card">
+                    <div class="kpi-icon"><i class="fa-solid fa-chart-column"></i></div>
+                    <div class="kpi-info">
+                        <h3>Faturamento Total</h3>
+                        <p class="kpi-value">R$ 48.750,32</p>
+                        <p class="kpi-trend positive"><i class="fa-solid fa-arrow-up"></i> 18,6% <span>em relação ao período anterior</span></p>
+                    </div>
+                </div>
+                <div class="kpi-card card">
+                    <div class="kpi-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+                    <div class="kpi-info">
+                        <h3>Lucro Líquido</h3>
+                        <p class="kpi-value">R$ 16.240,75</p>
+                        <p class="kpi-trend positive"><i class="fa-solid fa-arrow-up"></i> 14,3% <span>em relação ao período anterior</span></p>
+                    </div>
+                </div>
+                <div class="kpi-card card">
+                    <div class="kpi-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                    <div class="kpi-info">
+                        <h3>Total de Vendas</h3>
+                        <p class="kpi-value">342</p>
+                        <p class="kpi-trend positive"><i class="fa-solid fa-arrow-up"></i> 12,7% <span>em relação ao período anterior</span></p>
+                    </div>
+                </div>
+                <div class="kpi-card card">
+                    <div class="kpi-icon"><i class="fa-solid fa-ticket"></i></div>
+                    <div class="kpi-info">
+                        <h3>Ticket Médio</h3>
+                        <p class="kpi-value">R$ 142,69</p>
+                        <p class="kpi-trend positive"><i class="fa-solid fa-arrow-up"></i> 9,8% <span>em relação ao período anterior</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Inferior: Relatórios Específicos e Recentes -->
+            <div class="bottom-layout">
+                
+                <!-- Lado Esquerdo: Categorias de Relatórios -->
+                <div class="reports-area">
+                    <h2 class="section-title">Relatórios</h2>
+                                        
+                    <!-- Categoria: Vendas -->
+                    <div class="report-category card">
+                        <div class="category-header">
+                            <i class="fa-solid fa-chart-column"></i> Vendas
+                        </div>
+                        <div class="reports-grid grid-vendas">
+                            <div class="report-item">
+                                <div class="report-item-header">
+                                    <i class="fa-solid fa-arrow-trend-up icon-blue"></i>
+                                    <h4>Vendas por Período</h4>
+                                </div>
+                                <p>Acompanhe o desempenho em diferentes períodos.</p>
+                                <button class="btn btn-outline-small">Ver relatório ></button>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-item-header">
+                                    <i class="fa-solid fa-chart-bar icon-purple"></i>
+                                    <h4>Produtos mais Vendidos</h4>
+                                </div>
+                                <p>Produtos com maior saída e faturamento.</p>
+                                <button class="btn btn-outline-small">Ver relatório ></button>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-item-header">
+                                    <i class="fa-solid fa-users icon-blue"></i>
+                                    <h4>Vendas por Vendedor</h4>
+                                </div>
+                                <p>Desempenho de vendas por vendedor.</p>
+                                <button class="btn btn-outline-small">Ver relatório ></button>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-item-header">
+                                    <i class="fa-solid fa-border-all icon-purple"></i>
+                                    <h4>Vendas por Categoria</h4>
+                                </div>
+                                <p>Desempenho por categoria de produtos.</p>
+                                <button class="btn btn-outline-small">Ver relatório ></button>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-item-header">
+                                    <i class="fa-solid fa-tag icon-blue"></i>
+                                    <h4>Vendas por Marca</h4>
+                                </div>
+                                <p>Marcas com mais saída e faturamento.</p>
+                                <button class="btn btn-outline-small">Ver relatório ></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linha inferior de categorias (Financeiro, Estoque, Clientes) -->
+                    <div class="reports-grid grid-3-categories">
+                        
+                        <!-- Categoria: Financeiro -->
+                        <div class="report-category card">
+                            <div class="category-header">
+                                <i class="fa-solid fa-dollar-sign"></i> Financeiro
+                            </div>
+                            <div class="reports-grid">
+                                <div class="report-item">
+                                    <div class="report-item-header">
+                                        <i class="fa-solid fa-dollar-sign icon-purple-round"></i>
+                                        <h4>Lucro Mensal</h4>
+                                    </div>
+                                    <p>Lucratividade do negócio mês a mês.</p>
+                                    <button class="btn btn-outline-small">Ver relatório ></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categoria: Estoque -->
+                        <div class="report-category card">
+                            <div class="category-header">
+                                <i class="fa-solid fa-box-open"></i> Estoque
+                            </div>
+                            <div class="reports-grid grid-2">
+                                <div class="report-item">
+                                    <div class="report-item-header">
+                                        <i class="fa-solid fa-hourglass-empty icon-blue-round"></i>
+                                        <h4>Produtos sem Saída</h4>
+                                    </div>
+                                    <p>Produtos há mais tempo sem venda.</p>
+                                    <button class="btn btn-outline-small">Ver relatório ></button>
+                                </div>
+                                <div class="report-item">
+                                    <div class="report-item-header">
+                                        <i class="fa-solid fa-clock-rotate-left icon-purple-round"></i>
+                                        <h4>Relatório de Validade</h4>
+                                    </div>
+                                    <p>Monitore produtos próximos do vencimento.</p>
+                                    <button class="btn btn-outline-small">Ver relatório ></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categoria: Clientes -->
+                        <div class="report-category card">
+                            <div class="category-header">
+                                <i class="fa-solid fa-users"></i> Clientes
+                            </div>
+                            <div class="reports-grid">
+                                <div class="report-item">
+                                    <div class="report-item-header">
+                                        <i class="fa-solid fa-user icon-purple-round"></i>
+                                        <h4>Clientes que mais Compram</h4>
+                                    </div>
+                                    <p>Clientes com maior frequência de compras.</p>
+                                    <button class="btn btn-outline-small">Ver relatório ></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- Fechamento correto da div.reports-area -->
+
+                <!-- Lado Direito: Relatórios Recentes -->
+                <aside class="recent-reports card">
+                    <div class="recent-header">
+                        <h3><i class="fa-regular fa-clock"></i> Relatórios Recentes</h3>
+                    </div>
+                    <ul class="recent-list">
+                        <li>
+                            <i class="fa-solid fa-file-lines icon-purple"></i>
+                            <div>
+                                <h4>Vendas por Período</h4>
+                                <span>31/05/2026 10:30</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-file-lines icon-purple"></i>
+                            <div>
+                                <h4>Produtos mais Vendidos</h4>
+                                <span>31/05/2026 10:15</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-file-lines icon-purple"></i>
+                            <div>
+                                <h4>Lucro Mensal</h4>
+                                <span>31/05/2026 09:45</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-file-lines icon-purple"></i>
+                            <div>
+                                <h4>Vendas por Vendedor</h4>
+                                <span>30/05/2026 16:20</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-user icon-purple"></i>
+                            <div>
+                                <h4>Clientes que mais Compram</h4>
+                                <span>30/05/2026 14:10</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="#" class="view-all">Ver todos ></a>
+                </aside>
+
+            </div>
+
+            <footer class="page-footer">
+                <i class="fa-solid fa-circle-info"></i> Dados consultados em 31/05/2026 às 10:30
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Referência ao JavaScript -->
+    <script src="relatorios.js"></script>
+</body>
+</html>
