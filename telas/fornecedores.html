@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fornecedores - Nexo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'] }, colors: {
+        brand: { purple:'#7c3aed', purpleLight:'#f3e8ff', darkblue:'#1e1b4b', textMain:'#111827', textMuted:'#6b7280', bg:'#f8fafc', border:'#e2e8f0' }
+      }}}
+    };
+  </script>
+  <style>
+    ::-webkit-scrollbar{width:8px;height:8px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+    .fade-in{animation:fadeIn .25s ease-in-out}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .modal-bg{background:rgba(15,23,42,.45);backdrop-filter:blur(2px)}
+  </style>
+</head>
+<body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex font-sans">
+
+<aside class="w-[260px] border-r border-brand-border flex flex-col py-6 bg-white shrink-0 z-20 shadow-sm">
+  <div class="px-6 flex items-center gap-2 mb-8">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 30V10L30 30V10" stroke="url(#logoGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs><linearGradient id="logoGradient" x1="10" y1="10" x2="30" y2="30"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+    </svg>
+    <span class="text-3xl font-extrabold tracking-tight text-brand-darkblue">nexo</span>
+  </div>
+
+  <nav class="flex flex-col px-4 gap-1 flex-1">
+    <a href="#" onclick="return false" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-house text-lg w-6 text-center"></i><span class="font-semibold">Início</span></a>
+    <a href="#" onclick="return false" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-briefcase text-lg w-6 text-center"></i><span class="font-semibold">Empresa</span></a>
+    <a href="#" onclick="return false" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-cart-shopping text-lg w-6 text-center"></i><span class="font-semibold">Produtos</span></a>
+    <a href="#" onclick="return false" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-clipboard-list text-lg w-6 text-center"></i><span class="font-semibold">Relatórios</span></a>
+    <a href="#" onclick="return false" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-user-group text-lg w-6 text-center"></i><span class="font-semibold">Clientes</span></a>
+    <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-purple text-white shadow-md"><i class="fa-solid fa-truck text-lg w-6 text-center"></i><span class="font-semibold">Fornecedores</span></a>
+  </nav>
+
+  <div class="px-4 mt-auto">
+    <div class="flex items-center gap-3 px-4 py-3 border border-gray-200 rounded-xl bg-gray-50">
+      <div class="w-8 h-8 rounded-full bg-brand-purple text-white flex items-center justify-center font-bold text-sm">A</div>
+      <div class="flex-1 overflow-hidden"><p class="text-sm font-bold truncate">Admin User</p><p class="text-xs text-gray-500 truncate">admin@nexo.com</p></div>
+      <i class="fa-solid fa-gear text-gray-400"></i>
+    </div>
+  </div>
+</aside>
+
+<main class="flex-1 relative overflow-y-auto w-full">
+  <div class="max-w-[1400px] mx-auto p-8 w-full min-h-full pb-24">
+    <section class="fade-in space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+        <div class="text-center md:text-left flex-1">
+          <h1 class="text-3xl font-extrabold text-gray-900 mb-1">Fornecedores</h1>
+          <p class="text-brand-textMuted">Gerencie e acompanhe os fornecedores da sua empresa.</p>
+        </div>
+        <button onclick="openSupplierModal()" class="bg-brand-purple hover:bg-purple-700 transition text-white px-5 py-2.5 rounded-lg font-semibold shadow-md flex items-center gap-2 whitespace-nowrap">
+          <i class="fa-solid fa-plus"></i> Cadastrar Fornecedor
+        </button>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-brand-border">
+        <div class="flex items-center gap-2 mb-4 text-brand-purple font-bold">
+          <i class="fa-solid fa-filter"></i><span>Filtros</span>
+          <button onclick="clearFilters()" class="ml-auto text-xs font-medium text-brand-purple border border-brand-purple rounded-md px-3 py-1.5 flex items-center gap-1 hover:bg-brand-purpleLight transition"><i class="fa-solid fa-rotate-right"></i> Limpar Filtros</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Buscar fornecedor</label>
+            <div class="relative"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i><input id="searchSupplier" oninput="applyFilters()" type="text" placeholder="Digite o nome, e-mail ou CNPJ" class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-purple"></div>
+          </div>
+          <div><label class="block text-xs font-semibold text-gray-500 mb-1">Status</label><select id="statusFilter" onchange="applyFilters()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-purple"><option value="Todos">Todos</option><option value="Ativo">Ativos</option><option value="Inativo">Inativos</option></select></div>
+          <div><label class="block text-xs font-semibold text-gray-500 mb-1">Categoria</label><select id="categoryFilter" onchange="applyFilters()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-purple"><option value="Todas">Todas</option><option>Cosméticos</option><option>Perfumaria</option><option>Distribuidora</option><option>Capilar</option></select></div>
+          <div><label class="block text-xs font-semibold text-gray-500 mb-1">Cidade</label><select id="cityFilter" onchange="applyFilters()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-purple"><option value="Todas">Todas</option><option>São Paulo - SP</option><option>Guarulhos - SP</option><option>Santos - SP</option><option>Osasco - SP</option><option>Campinas - SP</option><option>Ribeirão Preto - SP</option><option>Rio de Janeiro - RJ</option></select></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4"><div class="w-10 h-10 rounded-lg bg-brand-purpleLight text-brand-purple flex items-center justify-center"><i class="fa-solid fa-truck"></i></div><div><p class="text-xs font-bold text-gray-500">Total de Fornecedores</p><p id="totalCount" class="text-2xl font-extrabold text-gray-900">42</p></div></div>
+        <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4"><div class="w-2 h-2 rounded-full bg-green-500"></div><div><p class="text-xs font-bold text-gray-500">Ativos</p><p id="activeCount" class="text-2xl font-extrabold text-gray-900">38</p></div></div>
+        <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4"><div class="w-2 h-2 rounded-full bg-amber-400"></div><div><p class="text-xs font-bold text-gray-500">Inativos</p><p id="inactiveCount" class="text-2xl font-extrabold text-gray-900">4</p></div></div>
+        <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4"><div class="w-2 h-2 rounded-full bg-blue-500"></div><div><p class="text-xs font-bold text-gray-500">Novos este mês</p><p id="newCount" class="text-2xl font-extrabold text-gray-900">4</p></div></div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-brand-border overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-[11px] min-w-[950px]">
+            <thead class="bg-white text-gray-500 border-b border-gray-100"><tr><th class="px-5 py-3 font-bold">Fornecedor</th><th class="px-5 py-3 font-bold">Categoria</th><th class="px-5 py-3 font-bold">Contato</th><th class="px-5 py-3 font-bold">Cidade / Estado</th><th class="px-5 py-3 font-bold">Prazo de Entrega</th><th class="px-5 py-3 font-bold text-center">Status</th><th class="px-5 py-3 font-bold text-center">Ações</th></tr></thead>
+            <tbody id="supplierTable" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+        <div class="px-5 py-4 border-t border-gray-100 flex justify-between items-center bg-gray-50"><span id="paginationText" class="text-xs text-gray-500"></span><div id="pagination" class="flex gap-1"></div></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="supplierModal" class="hidden fixed inset-0 z-50 modal-bg items-center justify-center p-4">
+  <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-6 fade-in">
+    <div class="flex items-center justify-between mb-5"><div><h2 id="modalTitle" class="text-xl font-extrabold text-gray-900">Cadastrar Fornecedor</h2><p class="text-sm text-gray-500 mt-1">Preencha os dados do fornecedor.</p></div><button onclick="closeSupplierModal()" class="w-9 h-9 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200"><i class="fa-solid fa-xmark"></i></button></div>
+    <form id="supplierForm" onsubmit="saveSupplier(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input type="hidden" id="editIndex" value="-1">
+      <div class="md:col-span-2"><label class="block text-xs font-bold text-gray-500 mb-1">Nome / Razão Social *</label><input id="fName" required class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple" placeholder="Nome do fornecedor"></div>
+      <div><label class="block text-xs font-bold text-gray-500 mb-1">E-mail *</label><input id="fEmail" required type="email" class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple" placeholder="email@empresa.com"></div>
+      <div><label class="block text-xs font-bold text-gray-500 mb-1">Telefone</label><input id="fPhone" class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple" placeholder="(11) 99999-9999"></div>
+      <div><label class="block text-xs font-bold text-gray-500 mb-1">CNPJ</label><input id="fCnpj" class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple" placeholder="00.000.000/0001-00"></div>
+      <div><label class="block text-xs font-bold text-gray-500 mb-1">Categoria *</label><select id="fCategory" required class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple"><option>Cosméticos</option><option>Perfumaria</option><option>Distribuidora</option><option>Capilar</option></select></div>
+      <div><label class="block text-xs font-bold text-gray-500 mb-1">Cidade / Estado *</label><input id="fCity" required class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple" placeholder="São Paulo - SP"></div>
+      <div><label class="block text-xs font-bold text-gray-500 mb-1">Prazo de entrega *</label><input id="fDelivery" required class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple" placeholder="5 dias úteis"></div>
+      <div class="md:col-span-2"><label class="block text-xs font-bold text-gray-500 mb-1">Status</label><select id="fStatus" class="w-full px-3 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-purple"><option>Ativo</option><option>Inativo</option></select></div>
+      <div class="md:col-span-2 flex justify-end gap-3 mt-2"><button type="button" onclick="closeSupplierModal()" class="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50">Cancelar</button><button type="submit" class="px-5 py-2 rounded-lg bg-brand-purple text-white font-semibold hover:bg-purple-700">Salvar Fornecedor</button></div>
+    </form>
+  </div>
+</div>
+
+<script>
+const suppliers = [
+ {name:'Maiane Cosméticos',email:'maiane@maiane.com.br',phone:'(11) 94567-8901',cnpj:'12.345.678/0001-90',category:'Cosméticos',city:'São Paulo - SP',delivery:'3 dias úteis',status:'Ativo',newMonth:true},
+ {name:'Leandro Cosméticos',email:'contato@leandroc.com.br',phone:'(11) 91234-5678',cnpj:'23.456.789/0001-01',category:'Perfumaria',city:'Guarulhos - SP',delivery:'5 dias úteis',status:'Ativo',newMonth:false},
+ {name:'Totaltrade',email:'comercial@totaltrade.com.br',phone:'(13) 3344-2211',cnpj:'34.567.890/0001-12',category:'Distribuidora',city:'Santos - SP',delivery:'7 dias úteis',status:'Ativo',newMonth:true},
+ {name:'Meri Distribuidora',email:'vendas@meri.com.br',phone:'(11) 99876-4321',cnpj:'45.678.901/0001-23',category:'Distribuidora',city:'Osasco - SP',delivery:'4 dias úteis',status:'Ativo',newMonth:false},
+ {name:'Beleza & Cia Ltda',email:'atendimento@belezacia.com.br',phone:'(11) 98827-6655',cnpj:'56.789.012/0001-34',category:'Cosméticos',city:'Campinas - SP',delivery:'6 dias úteis',status:'Inativo',newMonth:false},
+ {name:'Natural Hair Brasil',email:'contato@naturalhair.com.br',phone:'(11) 96666-7788',cnpj:'67.890.123/0001-45',category:'Capilar',city:'Ribeirão Preto - SP',delivery:'5 dias úteis',status:'Ativo',newMonth:true},
+ {name:'Pro Hair Profissional',email:'vendas@prohair.com.br',phone:'(11) 93456-7890',cnpj:'78.901.234/0001-56',category:'Capilar',city:'São Paulo - SP',delivery:'3 dias úteis',status:'Ativo',newMonth:false},
+ {name:'Beauty Prime Distribuidora',email:'contato@beautyprime.com.br',phone:'(21) 98765-4321',cnpj:'89.012.345/0001-67',category:'Distribuidora',city:'Rio de Janeiro - RJ',delivery:'7 dias úteis',status:'Ativo',newMonth:true},
+ {name:'Essenza Brasil',email:'contato@essenzabrasil.com.br',phone:'(11) 95555-1122',cnpj:'90.123.456/0001-78',category:'Cosméticos',city:'São Paulo - SP',delivery:'4 dias úteis',status:'Ativo',newMonth:false},
+ {name:'Bella Perfumaria',email:'contato@bellaperfumaria.com.br',phone:'(11) 94444-2233',cnpj:'01.234.567/0001-89',category:'Perfumaria',city:'Osasco - SP',delivery:'6 dias úteis',status:'Ativo',newMonth:false}
+];
+let filtered = [...suppliers], currentPage=1, pageSize=8;
+
+function escapeHtml(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function initials(name){return name.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase();}
+function applyFilters(){
+ const q=document.getElementById('searchSupplier').value.toLowerCase().trim(), status=document.getElementById('statusFilter').value, cat=document.getElementById('categoryFilter').value, city=document.getElementById('cityFilter').value;
+ filtered=suppliers.filter(s=>{const text=`${s.name} ${s.email} ${s.cnpj}`.toLowerCase();return (!q||text.includes(q))&&(status==='Todos'||s.status===status)&&(cat==='Todas'||s.category===cat)&&(city==='Todas'||s.city===city);});
+ currentPage=1; render();
+}
+function clearFilters(){document.getElementById('searchSupplier').value='';document.getElementById('statusFilter').value='Todos';document.getElementById('categoryFilter').value='Todas';document.getElementById('cityFilter').value='Todas';applyFilters();}
+function render(){
+ const totalPages=Math.max(1,Math.ceil(filtered.length/pageSize)); if(currentPage>totalPages)currentPage=totalPages;
+ const start=(currentPage-1)*pageSize, rows=filtered.slice(start,start+pageSize);
+ document.getElementById('supplierTable').innerHTML=rows.length?rows.map(s=>{const i=suppliers.indexOf(s);return `<tr class="hover:bg-gray-50 transition"><td class="px-5 py-3"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-purple-100 text-brand-purple flex items-center justify-center font-bold text-[10px] shrink-0">${escapeHtml(initials(s.name))}</div><div><p class="font-bold text-gray-900">${escapeHtml(s.name)}</p><p class="text-[10px] text-gray-400">${escapeHtml(s.email)}</p></div></div></td><td class="px-5 py-3"><span class="bg-brand-purpleLight text-brand-purple border border-purple-100 px-2 py-1 rounded-md font-semibold">${escapeHtml(s.category)}</span></td><td class="px-5 py-3 text-gray-600">${escapeHtml(s.phone)}</td><td class="px-5 py-3 text-gray-600">${escapeHtml(s.city)}</td><td class="px-5 py-3 text-gray-600">${escapeHtml(s.delivery)}</td><td class="px-5 py-3 text-center"><span class="${s.status==='Ativo'?'bg-green-50 text-green-600 border-green-200':'bg-red-50 text-red-600 border-red-200'} border px-2 py-1 rounded-full font-bold">${s.status}</span></td><td class="px-5 py-3"><div class="flex justify-center gap-1"><button onclick="viewSupplier(${i})" title="Visualizar" class="w-7 h-7 rounded-full text-brand-purple hover:bg-brand-purpleLight"><i class="fa-regular fa-eye"></i></button><button onclick="editSupplier(${i})" title="Editar" class="w-7 h-7 rounded-full text-blue-600 hover:bg-blue-50"><i class="fa-solid fa-pen"></i></button><button onclick="toggleSupplier(${i})" title="Alterar status" class="w-7 h-7 rounded-full text-gray-500 hover:bg-gray-100"><i class="fa-solid fa-ellipsis-vertical"></i></button></div></td></tr>`}).join(''):`<tr><td colspan="7" class="px-5 py-12 text-center text-gray-500"><i class="fa-solid fa-magnifying-glass text-2xl mb-2"></i><p class="font-semibold">Nenhum fornecedor encontrado.</p></td></tr>`;
+ document.getElementById('paginationText').textContent=filtered.length?`Mostrando ${start+1} a ${Math.min(start+pageSize,filtered.length)} de ${filtered.length} fornecedores`:'Mostrando 0 fornecedores';
+ document.getElementById('pagination').innerHTML=`<button onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''} class="w-8 h-8 rounded flex items-center justify-center ${currentPage===1?'text-gray-300':'text-gray-600 hover:bg-white'}"><i class="fa-solid fa-chevron-left text-xs"></i></button>`+Array.from({length:totalPages},(_,n)=>`<button onclick="changePage(${n+1})" class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold ${currentPage===n+1?'bg-brand-purple text-white':'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'}">${n+1}</button>`).join('')+`<button onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''} class="w-8 h-8 rounded flex items-center justify-center ${currentPage===totalPages?'text-gray-300':'text-gray-600 hover:bg-white'}"><i class="fa-solid fa-chevron-right text-xs"></i></button>`;
+ updateStats();
+}
+function changePage(p){const max=Math.max(1,Math.ceil(filtered.length/pageSize));if(p<1||p>max)return;currentPage=p;render();}
+function updateStats(){document.getElementById('totalCount').textContent=suppliers.length+32;document.getElementById('activeCount').textContent=suppliers.filter(s=>s.status==='Ativo').length+30;document.getElementById('inactiveCount').textContent=suppliers.filter(s=>s.status==='Inativo').length+2;document.getElementById('newCount').textContent=suppliers.filter(s=>s.newMonth).length+0;}
+function openSupplierModal(index=-1){document.getElementById('editIndex').value=index;document.getElementById('modalTitle').textContent=index===-1?'Cadastrar Fornecedor':'Editar Fornecedor';document.getElementById('supplierForm').reset();if(index>=0){const s=suppliers[index];for(const [id,key] of [['fName','name'],['fEmail','email'],['fPhone','phone'],['fCnpj','cnpj'],['fCategory','category'],['fCity','city'],['fDelivery','delivery'],['fStatus','status']])document.getElementById(id).value=s[key];}document.getElementById('supplierModal').classList.remove('hidden');document.getElementById('supplierModal').classList.add('flex');document.getElementById('fName').focus();}
+function closeSupplierModal(){document.getElementById('supplierModal').classList.add('hidden');document.getElementById('supplierModal').classList.remove('flex');}
+function saveSupplier(e){e.preventDefault();const data={name:fName.value,email:fEmail.value,phone:fPhone.value,cnpj:fCnpj.value,category:fCategory.value,city:fCity.value,delivery:fDelivery.value,status:fStatus.value,newMonth:document.getElementById('editIndex').value==='-1'};const index=Number(document.getElementById('editIndex').value);if(index===-1)suppliers.unshift(data);else suppliers[index]=data;closeSupplierModal();applyFilters();}
+function editSupplier(index){openSupplierModal(index);}
+function viewSupplier(index){const s=suppliers[index];alert(`Fornecedor: ${s.name}\nE-mail: ${s.email}\nTelefone: ${s.phone}\nCNPJ: ${s.cnpj}\nCategoria: ${s.category}\nCidade: ${s.city}\nPrazo: ${s.delivery}\nStatus: ${s.status}`);}
+function toggleSupplier(index){suppliers[index].status=suppliers[index].status==='Ativo'?'Inativo':'Ativo';applyFilters();}
+document.getElementById('supplierModal').addEventListener('click',e=>{if(e.target.id==='supplierModal')closeSupplierModal();});
+render();
+</script>
+</body>
+</html>
