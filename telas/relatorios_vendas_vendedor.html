@@ -39,49 +39,45 @@
 </head>
 <body class="bg-brand-bg text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
 
-    <!-- MENU LATERAL -->
+     <!-- MENU LATERAL (PADRÃO CLIENTES & INTERLIGADO) -->
     <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
         <div class="flex flex-col h-full overflow-hidden">
             <!-- Logótipo -->
-            <div class="px-8 pt-8 pb-6 flex items-center gap-2 shrink-0">
-                <div class="relative w-8 h-8 flex items-center justify-center">
-                    <div class="absolute w-3 h-6 bg-[#6366f1] rounded-full left-1 top-1 -rotate-12 opacity-80"></div>
-                    <div class="absolute w-3 h-6 bg-[#8b5cf6] rounded-full right-1 bottom-1 -rotate-12"></div>
-                </div>
-                <span class="font-bold text-3xl text-gray-800 tracking-tight">nexo</span>
+            <div class="px-8 pt-8 pb-6 flex items-center">
+                <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
             </div>
 
-            <!-- Links de Navegação com Scroll -->
+            <!-- Links de Navegação Interligados -->
             <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="home.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-briefcase w-5 text-center text-gray-500"></i> Empresa
+                <a href="empresa.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-building w-5 text-center text-gray-500"></i> Empresa
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="pedidos.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="produto.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="estoque.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-truck-field w-5 text-center text-gray-500"></i> Fornecedores
+                <a href="fornecedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck w-5 text-center text-gray-500"></i> Fornecedores
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="Clientes.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="revendedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
                 </a>
-                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                <a href="financeiro.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
                     <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
                 </a>
                 
-                <!-- ITEM ATIVO -->
+                <!-- ITEM ATIVO (Relatórios) -->
                 <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
                     <i class="fa-solid fa-file-lines w-5 text-center text-white"></i> Relatórios
                 </a>
@@ -102,6 +98,7 @@
             </div>
         </div>
     </aside>
+
 
     <!-- ÁREA PRINCIPAL -->
     <main class="flex-1 h-screen overflow-y-auto p-6 md:p-10">

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,86 +12,142 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'] }, colors: {
-                        brand: { purple:'#7c3aed', purpleLight:'#f3e8ff', darkblue:'#1e1b4b', textMain:'#111827', textMuted:'#6b7280', bg:'#f8fafc', border:'#e2e8f0' }
-                    }}}
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: {
+                        brand: { purple: '#7c3aed', purpleLight: '#f3e8ff', darkblue: '#1e1b4b', textMain: '#111827', textMuted: '#6b7280', bg: '#f8fafc', border: '#e2e8f0' }
+                    }
+                }
+            }
         };
     </script>
     <style>
-        ::-webkit-scrollbar{width:8px;height:8px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
-        .fade-in{animation:fadeIn .25s ease-in-out}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px
+        }
+
+        .fade-in {
+            animation: fadeIn .3s ease-in-out
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
     </style>
 </head>
+
 <body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
 
-<div class="md:hidden flex items-center justify-between bg-white p-4 border-b border-brand-border w-full z-20 shrink-0 shadow-sm">
-    <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-28 h-auto object-contain">
-    <button onclick="toggleSidebar()" class="text-gray-600 focus:outline-none p-2">
-        <i class="fa-solid fa-bars text-2xl"></i>
-    </button>
-</div>
+    <!-- MENU LATERAL (PADRÃO CLIENTES & INTERLIGADO) -->
+    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
+        <div class="flex flex-col h-full overflow-hidden">
+            <!-- Logótipo -->
+            <div class="px-8 pt-8 pb-6 flex items-center">
+                <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
+            </div>
 
-<div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-30 hidden md:hidden transition-opacity"></div>
-
-<aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out w-[260px] border-r border-brand-border flex flex-col py-6 bg-white shrink-0 z-40 shadow-xl md:shadow-sm h-full">
-    <div class="px-6 flex items-center justify-between mb-8">
-        <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
-        <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-800 focus:outline-none">
-            <i class="fa-solid fa-xmark text-xl"></i>
-        </button>
-    </div>
-
-    <nav class="flex flex-col px-4 gap-1 flex-1 overflow-y-auto">
-        <a href="home.html" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-house text-lg w-6 text-center"></i><span class="font-semibold">Início</span></a>
-        <a href="empresa.html" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-purple text-white shadow-md"><i class="fa-solid fa-briefcase text-lg w-6 text-center"></i><span class="font-semibold">Empresa</span></a>
-        <a href="produto.html" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-cart-shopping text-lg w-6 text-center"></i><span class="font-semibold">Produtos</span></a>
-        <a href="relatorios2.html" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-clipboard-list text-lg w-6 text-center"></i><span class="font-semibold">Relatórios</span></a>
-        <a href="clientes.html" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-user-group text-lg w-6 text-center"></i><span class="font-semibold">Clientes</span></a>
-        <a href="fornecedores.html" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition"><i class="fa-solid fa-truck text-lg w-6 text-center"></i><span class="font-semibold">Fornecedores</span></a>
-    </nav>
-
-    <div class="px-4 mt-auto pt-4 border-t border-gray-100 md:border-none">
-        <div class="flex items-center gap-3 px-4 py-3 border border-gray-200 rounded-xl bg-gray-50">
-            <div class="w-8 h-8 rounded-full bg-brand-purple text-white flex items-center justify-center font-bold text-sm">A</div>
-            <div class="flex-1 overflow-hidden"><p class="text-sm font-bold truncate">Admin User</p><p class="text-xs text-gray-500 truncate">admin@nexo.com</p></div>
-            <i class="fa-solid fa-gear text-gray-400"></i>
+            <!-- Links de Navegação Interligados -->
+            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                <a href="home.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                </a>
+                <a href="empresa.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                    <i class="fa-solid fa-building w-5 text-center text-white"></i> Empresa
+                </a>
+                <a href="pedidos.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                </a>
+                <a href="produto.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
+                </a>
+                <a href="estoque.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                </a>
+                <a href="fornecedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck w-5 text-center text-gray-500"></i> Fornecedores
+                </a>
+                <a href="Clientes.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
+                </a>
+                <a href="revendedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                </a>
+                <a href="financeiro.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                </a>
+                <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-gray-500"></i> Relatórios
+                </a>
+            </nav>
         </div>
-    </div>
-</aside>
+        
+        <!-- Perfil no Rodapé -->
+        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-bold text-gray-800">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@nexo.com</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
+            </div>
+        </div>
+    </aside>
 
-<main class="flex-1 relative overflow-y-auto w-full h-full">
-    <div class="max-w-[1000px] mx-auto p-4 md:p-8 w-full min-h-full pb-24">
-        <section class="fade-in space-y-6">
+    <!-- CONTEÚDO PRINCIPAL (DADOS DA EMPRESA) -->
+    <main class="flex-1 relative overflow-y-auto w-full h-full">
+        <div class="max-w-[1200px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
 
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 mt-2 md:mt-0">
-                <div class="text-left flex-1">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 mt-2 md:mt-0">
+                <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Dados da Empresa</h1>
                     <p class="text-sm md:text-base text-brand-textMuted">Visualize e edite as informações cadastrais e fiscais da sua empresa.</p>
                 </div>
-                <button onclick="salvarDados()" class="w-full md:w-auto justify-center bg-brand-purple hover:bg-purple-700 transition text-white px-6 py-3 md:py-2.5 rounded-lg font-semibold shadow-md flex items-center gap-2">
+
+                <button onclick="salvarDados()" class="bg-brand-purple hover:bg-purple-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2 justify-center">
                     <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
                 </button>
             </div>
 
-            <div class="bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-brand-border space-y-8">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-border space-y-8">
                 <div>
-                    <h2 class="text-base md:text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-building"></i> Informações Cadastrais</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                    <h2 class="text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-building"></i> Informações Cadastrais</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Razão Social</label>
-                            <input type="text" value="Nexo Gestão e Recursos Empresariais LTDA" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Razão Social</label>
+                            <input type="text" value="Nexo Gestão e Recursos Empresariais LTDA" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Nome Fantasia</label>
-                            <input type="text" value="Nexo ERP" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nome Fantasia</label>
+                            <input type="text" value="Nexo ERP" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">CNPJ</label>
-                            <input type="text" value="12.345.678/0001-90" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CNPJ</label>
+                            <input type="text" value="12.345.678/0001-90" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Inscrição Estadual</label>
-                            <input type="text" value="123.456.789.123" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Inscrição Estadual</label>
+                            <input type="text" value="123.456.789.123" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
                     </div>
                 </div>
@@ -98,15 +155,15 @@
                 <hr class="border-gray-100">
 
                 <div>
-                    <h2 class="text-base md:text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-address-book"></i> Dados de Contato</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                    <h2 class="text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-address-book"></i> Dados de Contato</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">E-mail Principal</label>
-                            <input type="email" value="contato@nexo.com.br" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail Principal</label>
+                            <input type="email" value="contato@nexo.com.br" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Telefone / WhatsApp</label>
-                            <input type="text" value="(11) 4002-8922" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Telefone / WhatsApp</label>
+                            <input type="text" value="(11) 4002-8922" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
                     </div>
                 </div>
@@ -114,31 +171,31 @@
                 <hr class="border-gray-100">
 
                 <div>
-                    <h2 class="text-base md:text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> Endereço</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-                        <div class="sm:col-span-2 md:col-span-1">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">CEP</label>
-                            <input type="text" value="01001-000" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                    <h2 class="text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> Endereço</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CEP</label>
+                            <input type="text" value="01001-000" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
-                        <div class="sm:col-span-2 md:col-span-2">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Logradouro</label>
-                            <input type="text" value="Praça da Sé" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Logradouro</label>
+                            <input type="text" value="Praça da Sé" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
-                        <div class="sm:col-span-1 md:col-span-1">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Número</label>
-                            <input type="text" value="S/N" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número</label>
+                            <input type="text" value="S/N" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
-                        <div class="sm:col-span-1 md:col-span-2">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Bairro</label>
-                            <input type="text" value="Sé" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Bairro</label>
+                            <input type="text" value="Sé" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
-                        <div class="sm:col-span-2 md:col-span-2">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Cidade</label>
-                            <input type="text" value="São Paulo" class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Cidade</label>
+                            <input type="text" value="São Paulo" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                         </div>
-                        <div class="sm:col-span-2 md:col-span-1">
-                            <label class="block text-xs font-bold text-gray-500 mb-1">Estado</label>
-                            <select class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Estado</label>
+                            <select class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
                                 <option value="SP" selected>SP</option>
                                 <option value="RJ">RJ</option>
                                 <option value="MG">MG</option>
@@ -146,23 +203,16 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-        </section>
-    </div>
-</main>
 
-<script>
-    function salvarDados() {
-        alert("Dados da empresa guardados com sucesso!");
-    }
+        </div>
+    </main>
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        sidebar.classList.toggle('-translate-x-full');
-        overlay.classList.toggle('hidden');
-    }
-</script>
+    <script>
+        function salvarDados() {
+            alert("Dados da empresa guardados com sucesso!");
+        }
+    </script>
 </body>
+
 </html>
