@@ -8,49 +8,82 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Folha de Estilos CSS -->
+    <!-- Tailwind CSS (Apenas para padronizar o menu lateral) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: {
+                        brand: { purple: '#7c3aed', purpleLight: '#f3e8ff', darkblue: '#1e1b4b', textMain: '#111827', textMuted: '#6b7280', bg: '#f8fafc', border: '#e2e8f0' }
+                    }
+                }
+            }
+        };
+    </script>
+    <!-- Folha de Estilos Própria dos Clientes -->
     <link rel="stylesheet" href="../css/CSSclientes.css">
 </head>
 <body>
 
     <div class="app-container">
-        <!-- Barra Lateral (Sidebar) -->
-        <aside class="sidebar">
-            <div class="sidebar-logo">
-                <img src="../assets/img/logoNexo.png" alt="Nexo Logo" class="brand-logo-img">
+        <!-- BARRA LATERAL PADRÃO E INTERLIGADA -->
+        <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex fixed">
+            <div class="flex flex-col h-full overflow-hidden">
+                <div class="px-8 pt-8 pb-6 flex items-center">
+                    <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
+                </div>
+
+                <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                    <a href="home.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                    </a>
+                    <a href="empresa.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-building w-5 text-center text-gray-500"></i> Empresa
+                    </a>
+                    <a href="pedidos.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                    </a>
+                    <a href="produto.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
+                    </a>
+                    <a href="estoque.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                    </a>
+                    <a href="fornecedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-truck w-5 text-center text-gray-500"></i> Fornecedores
+                    </a>
+                    <a href="clientes.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                        <i class="fa-solid fa-users w-5 text-center text-white"></i> Clientes
+                    </a>
+                    <a href="revendedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                    </a>
+                    <a href="financeiro.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                    </a>
+                    <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                        <i class="fa-solid fa-file-lines w-5 text-center text-gray-500"></i> Relatórios
+                    </a>
+                </nav>
             </div>
             
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Início</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-building"></i>
-                    <span>Empresa</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Produtos</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-file-lines"></i>
-                    <span>Relatórios</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Clientes</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-truck"></i>
-                    <span>Fornecedores</span>
-                </a>
-            </nav>
+            <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+                <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                        <div class="leading-tight">
+                            <p class="text-sm font-bold text-gray-800">Admin User</p>
+                            <p class="text-xs text-gray-500">admin@nexo.com</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
+                </div>
+            </div>
         </aside>
 
-        <!-- Conteúdo Principal -->
+        <!-- Conteúdo Principal com o Visual Original -->
         <main class="main-content">
-            <!-- Cabeçalho Superior -->
             <header class="top-header">
                 <div class="header-title-wrapper">
                     <h1>Clientes</h1>
@@ -61,7 +94,6 @@
                 </button>
             </header>
 
-            <!-- Secção de Filtros -->
             <section class="filters-card">
                 <div class="filters-header">
                     <div class="filters-title">
@@ -111,7 +143,6 @@
                 </div>
             </section>
 
-            <!-- Cards de Métricas / Resumo -->
             <section class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-icon purple">
@@ -151,7 +182,6 @@
                 </div>
             </section>
 
-            <!-- Tabela de Clientes -->
             <section class="table-card">
                 <div class="table-responsive">
                     <table class="clients-table">
@@ -166,46 +196,32 @@
                                 <th class="text-right">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="clientsTableBody">
-                            <!-- Os dados serão injetados dinamicamente via script.js -->
-                        </tbody>
+                        <tbody id="clientsTableBody"></tbody>
                     </table>
                 </div>
 
-                <!-- Paginação -->
                 <div class="table-footer">
-                    <span class="pagination-info" id="paginationInfo">Mostrando 1 a 8 de 128 clientes</span>
-                    <div class="pagination-controls">
-                        <button class="page-btn" id="prevPage"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button class="page-btn active">1</button>
-                        <button class="page-btn">2</button>
-                        <button class="page-btn">3</button>
-                        <span class="page-dots">...</span>
-                        <button class="page-btn">16</button>
-                        <button class="page-btn" id="nextPage"><i class="fa-solid fa-chevron-right"></i></button>
-                    </div>
+                    <span class="pagination-info" id="paginationInfo">Mostrando 1 a 5 de 128 clientes</span>
+                    <div class="pagination-controls"></div>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- Modal / Janela Pop-up para Detalhes / Ações -->
     <div class="modal-overlay" id="clientModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">Detalhes do Cliente</h3>
                 <button class="modal-close" id="closeModalBtn">&times;</button>
             </div>
-            <div class="modal-body" id="modalBodyContent">
-                <!-- Conteúdo injetado via JS -->
-            </div>
+            <div class="modal-body" id="modalBodyContent"></div>
             <div class="modal-footer">
                 <button class="btn-secondary" id="modalCloseAction">Fechar</button>
             </div>
         </div>
     </div>
 
-    <!-- Script JavaScript -->
+    <!-- Script JavaScript Original -->
     <script src="../JS/JSclientes.js"></script>
 </body>
 </html>

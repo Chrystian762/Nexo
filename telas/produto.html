@@ -56,63 +56,60 @@
 </head>
 <body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex font-sans">
 
-    <!-- Left Sidebar -->
-    <aside class="w-[260px] border-r border-brand-border flex flex-col py-6 bg-white shrink-0 z-20 shadow-sm">
-        
-        <!-- Logo Area -->
-        <div class="px-6 flex items-center gap-2 mb-8">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 30V10L30 30V10" stroke="url(#paint0_linear)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-                <defs>
-                    <linearGradient id="paint0_linear" x1="10" y1="10" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#3b82f6" />
-                        <stop offset="1" stop-color="#7c3aed" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            <span class="text-3xl font-extrabold tracking-tight text-brand-darkblue">nexo</span>
-        </div>
+    <!-- MENU LATERAL (PADRÃO CLIENTES & INTERLIGADO) -->
+    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
+        <div class="flex flex-col h-full overflow-hidden">
+            <!-- Logótipo -->
+            <div class="px-8 pt-8 pb-6 flex items-center">
+                <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
+            </div>
 
-        <!-- Navigation Links -->
-        <nav class="flex flex-col px-4 gap-1 flex-1">
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                <i class="fa-solid fa-house text-lg w-6 text-center"></i>
-                <span class="font-semibold">Início</span>
-            </a>
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                <i class="fa-solid fa-briefcase text-lg w-6 text-center"></i>
-                <span class="font-semibold">Empresa</span>
-            </a>
-            <!-- Active Link -->
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-brand-purple text-white shadow-md transition-colors duration-200">
-                <i class="fa-solid fa-cart-shopping text-lg w-6 text-center"></i>
-                <span class="font-semibold">Produtos</span>
-            </a>
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                <i class="fa-solid fa-clipboard-list text-lg w-6 text-center"></i>
-                <span class="font-semibold">Relatórios</span>
-            </a>
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                <i class="fa-solid fa-user-group text-lg w-6 text-center"></i>
-                <span class="font-semibold">Clientes</span>
-            </a>
-            <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-200">
-                <i class="fa-solid fa-truck text-lg w-6 text-center"></i>
-                <span class="font-semibold">Fornecedores</span>
-            </a>
-        </nav>
+            <!-- Links de Navegação Interligados -->
+            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                <a href="home.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                </a>
+                <a href="empresa.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-building w-5 text-center text-gray-500"></i> Empresa
+                </a>
+                <a href="pedidos.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                </a>
+                <a href="produto.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-white"></i> Produtos
+                </a>
+                <a href="estoque.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                </a>
+                <a href="fornecedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck w-5 text-center text-gray-500"></i> Fornecedores
+                </a>
+                <a href="Clientes.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
+                </a>
+                <a href="revendedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                </a>
+                <a href="financeiro.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                </a>
+                    <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-gray-500"></i> Relatórios
+                </a>
+            </nav>
+        </div>
         
-        <!-- User Profile -->
-        <div class="px-4 mt-auto">
-            <div class="flex items-center gap-3 px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 cursor-pointer hover:bg-gray-100 transition">
-                <div class="w-8 h-8 rounded-full bg-brand-purple text-white flex items-center justify-center font-bold text-sm">
-                    A
+        <!-- Perfil no Rodapé -->
+        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-bold text-gray-800">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@nexo.com</p>
+                    </div>
                 </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-sm font-bold truncate">Admin User</p>
-                    <p class="text-xs text-gray-500 truncate">admin@nexo.com</p>
-                </div>
-                <i class="fa-solid fa-gear text-gray-400"></i>
+                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
             </div>
         </div>
     </aside>
