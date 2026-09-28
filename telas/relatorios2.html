@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nexo - Relatórios</title>
+
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuração de Cores -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            purple: '#8b5cf6',
+                            purpleHover: '#7c3aed',
+                            bg: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- MENU LATERAL -->
+    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
+        <div class="flex flex-col h-full overflow-hidden">
+            <!-- Logótipo -->
+            <div class="px-8 pt-8 pb-6 flex items-center">
+                <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
+            </div>
+
+            <!-- Links de Navegação com Scroll -->
+            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-briefcase w-5 text-center text-gray-500"></i> Empresa
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck-field w-5 text-center text-gray-500"></i> Fornecedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                </a>
+                
+                <!-- ITEM ATIVO -->
+                <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-white"></i> Relatórios
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Perfil no Rodapé -->
+        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-bold text-gray-800">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@nexo.com</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main class="flex-1 h-screen overflow-y-auto p-8 md:px-10">
+        
+        <!-- Cabeçalho -->
+        <div class="flex justify-between items-start mb-8">
+            <div>
+                <h1 class="text-[32px] font-extrabold text-gray-900 tracking-tight leading-none mb-2">Relatórios</h1>
+                <p class="text-[15px] text-gray-500">Analise os indicadores e o desempenho do seu negócio.</p>
+            </div>
+            <button class="bg-brand-purple hover:bg-brand-purpleHover text-white px-5 py-2.5 rounded-xl font-semibold transition shadow-sm flex items-center gap-2">
+                <i class="fa-solid fa-download"></i> Exportar Dados
+            </button>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 mb-6">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                <div class="flex items-center gap-2 text-brand-purple font-semibold text-sm">
+                    <i class="fa-solid fa-filter"></i> Filtros
+                </div>
+                <!-- Botão Limpar Filtros -->
+                <button onclick="limparFiltros()" class="flex items-center gap-2 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition cursor-pointer">
+                    <i class="fa-solid fa-rotate-right text-xs"></i> Limpar Filtros
+                </button>
+            </div>
+            <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- 1. Período -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5">Período</label>
+                    <select id="periodoFilter" class="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple cursor-pointer">
+                        <option value="mes_atual">Este Mês</option>
+                        <option value="mes_passado">Mês Passado</option>
+                        <option value="7_dias">Últimos 7 dias</option>
+                        <option value="30_dias">Últimos 30 dias</option>
+                        <option value="ano_atual">Este Ano</option>
+                        <option value="personalizado">Personalizado...</option>
+                    </select>
+                </div>
+                
+                <!-- 2. Categoria (Ação de filtrar no onchange) -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5">Categoria</label>
+                    <select id="categoriaFilter" onchange="filtrarRelatorios()" class="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple cursor-pointer">
+                        <option value="todas">Todas as Categorias</option>
+                        <option value="vendas">Vendas</option>
+                        <option value="financeiro">Financeiro</option>
+                        <option value="estoque">Estoque</option>
+                        <option value="clientes">Clientes</option>
+                    </select>
+                </div>
+                
+                <!-- 3. Vendedor -->
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1.5">Vendedor</label>
+                    <select id="vendedorFilter" class="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple cursor-pointer">
+                        <option value="todos">Todos os Vendedores</option>
+                        <option value="ana">Ana Silva</option>
+                        <option value="carlos">Carlos Santos</option>
+                        <option value="mariana">Mariana Costa</option>
+                        <option value="pedro">Pedro Alves</option>
+                    </select>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- INDICADORES (KPIs) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-chart-line text-gray-400"></i>
+                    <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Faturamento Total (Mês)</h3>
+                </div>
+                <div class="flex items-end gap-3">
+                    <p class="text-3xl font-extrabold text-gray-900">R$ 48.750</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                    <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Vendas Concluídas</h3>
+                </div>
+                <div class="flex items-end gap-3">
+                    <p class="text-3xl font-extrabold text-gray-900">342</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                    <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Ticket Médio</h3>
+                </div>
+                <div class="flex items-end gap-3">
+                    <p class="text-3xl font-extrabold text-gray-900">R$ 142</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LISTAGEM DOS RELATÓRIOS -->
+        <div id="gridRelatorios" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 pb-10">
+            
+            <!-- 1. Vendas por Período (VENDAS) -->
+            <a href="relatorios_vendas_periodo.html" class="report-card block bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-blue-200 transition" data-categoria="vendas">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Vendas por Período</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Acompanhe o volume de vendas diário, semanal ou mensal.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-purple-50 text-brand-purple px-2 py-0.5 rounded text-[11px] font-bold">Vendas</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. Produtos Mais Vendidos (VENDAS) -->
+            <a href="relatorios_produtos_vendidos.html" class="report-card block bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-purple-200 transition" data-categoria="vendas">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Produtos Mais Vendidos</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Descubra quais itens têm maior saída no seu estoque.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-purple-50 text-brand-purple px-2 py-0.5 rounded text-[11px] font-bold">Vendas</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 3. Vendas por Vendedor (VENDAS) -->
+            <a href="relatorios_vendas_vendedor.html" class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-orange-200 transition" data-categoria="vendas">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Vendas por Vendedor</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Desempenho da equipe, metas alcançadas e comissões.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-purple-50 text-brand-purple px-2 py-0.5 rounded text-[11px] font-bold">Vendas</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 4. Vendas por Categoria (VENDAS) -->
+            <a href="relatorios_vendas_categoria.html" class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-indigo-200 transition" data-categoria="vendas">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Vendas por Categoria</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Avalie quais grupos de produtos geram mais receita.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-purple-50 text-brand-purple px-2 py-0.5 rounded text-[11px] font-bold">Vendas</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 5. Vendas por Marca (VENDAS) -->
+            <div class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-teal-200 transition" data-categoria="vendas">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-teal-50 text-teal-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Vendas por Marca</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Descubra as marcas preferidas e mais lucrativas dos clientes.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-purple-50 text-brand-purple px-2 py-0.5 rounded text-[11px] font-bold">Vendas</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Lucro Mensal (FINANCEIRO) -->
+            <div class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-pink-200 transition" data-categoria="financeiro">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-pink-50 text-pink-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-money-bill-trend-up"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Lucro Mensal</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Demonstração de resultados abatendo custos (DRE).</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-[11px] font-bold">Financeiro</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Produtos Sem Saída (ESTOQUE) -->
+            <div class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-red-200 transition" data-categoria="estoque">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Produtos Sem Saída</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Identifique estoque estagnado e há muito tempo sem vendas.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-orange-50 text-orange-600 px-2 py-0.5 rounded text-[11px] font-bold">Estoque</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Relatório de Validade (ESTOQUE) -->
+            <div class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-amber-200 transition" data-categoria="estoque">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Relatório de Validade</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Controle o vencimento dos lotes de produtos no inventário.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-orange-50 text-orange-600 px-2 py-0.5 rounded text-[11px] font-bold">Estoque</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Clientes que Mais Compram (CLIENTES) -->
+            <div class="report-card bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 relative group cursor-pointer hover:border-green-200 transition" data-categoria="clientes">
+                <i class="fa-solid fa-ellipsis-vertical absolute right-5 top-5 text-gray-400 cursor-pointer p-1"></i>
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-green-50 text-green-500 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-lg">Melhores Clientes</h4>
+                        <p class="text-[13px] text-gray-500 mt-1 leading-snug pr-4">Curva ABC e fidelização dos compradores mais frequentes.</p>
+                        <div class="flex gap-2 mt-4">
+                            <span class="bg-teal-50 text-teal-600 px-2 py-0.5 rounded text-[11px] font-bold">Clientes</span>
+                            <span class="bg-green-50 text-green-600 border border-green-100 px-2 py-0.5 rounded text-[11px] font-bold">Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Script de Funcionalidade dos Filtros -->
+    <script>
+        function filtrarRelatorios() {
+            // Pega o valor selecionado no select de categoria
+            const categoriaSelecionada = document.getElementById('categoriaFilter').value;
+            // Pega todos os cartões que possuem a classe 'report-card'
+            const cartoes = document.querySelectorAll('.report-card');
+
+            cartoes.forEach(cartao => {
+                const categoriaDoCartao = cartao.getAttribute('data-categoria');
+                
+                // Se a categoria selecionada for 'todas' ou igual a categoria do cartão, ele aparece. Caso contrário, esconde.
+                if (categoriaSelecionada === 'todas' || categoriaSelecionada === categoriaDoCartao) {
+                    cartao.style.display = 'block';
+                } else {
+                    cartao.style.display = 'none';
+                }
+            });
+        }
+
+        function limparFiltros() {
+            // Reseta os 3 selects para o index 0 (primeira opção)
+            document.getElementById('periodoFilter').selectedIndex = 0;
+            document.getElementById('categoriaFilter').selectedIndex = 0;
+            document.getElementById('vendedorFilter').selectedIndex = 0;
+            
+            // Chama a função de filtrar novamente para exibir todos os cartões
+            filtrarRelatorios();
+        }
+    </script>
+
+</body>
+</html>

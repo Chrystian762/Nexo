@@ -317,9 +317,13 @@ body {
     color: var(--text-main);
 }
 
+/* 1. Faz o cartão da categoria ser Flexbox para expandir em altura */
 .report-category {
     padding: 0;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .category-header {
@@ -334,10 +338,12 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
+/* 2. Faz o grid interno preencher todo o espaço restante da categoria */
 .reports-grid {
     padding: 20px;
     display: grid;
     gap: 16px;
+    flex-grow: 1;
 }
 
 .grid-vendas { grid-template-columns: repeat(3, 1fr); }
@@ -350,12 +356,14 @@ body {
     padding: 0;
 }
 
+/* 3. Garante que o cartão do relatório estique até o final da área disponível */
 .report-item {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 16px;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .report-item-header {

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nexo - Produtos Mais Vendidos</title>
+
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Configuração de Cores -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            purple: '#8b5cf6',
+                            purpleHover: '#7c3aed',
+                            bg: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- MENU LATERAL -->
+    <!-- MENU LATERAL -->
+    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
+        <div class="flex flex-col h-full overflow-hidden">
+            <!-- Logótipo -->
+            <div class="px-8 pt-8 pb-6 flex items-center gap-2 shrink-0">
+                <div class="relative w-8 h-8 flex items-center justify-center">
+                    <div class="absolute w-3 h-6 bg-[#6366f1] rounded-full left-1 top-1 -rotate-12 opacity-80"></div>
+                    <div class="absolute w-3 h-6 bg-[#8b5cf6] rounded-full right-1 bottom-1 -rotate-12"></div>
+                </div>
+                <span class="font-bold text-3xl text-gray-800 tracking-tight">nexo</span>
+            </div>
+
+            <!-- Links de Navegação com Scroll -->
+            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-briefcase w-5 text-center text-gray-500"></i> Empresa
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck-field w-5 text-center text-gray-500"></i> Fornecedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                </a>
+                
+                <!-- ITEM ATIVO -->
+                <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-white"></i> Relatórios
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Perfil no Rodapé -->
+        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-bold text-gray-800">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@nexo.com</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DO RELATÓRIO -->
+    <main class="flex-1 h-screen overflow-y-auto p-8 md:px-10">
+        
+        <!-- Navegação / Voltar -->
+        <a href="relatorios2.html" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-brand-purple transition mb-4">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para Relatórios
+        </a>
+
+        <!-- Cabeçalho do Relatório -->
+        <div class="flex justify-between items-end mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Ícone roxo correspondente ao cartão -->
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-box-open"></i>
+                </div>
+                <div>
+                    <h1 class="text-[28px] font-extrabold text-gray-900 tracking-tight leading-none mb-1">Produtos Mais Vendidos</h1>
+                    <p class="text-[14px] text-gray-500">Ranking dos itens com maior saída no período selecionado</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl font-semibold transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+                <button class="bg-brand-purple hover:bg-brand-purpleHover text-white px-5 py-2.5 rounded-xl font-semibold transition shadow-sm flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-download"></i> Exportar Excel
+                </button>
+            </div>
+        </div>
+
+        <!-- BARRA DE FILTROS -->
+        <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 mb-6 flex flex-wrap gap-4 items-end">
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Data Inicial</label>
+                <input type="date" value="2026-09-01" class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Data Final</label>
+                <input type="date" value="2026-09-30" class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Categoria</label>
+                <select class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple min-w-[160px]">
+                    <option>Todas as Categorias</option>
+                    <option>Shampoos</option>
+                    <option>Máscaras</option>
+                    <option>Finalizadores</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Ordenar Por</label>
+                <select class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple">
+                    <option>Quantidade Vendida</option>
+                    <option>Maior Faturamento</option>
+                </select>
+            </div>
+            <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2 rounded-xl font-semibold transition text-sm ml-auto">
+                Atualizar Ranking
+            </button>
+        </div>
+
+        <!-- ÁREA DO GRÁFICO E MINI KPIs -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            
+            <!-- Mini KPIs Lateral -->
+            <div class="flex flex-col gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 flex-1 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-16 h-16 bg-purple-50 rounded-bl-full flex items-center justify-center">
+                        <i class="fa-solid fa-trophy text-brand-purple translate-x-1 -translate-y-1"></i>
+                    </div>
+                    <h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-1">Produto Destaque</h3>
+                    <p class="text-xl font-extrabold text-gray-900 truncate pr-6" title="Shampoo Reconstrução 500ml">Shampoo Reconst...</p>
+                    <p class="text-xs text-brand-purple font-semibold mt-2">340 unidades vendidas</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 flex-1">
+                    <h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-1">Total de Itens Vendidos</h3>
+                    <p class="text-3xl font-extrabold text-gray-900">1.245</p>
+                    <p class="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1"><i class="fa-solid fa-arrow-trend-up"></i> +4.2% vs mês anterior</p>
+                </div>
+            </div>
+
+            <!-- Gráfico principal (Gráfico de Barras) -->
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 lg:col-span-3">
+                <h3 class="text-[14px] font-bold text-gray-800 mb-4">Top 5 Produtos (Quantidade)</h3>
+                <div class="w-full h-[250px] relative">
+                    <canvas id="rankingChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TABELA DE RANKING DETALHADO -->
+        <div class="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 overflow-hidden mb-10">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="font-bold text-gray-800">Ranking Completo</h3>
+                <span class="text-xs font-semibold text-gray-500">Exibindo os 5 principais de 45 itens</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-white border-b border-gray-100 text-[11px] uppercase tracking-wider text-gray-500">
+                            <th class="p-4 font-bold w-16 text-center">Pos</th>
+                            <th class="p-4 font-bold">Produto</th>
+                            <th class="p-4 font-bold">Categoria</th>
+                            <th class="p-4 font-bold text-center">Qtd. Vendida</th>
+                            <th class="p-4 font-bold text-right">Preço Médio</th>
+                            <th class="p-4 font-bold text-right">Faturamento (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <!-- Posição 1 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-bold text-center text-brand-purple">1º</td>
+                            <td class="p-4 font-medium text-gray-900 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-bottle-droplet"></i></div>
+                                Shampoo Reconstrução 500ml
+                            </td>
+                            <td class="p-4"><span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-semibold">Shampoos</span></td>
+                            <td class="p-4 text-gray-600 text-center font-bold">340</td>
+                            <td class="p-4 text-gray-500 text-right">R$ 45,00</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 15.300,00</td>
+                        </tr>
+                        <!-- Posição 2 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-bold text-center text-gray-500">2º</td>
+                            <td class="p-4 font-medium text-gray-900 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-jar"></i></div>
+                                Máscara Hidratação Profunda
+                            </td>
+                            <td class="p-4"><span class="bg-orange-50 text-orange-600 px-2 py-1 rounded text-xs font-semibold">Máscaras</span></td>
+                            <td class="p-4 text-gray-600 text-center font-bold">280</td>
+                            <td class="p-4 text-gray-500 text-right">R$ 68,00</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 19.040,00</td>
+                        </tr>
+                        <!-- Posição 3 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-bold text-center text-gray-500">3º</td>
+                            <td class="p-4 font-medium text-gray-900 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-spray-can"></i></div>
+                                Spray Fixador Extra Forte
+                            </td>
+                            <td class="p-4"><span class="bg-purple-50 text-purple-600 px-2 py-1 rounded text-xs font-semibold">Finalizadores</span></td>
+                            <td class="p-4 text-gray-600 text-center font-bold">215</td>
+                            <td class="p-4 text-gray-500 text-right">R$ 32,50</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 6.987,50</td>
+                        </tr>
+                        <!-- Posição 4 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-bold text-center text-gray-400">4º</td>
+                            <td class="p-4 font-medium text-gray-900 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-pump-soap"></i></div>
+                                Condicionador Nutrição 500ml
+                            </td>
+                            <td class="p-4"><span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-semibold">Condicionadores</span></td>
+                            <td class="p-4 text-gray-600 text-center font-bold">190</td>
+                            <td class="p-4 text-gray-500 text-right">R$ 48,00</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 9.120,00</td>
+                        </tr>
+                        <!-- Posição 5 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-bold text-center text-gray-400">5º</td>
+                            <td class="p-4 font-medium text-gray-900 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-droplet"></i></div>
+                                Óleo Reparador de Pontas
+                            </td>
+                            <td class="p-4"><span class="bg-purple-50 text-purple-600 px-2 py-1 rounded text-xs font-semibold">Finalizadores</span></td>
+                            <td class="p-4 text-gray-600 text-center font-bold">120</td>
+                            <td class="p-4 text-gray-500 text-right">R$ 25,00</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 3.000,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script para renderizar o gráfico de barras -->
+    <script>
+        const ctx = document.getElementById('rankingChart').getContext('2d');
+        
+        const rankingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Shampoo Reconstr.', 'Máscara Hidrat.', 'Spray Fixador', 'Condicionador', 'Óleo Reparador'],
+                datasets: [{
+                    label: 'Quantidade Vendida',
+                    data: [340, 280, 215, 190, 120],
+                    backgroundColor: '#8b5cf6', // brand-purple
+                    hoverBackgroundColor: '#7c3aed',
+                    borderRadius: 6, // Arredonda as pontas das barras
+                    barThickness: 35 // Espessura da barra
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#111827',
+                        padding: 12,
+                        titleFont: { family: 'Inter', size: 13 },
+                        bodyFont: { family: 'Inter', size: 14, weight: 'bold' },
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' unidades';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9', drawBorder: false },
+                        ticks: {
+                            font: { family: 'Inter', size: 11 },
+                            color: '#94a3b8'
+                        }
+                    },
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: { 
+                            font: { family: 'Inter', size: 11 }, 
+                            color: '#64748b' 
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

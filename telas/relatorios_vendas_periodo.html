@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nexo - Vendas por Período</title>
+
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js (Para o gráfico real) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Configuração de Cores -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            purple: '#8b5cf6',
+                            purpleHover: '#7c3aed',
+                            bg: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- MENU LATERAL -->
+    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
+        <div class="flex flex-col h-full overflow-hidden">
+            <!-- Logótipo -->
+            <div class="px-8 pt-8 pb-6 flex items-center gap-2 shrink-0">
+                <div class="relative w-8 h-8 flex items-center justify-center">
+                    <div class="absolute w-3 h-6 bg-[#6366f1] rounded-full left-1 top-1 -rotate-12 opacity-80"></div>
+                    <div class="absolute w-3 h-6 bg-[#8b5cf6] rounded-full right-1 bottom-1 -rotate-12"></div>
+                </div>
+                <span class="font-bold text-3xl text-gray-800 tracking-tight">nexo</span>
+            </div>
+
+            <!-- Links de Navegação com Scroll -->
+            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-briefcase w-5 text-center text-gray-500"></i> Empresa
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck-field w-5 text-center text-gray-500"></i> Fornecedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                </a>
+                
+                <!-- ITEM ATIVO -->
+                <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-white"></i> Relatórios
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Perfil no Rodapé -->
+        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-bold text-gray-800">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@nexo.com</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DO RELATÓRIO ESPECÍFICO -->
+    <main class="flex-1 h-screen overflow-y-auto p-8 md:px-10">
+        
+        <!-- Navegação / Voltar -->
+        <a href="relatorios2.html" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-brand-purple transition mb-4">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para Relatórios
+        </a>
+
+        <!-- Cabeçalho do Relatório -->
+        <div class="flex justify-between items-end mb-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div>
+                    <h1 class="text-[28px] font-extrabold text-gray-900 tracking-tight leading-none mb-1">Vendas por Período</h1>
+                    <p class="text-[14px] text-gray-500">Faturamento gerado entre 01/09/2026 e 30/09/2026</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl font-semibold transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+                <button class="bg-brand-purple hover:bg-brand-purpleHover text-white px-5 py-2.5 rounded-xl font-semibold transition shadow-sm flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-download"></i> Exportar CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- BARRA DE FILTROS ESPECÍFICA -->
+        <div class="bg-white p-4 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 mb-6 flex flex-wrap gap-4 items-end">
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Data Inicial</label>
+                <input type="date" value="2026-09-01" class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Data Final</label>
+                <input type="date" value="2026-09-30" class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Agrupamento</label>
+                <select class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple">
+                    <option>Diário</option>
+                    <option>Semanal</option>
+                    <option>Mensal</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Status do Pedido</label>
+                <select class="border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2 outline-none focus:border-brand-purple">
+                    <option>Todos Concluídos</option>
+                    <option>Aguardando Pagamento</option>
+                    <option>Cancelados</option>
+                </select>
+            </div>
+            <button class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2 rounded-xl font-semibold transition text-sm ml-auto">
+                Atualizar Dados
+            </button>
+        </div>
+
+        <!-- ÁREA DO GRÁFICO E MINI KPIs -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            
+            <!-- Mini KPIs Lateral -->
+            <div class="flex flex-col gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 flex-1">
+                    <h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-1">Total Faturado</h3>
+                    <p class="text-2xl font-extrabold text-brand-purple">R$ 32.450,00</p>
+                    <p class="text-xs text-green-500 font-semibold mt-2 flex items-center gap-1"><i class="fa-solid fa-arrow-trend-up"></i> +12.5% vs mês anterior</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 flex-1">
+                    <h3 class="text-[12px] font-bold text-gray-500 uppercase tracking-wider mb-1">Total de Pedidos</h3>
+                    <p class="text-2xl font-extrabold text-gray-900">184</p>
+                    <p class="text-xs text-gray-500 mt-2">Média de 6 pedidos/dia</p>
+                </div>
+            </div>
+
+            <!-- Gráfico principal -->
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 lg:col-span-3">
+                <h3 class="text-[14px] font-bold text-gray-800 mb-4">Evolução do Faturamento</h3>
+                <div class="w-full h-[250px] relative">
+                    <canvas id="vendasChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TABELA DE DADOS DETALHADOS -->
+        <div class="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 overflow-hidden mb-10">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="font-bold text-gray-800">Detalhamento Diário</h3>
+                <span class="text-xs font-semibold text-gray-500">Exibindo 7 registros</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-white border-b border-gray-100 text-[11px] uppercase tracking-wider text-gray-500">
+                            <th class="p-4 font-bold">Data</th>
+                            <th class="p-4 font-bold">Pedidos Concluídos</th>
+                            <th class="p-4 font-bold">Produtos Vendidos</th>
+                            <th class="p-4 font-bold text-right">Faturamento (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <!-- Linha 1 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-medium text-gray-900">07 Set 2026</td>
+                            <td class="p-4 text-gray-600">32 pedidos</td>
+                            <td class="p-4 text-gray-600">84 itens</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 5.420,00</td>
+                        </tr>
+                        <!-- Linha 2 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-medium text-gray-900">06 Set 2026</td>
+                            <td class="p-4 text-gray-600">28 pedidos</td>
+                            <td class="p-4 text-gray-600">62 itens</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 4.150,50</td>
+                        </tr>
+                        <!-- Linha 3 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-medium text-gray-900">05 Set 2026</td>
+                            <td class="p-4 text-gray-600">45 pedidos</td>
+                            <td class="p-4 text-gray-600">110 itens</td>
+                            <td class="p-4 font-bold text-green-600 text-right">R$ 8.900,00</td>
+                        </tr>
+                        <!-- Linha 4 -->
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td class="p-4 font-medium text-gray-900">04 Set 2026</td>
+                            <td class="p-4 text-gray-600">15 pedidos</td>
+                            <td class="p-4 text-gray-600">30 itens</td>
+                            <td class="p-4 font-bold text-gray-900 text-right">R$ 2.100,00</td>
+                        </tr>
+                        <!-- Totalizador -->
+                        <tr class="bg-gray-50">
+                            <td class="p-4 font-bold text-gray-900">Total do Período</td>
+                            <td class="p-4 font-bold text-gray-900">120 pedidos</td>
+                            <td class="p-4 font-bold text-gray-900">286 itens</td>
+                            <td class="p-4 font-extrabold text-brand-purple text-right">R$ 20.570,50</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script para renderizar o gráfico -->
+    <script>
+        const ctx = document.getElementById('vendasChart').getContext('2d');
+        
+        // Criando um gradiente roxo para preencher a linha do gráfico
+        let gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(139, 92, 246, 0.4)'); // Roxo mais forte no topo
+        gradient.addColorStop(1, 'rgba(139, 92, 246, 0.0)'); // Transparente na base
+
+        const vendasChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['01 Set', '02 Set', '03 Set', '04 Set', '05 Set', '06 Set', '07 Set'],
+                datasets: [{
+                    label: 'Faturamento Diário (R$)',
+                    data: [3200, 4100, 2800, 2100, 8900, 4150, 5420],
+                    borderColor: '#8b5cf6', // brand-purple
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#8b5cf6',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.4 // Deixa a linha suave/curvada
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#111827',
+                        padding: 12,
+                        titleFont: { family: 'Inter', size: 13 },
+                        bodyFont: { family: 'Inter', size: 14, weight: 'bold' },
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'R$ ' + context.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9', drawBorder: false },
+                        ticks: {
+                            font: { family: 'Inter', size: 11 },
+                            color: '#94a3b8',
+                            callback: function(value) { return 'R$ ' + value; }
+                        }
+                    },
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: { font: { family: 'Inter', size: 11 }, color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
