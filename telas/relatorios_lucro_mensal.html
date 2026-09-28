@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nexo - Relatório de Lucro Mensal</title>
+
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js para o Gráfico -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Configuração de Cores -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            purple: '#8b5cf6',
+                            purpleHover: '#7c3aed',
+                            bg: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- MENU LATERAL -->
+    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
+        <div class="flex flex-col h-full overflow-hidden">
+            <!-- Logótipo Horizontal -->
+            <div class="px-8 pt-8 pb-6 flex items-center shrink-0">
+                <img src="logo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
+            </div>
+
+            <!-- Links de Navegação com Scroll -->
+            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-briefcase w-5 text-center text-gray-500"></i> Empresa
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-truck-field w-5 text-center text-gray-500"></i> Fornecedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
+                </a>
+                <a href="#" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
+                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
+                </a>
+                
+                <!-- ITEM ATIVO -->
+                <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
+                    <i class="fa-solid fa-file-lines w-5 text-center text-white"></i> Relatórios
+                </a>
+            </nav>
+        </div>
+        
+        <!-- Perfil no Rodapé -->
+        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
+            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-bold text-gray-800">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@nexo.com</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main class="flex-1 h-screen overflow-y-auto p-6 md:p-10">
+        
+        <!-- Botão Voltar -->
+        <a href="relatorios2.html" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-purple transition mb-6">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para Relatórios
+        </a>
+
+        <!-- Cabeçalho -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight leading-none">Relatório de Lucro Mensal</h1>
+                </div>
+                <p class="text-[15px] text-gray-500">Acompanhe a evolução do faturamento, custos de produtos e o lucro líquido acumulado.</p>
+            </div>
+            <div class="flex gap-3 w-full md:w-auto">
+                <button class="flex-1 md:flex-none bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl font-semibold transition shadow-sm flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+                <button class="flex-1 md:flex-none bg-brand-purple hover:bg-brand-purpleHover text-white px-4 py-2.5 rounded-xl font-semibold transition shadow-sm flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-download"></i> Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 mb-6 flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Ano de Referência</label>
+                <select class="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+                    <option>2026 (Ano Atual)</option>
+                    <option>2025</option>
+                    <option>2024</option>
+                </select>
+            </div>
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Visão</label>
+                <select class="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+                    <option>Mensal (Janeiro a Dezembro)</option>
+                    <option>Trimestral</option>
+                </select>
+            </div>
+            <div class="flex-1">
+                <label class="block text-xs font-semibold text-gray-500 mb-1.5">Métrica Principal</label>
+                <select class="w-full bg-white border border-gray-200 text-gray-700 text-sm rounded-xl px-4 py-2.5 outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple">
+                    <option>Lucro Líquido</option>
+                    <option>Faturamento Bruto</option>
+                    <option>Margem Percentual</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- INDICADORES (KPIs) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Faturamento Total (Ano)</h3>
+                <p class="text-2xl font-extrabold text-gray-900">R$ 528.400,00</p>
+                <p class="text-xs text-green-600 font-medium mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +14.2% vs ano ant.</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Custos / CMV</h3>
+                <p class="text-2xl font-extrabold text-rose-600">R$ 211.360,00</p>
+                <p class="text-xs text-gray-500 font-medium mt-1">Média de 40% da receita</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Lucro Líquido Acumulado</h3>
+                <p class="text-2xl font-extrabold text-brand-purple">R$ 317.040,00</p>
+                <p class="text-xs text-green-600 font-medium mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +16.8% vs ano ant.</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200">
+                <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Margem de Lucro Média</h3>
+                <p class="text-2xl font-extrabold text-emerald-600">60.0%</p>
+                <p class="text-xs text-gray-500 font-medium mt-1">Excelente rentabilidade</p>
+            </div>
+        </div>
+
+        <!-- GRÁFICO E TABELA (Grid) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+            
+            <!-- Gráfico de Evolução (Ocupa 1 coluna) -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900 mb-1">Evolução Financeira</h3>
+                    <p class="text-xs text-gray-500 mb-6">Receita vs Lucro Líquido (R$)</p>
+                </div>
+                <div class="relative h-[260px] w-full flex items-center justify-center">
+                    <canvas id="lucroChart"></canvas>
+                </div>
+                <div class="mt-6 text-xs text-gray-500 text-center">
+                    Valores expressos em base mensal.
+                </div>
+            </div>
+
+            <!-- Tabela Detalhada (Ocupa 2 colunas) -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-200 overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <div>
+                            <h3 class="text-base font-bold text-gray-900">Demonstrativo Mensal Detalhado</h3>
+                            <p class="text-xs text-gray-500 mt-0.5">Receitas, despesas de produtos e lucro líquido por mês</p>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-gray-100 bg-white">
+                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Mês</th>
+                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Faturamento</th>
+                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Custos (CMV)</th>
+                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Lucro Líquido</th>
+                                    <th class="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Margem</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Janeiro</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 42.000,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 16.800,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 25.200,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Fevereiro</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 38.500,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 15.400,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 23.100,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Março</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 45.100,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 18.040,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 27.060,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Abril</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 49.000,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 19.600,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 29.400,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Maio</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 46.800,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 18.720,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 28.080,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Junho</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 51.500,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 20.600,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 30.900,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Julho</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 53.000,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 21.200,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 31.800,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Agosto</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 49.500,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 19.800,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 29.700,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                                <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition">
+                                    <td class="p-4 font-bold text-gray-900">Setembro</td>
+                                    <td class="p-4 text-right font-medium text-gray-700">R$ 53.500,00</td>
+                                    <td class="p-4 text-right font-medium text-rose-600">R$ 21.400,00</td>
+                                    <td class="p-4 text-right font-bold text-brand-purple">R$ 32.100,00</td>
+                                    <td class="p-4 text-right font-semibold text-emerald-600">60.0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border-t border-gray-200 p-4 flex justify-between items-center text-sm font-bold text-gray-900">
+                    <span>ACUMULADO (JAN - SET)</span>
+                    <div class="flex gap-8 pr-4">
+                        <span class="font-medium text-gray-700">R$ 430.000,00</span>
+                        <span class="font-medium text-rose-600">R$ 172.000,00</span>
+                        <span class="text-brand-purple font-extrabold">R$ 258.000,00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script do Gráfico -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('lucroChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set'],
+                    datasets: [
+                        {
+                            label: 'Faturamento',
+                            data: [42, 38.5, 45.1, 49, 46.8, 51.5, 53, 49.5, 53.5],
+                            backgroundColor: '#cbd5e1',
+                            borderRadius: 4,
+                            barThickness: 8
+                        },
+                        {
+                            label: 'Lucro Líquido',
+                            data: [25.2, 23.1, 27.06, 29.4, 28.08, 30.9, 31.8, 29.7, 32.1],
+                            backgroundColor: '#8b5cf6',
+                            borderRadius: 4,
+                            barThickness: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 10,
+                                font: { family: 'Inter', size: 10 },
+                                color: '#4b5563',
+                                padding: 10
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1f2937',
+                            padding: 10,
+                            titleFont: { family: 'Inter', size: 12 },
+                            bodyFont: { family: 'Inter', size: 12, weight: 'bold' },
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.dataset.label + ': R$ ' + context.parsed.y + 'k';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Inter', size: 10 }, color: '#4b5563' }
+                        },
+                        y: {
+                            grid: { color: '#f3f4f6' },
+                            ticks: { 
+                                font: { family: 'Inter', size: 10 }, 
+                                color: '#4b5563',
+                                callback: function(value) {
+                                    return 'R$ ' + value + 'k';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
