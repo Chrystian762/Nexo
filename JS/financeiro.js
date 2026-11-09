@@ -557,7 +557,7 @@
             '<input type="text" id="lf-categoria" name="categoria" list="lf-categorias" class="nexo-input" maxlength="60" value="' + esc(l.categoria || '') + '">' +
             '<datalist id="lf-categorias">' + opcoesCategoria(tipo) + '</datalist></div>' +
             '<div><label class="nexo-label" for="lf-valor">Valor (R$) *</label>' +
-            '<input type="text" inputmode="decimal" id="lf-valor" name="valor" class="nexo-input" placeholder="0,00" value="' + (editando ? String(valor(l)).replace('.', ',') : '') + '"></div>' +
+            '<input type="text" inputmode="decimal" id="lf-valor" name="valor" class="nexo-input" placeholder="0,00" value="' + (editando ? valor(l).toFixed(2).replace('.', ',') : '') + '"></div>' +
             '<div><label class="nexo-label" for="lf-vencimento">Vencimento *</label>' +
             '<input type="date" id="lf-vencimento" name="vencimento" class="nexo-input" value="' + esc(fmt.dataInput(l.vencimento) || fmt.hojeInput()) + '"></div>' +
             '<div><label class="nexo-label" for="lf-forma">Forma de pagamento</label>' +

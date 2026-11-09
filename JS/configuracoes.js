@@ -486,7 +486,7 @@
             '<form id="form-geral" novalidate><div class="grid grid-cols-1 md:grid-cols-3 gap-4">' +
             '<div><label class="nexo-label" for="ge-min">Estoque mínimo padrão (un.) *</label><input type="number" id="ge-min" name="estoqueMinimoPadrao" class="nexo-input" min="0" step="1" value="' + esc(g.estoqueMinimoPadrao) + '"></div>' +
             '<div><label class="nexo-label" for="ge-prazo">Prazo de entrega padrão (dias) *</label><input type="number" id="ge-prazo" name="prazoEntregaPadrao" class="nexo-input" min="0" step="1" value="' + esc(g.prazoEntregaPadrao) + '"></div>' +
-            '<div><label class="nexo-label" for="ge-frete">Frete grátis acima de (R$) *</label><input type="text" inputmode="decimal" id="ge-frete" name="freteGratisAcima" class="nexo-input" value="' + esc(String(g.freteGratisAcima).replace('.', ',')) + '"></div>' +
+            '<div><label class="nexo-label" for="ge-frete">Frete grátis acima de (R$) *</label><input type="text" inputmode="decimal" id="ge-frete" name="freteGratisAcima" class="nexo-input" value="' + esc((Number(g.freteGratisAcima) || 0).toFixed(2).replace('.', ',')) + '"></div>' +
             '</div><div class="mt-4">' +
             linhaOpcao('permitirVendaSemEstoque', 'Permitir venda sem estoque', 'Quando ligado, pedidos podem ser criados mesmo com saldo insuficiente.', !!g.permitirVendaSemEstoque) +
             '</div>' + rodapeSalvar('Salvar configurações') + '</form>');
