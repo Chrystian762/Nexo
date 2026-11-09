@@ -6,148 +6,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empresa - Nexo</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../JS/nexo-tailwind.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: {
-                        brand: { purple: '#7c3aed', purpleLight: '#f3e8ff', darkblue: '#1e1b4b', textMain: '#111827', textMuted: '#6b7280', bg: '#f8fafc', border: '#e2e8f0' }
-                    }
-                }
-            }
-        };
-    </script>
-    <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px
-        }
-
-        .fade-in {
-            animation: fadeIn .3s ease-in-out
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-    </style>
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
 </head>
 
 <body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
 
-    <!-- MENU LATERAL (PADRÃO CLIENTES & INTERLIGADO) -->
-    <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex">
-        <div class="flex flex-col h-full overflow-hidden">
-            <!-- Logótipo -->
-            <div class="px-8 pt-8 pb-6 flex items-center">
-                <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
-            </div>
-
-            <!-- Links de Navegação Interligados -->
-            <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
-                <a href="home.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
-                </a>
-                <a href="empresa.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
-                    <i class="fa-solid fa-building w-5 text-center text-white"></i> Empresa
-                </a>
-                <a href="pedidos.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
-                </a>
-                <a href="produto.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
-                </a>
-                <a href="estoque.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
-                </a>
-                <a href="fornecedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-truck w-5 text-center text-gray-500"></i> Fornecedores
-                </a>
-                <a href="Clientes.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-users w-5 text-center text-gray-500"></i> Clientes
-                </a>
-                <a href="revendedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
-                </a>
-                <a href="financeiro.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
-                </a>
-                <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                    <i class="fa-solid fa-file-lines w-5 text-center text-gray-500"></i> Relatórios
-                </a>
-            </nav>
-        </div>
-        
-        <!-- Perfil no Rodapé -->
-        <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
-            <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
-                    <div class="leading-tight">
-                        <p class="text-sm font-bold text-gray-800">Admin User</p>
-                        <p class="text-xs text-gray-500">admin@nexo.com</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
-            </div>
-        </div>
-    </aside>
+    <!-- Menu lateral montado por Nexo.layout.montar('empresa') -->
+    <aside id="nexo-sidebar"></aside>
 
     <!-- CONTEÚDO PRINCIPAL (DADOS DA EMPRESA) -->
     <main class="flex-1 relative overflow-y-auto w-full h-full">
         <div class="max-w-[1200px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
 
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 mt-2 md:mt-0">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 mt-2 md:mt-0">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Dados da Empresa</h1>
                     <p class="text-sm md:text-base text-brand-textMuted">Visualize e edite as informações cadastrais e fiscais da sua empresa.</p>
                 </div>
 
-                <button onclick="salvarDados()" class="bg-brand-purple hover:bg-purple-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2 justify-center">
-                    <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
-                </button>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="btnEditar" class="bg-brand-purple hover:bg-purple-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm transition inline-flex items-center gap-2 justify-center">
+                        <i class="fa-solid fa-pen"></i> Editar
+                    </button>
+                    <button type="button" id="btnCancelar" style="display:none" class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold px-6 py-2.5 rounded-xl shadow-sm transition items-center gap-2 justify-center">
+                        <i class="fa-solid fa-xmark"></i> Cancelar
+                    </button>
+                    <button type="button" id="btnSalvar" style="display:none" class="bg-brand-purple hover:bg-purple-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm transition items-center gap-2 justify-center">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar alterações
+                    </button>
+                </div>
             </div>
 
-            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-border space-y-8">
+            <!-- Resumo da empresa -->
+            <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-brand-border mb-6 flex flex-col md:flex-row md:items-center gap-5">
+                <div class="w-20 h-20 rounded-2xl bg-brand-purpleLight flex items-center justify-center shrink-0 p-2">
+                    <img src="../assets/img/logoNexo.png" alt="Logo da empresa" class="max-w-full max-h-full object-contain">
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h2 id="resNome" class="text-xl font-extrabold text-gray-900 truncate"></h2>
+                    <p id="resRazao" class="text-sm text-gray-500 truncate"></p>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                    <div><p class="text-[11px] font-bold text-gray-500 uppercase">CNPJ</p><p id="resCnpj" class="font-semibold text-gray-900"></p></div>
+                    <div><p class="text-[11px] font-bold text-gray-500 uppercase">Cidade/UF</p><p id="resCidade" class="font-semibold text-gray-900"></p></div>
+                    <div><p class="text-[11px] font-bold text-gray-500 uppercase">Tempo de empresa</p><p id="resTempo" class="font-semibold text-gray-900"></p></div>
+                    <div><p class="text-[11px] font-bold text-gray-500 uppercase">Última atualização</p><p id="resAtualizacao" class="font-semibold text-gray-900"></p></div>
+                </div>
+            </div>
+
+            <form id="formEmpresa" novalidate class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-brand-border space-y-8">
                 <div>
                     <h2 class="text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-building"></i> Informações Cadastrais</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Razão Social</label>
-                            <input type="text" value="Nexo Gestão e Recursos Empresariais LTDA" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_razaoSocial">Razão Social</label>
+                            <input type="text" id="f_razaoSocial" name="razaoSocial" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nome Fantasia</label>
-                            <input type="text" value="Nexo ERP" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_nomeFantasia">Nome Fantasia</label>
+                            <input type="text" id="f_nomeFantasia" name="nomeFantasia" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CNPJ</label>
-                            <input type="text" value="12.345.678/0001-90" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_cnpj">CNPJ</label>
+                            <input type="text" id="f_cnpj" name="cnpj" class="nexo-input" inputmode="numeric" maxlength="18" readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Inscrição Estadual</label>
-                            <input type="text" value="123.456.789.123" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_inscricaoEstadual">Inscrição Estadual</label>
+                            <input type="text" id="f_inscricaoEstadual" name="inscricaoEstadual" class="nexo-input"  readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_inscricaoMunicipal">Inscrição Municipal</label>
+                            <input type="text" id="f_inscricaoMunicipal" name="inscricaoMunicipal" class="nexo-input"  readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_regimeTributario">Regime Tributário</label>
+                            <select id="f_regimeTributario" name="regimeTributario" class="nexo-input" disabled>
+                                <option value="Simples Nacional">Simples Nacional</option>
+                                <option value="Lucro Presumido">Lucro Presumido</option>
+                                <option value="Lucro Real">Lucro Real</option>
+                                <option value="MEI">MEI</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="nexo-label" for="f_cnae">CNAE (atividade principal)</label>
+                            <input type="text" id="f_cnae" name="cnae" class="nexo-input"  readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_dataAbertura">Data de Abertura</label>
+                            <input type="date" id="f_dataAbertura" name="dataAbertura" class="nexo-input"  readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_responsavel">Responsável</label>
+                            <input type="text" id="f_responsavel" name="responsavel" class="nexo-input"  readonly>
                         </div>
                     </div>
                 </div>
@@ -158,12 +114,24 @@
                     <h2 class="text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-address-book"></i> Dados de Contato</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">E-mail Principal</label>
-                            <input type="email" value="contato@nexo.com.br" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_email">E-mail Principal</label>
+                            <input type="email" id="f_email" name="email" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Telefone / WhatsApp</label>
-                            <input type="text" value="(11) 4002-8922" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_emailFinanceiro">E-mail Financeiro</label>
+                            <input type="email" id="f_emailFinanceiro" name="emailFinanceiro" class="nexo-input"  readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_telefone">Telefone</label>
+                            <input type="tel" id="f_telefone" name="telefone" class="nexo-input" inputmode="tel" maxlength="15" readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_whatsapp">WhatsApp</label>
+                            <input type="tel" id="f_whatsapp" name="whatsapp" class="nexo-input" inputmode="tel" maxlength="15" readonly>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="nexo-label" for="f_site">Site</label>
+                            <input type="text" id="f_site" name="site" class="nexo-input"  readonly>
                         </div>
                     </div>
                 </div>
@@ -174,45 +142,45 @@
                     <h2 class="text-lg font-bold text-brand-purple mb-4 flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> Endereço</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">CEP</label>
-                            <input type="text" value="01001-000" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_cep">CEP</label>
+                            <input type="text" id="f_cep" name="cep" class="nexo-input" inputmode="numeric" maxlength="9" readonly>
+                            <p id="msgCep" class="text-xs text-gray-500 mt-1 hidden"></p>
                         </div>
                         <div class="sm:col-span-2">
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Logradouro</label>
-                            <input type="text" value="Praça da Sé" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_logradouro">Logradouro</label>
+                            <input type="text" id="f_logradouro" name="logradouro" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Número</label>
-                            <input type="text" value="S/N" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_numero">Número</label>
+                            <input type="text" id="f_numero" name="numero" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Bairro</label>
-                            <input type="text" value="Sé" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_complemento">Complemento</label>
+                            <input type="text" id="f_complemento" name="complemento" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Cidade</label>
-                            <input type="text" value="São Paulo" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
+                            <label class="nexo-label" for="f_bairro">Bairro</label>
+                            <input type="text" id="f_bairro" name="bairro" class="nexo-input"  readonly>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Estado</label>
-                            <select class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-purple focus:bg-white transition">
-                                <option value="SP" selected>SP</option>
-                                <option value="RJ">RJ</option>
-                                <option value="MG">MG</option>
+                            <label class="nexo-label" for="f_cidade">Cidade</label>
+                            <input type="text" id="f_cidade" name="cidade" class="nexo-input"  readonly>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f_uf">Estado (UF)</label>
+                            <select id="f_uf" name="uf" class="nexo-input" disabled>
+                                <option value="">Selecione</option>
+                                <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
                             </select>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
         </div>
     </main>
 
-    <script>
-        function salvarDados() {
-            alert("Dados da empresa guardados com sucesso!");
-        }
-    </script>
+    <script src="../JS/empresa.js"></script>
 </body>
 
 </html>

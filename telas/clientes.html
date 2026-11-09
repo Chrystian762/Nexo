@@ -1,227 +1,134 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexo - Clientes</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Tailwind CSS (Apenas para padronizar o menu lateral) -->
+    <title>Clientes - Nexo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: {
-                        brand: { purple: '#7c3aed', purpleLight: '#f3e8ff', darkblue: '#1e1b4b', textMain: '#111827', textMuted: '#6b7280', bg: '#f8fafc', border: '#e2e8f0' }
-                    }
-                }
-            }
-        };
-    </script>
-    <!-- Folha de Estilos Própria dos Clientes -->
-    <link rel="stylesheet" href="../css/CSSclientes.css">
+    <script src="../JS/nexo-tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
 </head>
-<body>
+<body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
+    <aside id="nexo-sidebar"></aside>
 
-    <div class="app-container">
-        <!-- BARRA LATERAL PADRÃO E INTERLIGADA -->
-        <aside class="w-[260px] bg-white flex flex-col justify-between shrink-0 h-screen shadow-[1px_0_5px_rgba(0,0,0,0.02)] z-10 border-r border-gray-100 hidden md:flex fixed">
-            <div class="flex flex-col h-full overflow-hidden">
-                <div class="px-8 pt-8 pb-6 flex items-center">
-                    <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="w-32 h-auto object-contain">
+    <main class="flex-1 relative overflow-y-auto w-full h-full">
+        <div class="max-w-[1400px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
+            <section class="space-y-6">
+
+                <!-- Título e ações principais -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div class="text-left flex-1">
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Clientes</h1>
+                        <p class="text-sm md:text-base text-brand-textMuted">Gerencie e acompanhe os clientes da sua empresa.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <button type="button" id="btnExportar" class="nexo-btn nexo-btn-secundario"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+                        <button type="button" id="btnCadastrar" class="nexo-btn nexo-btn-primario"><i class="fa-solid fa-plus"></i> Cadastrar Cliente</button>
+                    </div>
                 </div>
 
-                <nav class="px-4 space-y-1 mt-2 overflow-y-auto flex-1 pb-4">
-                    <a href="home.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-house w-5 text-center text-gray-500"></i> Início
-                    </a>
-                    <a href="empresa.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-building w-5 text-center text-gray-500"></i> Empresa
-                    </a>
-                    <a href="pedidos.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-cart-shopping w-5 text-center text-gray-500"></i> Pedidos
-                    </a>
-                    <a href="produto.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-bottle-droplet w-5 text-center text-gray-500"></i> Produtos
-                    </a>
-                    <a href="estoque.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-boxes-stacked w-5 text-center text-gray-500"></i> Estoque
-                    </a>
-                    <a href="fornecedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-truck w-5 text-center text-gray-500"></i> Fornecedores
-                    </a>
-                    <a href="clientes.html" class="w-full flex items-center gap-3 px-4 py-2.5 bg-brand-purple text-white rounded-xl font-semibold transition shadow-sm text-left text-sm">
-                        <i class="fa-solid fa-users w-5 text-center text-white"></i> Clientes
-                    </a>
-                    <a href="revendedores.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-handshake w-5 text-center text-gray-500"></i> Revendedores
-                    </a>
-                    <a href="financeiro.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-wallet w-5 text-center text-gray-500"></i> Financeiro
-                    </a>
-                    <a href="relatorios2.html" class="w-full flex items-center gap-3 px-4 py-2.5 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition text-left text-sm">
-                        <i class="fa-solid fa-file-lines w-5 text-center text-gray-500"></i> Relatórios
-                    </a>
-                </nav>
-            </div>
-            
-            <div class="p-4 mb-2 shrink-0 border-t border-gray-100">
-                <div class="border border-gray-200 rounded-2xl p-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition">
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 bg-brand-purple text-white rounded-full flex items-center justify-center font-bold text-sm">A</div>
-                        <div class="leading-tight">
-                            <p class="text-sm font-bold text-gray-800">Admin User</p>
-                            <p class="text-xs text-gray-500">admin@nexo.com</p>
+                <!-- Filtros -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-brand-border">
+                    <div class="flex items-center gap-2 mb-4 text-brand-purple font-bold">
+                        <i class="fa-solid fa-filter"></i><span>Filtros</span>
+                        <button type="button" id="btnLimpar" class="ml-auto text-xs font-semibold text-brand-purple border border-brand-purple rounded-lg px-3 py-1.5 flex items-center gap-1 hover:bg-brand-purpleLight transition"><i class="fa-solid fa-rotate-right"></i> Limpar Filtros</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="nexo-label" for="fBusca">Buscar cliente</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <input id="fBusca" type="text" placeholder="Nome, documento, e-mail ou telefone" class="nexo-input" style="padding-left:2.25rem">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="fTipo">Tipo</label>
+                            <select id="fTipo" class="nexo-input"><option value="">Todos</option><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="fStatus">Status</label>
+                            <select id="fStatus" class="nexo-input"><option value="">Todos</option><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="fCidade">Cidade</label>
+                            <select id="fCidade" class="nexo-input"><option value="">Todas</option></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="fRevendedor">Revendedor</label>
+                            <select id="fRevendedor" class="nexo-input"></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="fCompras">Compras</label>
+                            <select id="fCompras" class="nexo-input"><option value="">Todos</option><option value="com">Com compras</option><option value="sem">Sem compras</option></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="fOrdem">Ordenar por</label>
+                            <select id="fOrdem" class="nexo-input">
+                                <option value="nome-asc">Nome (A-Z)</option>
+                                <option value="nome-desc">Nome (Z-A)</option>
+                                <option value="total-desc">Maior total comprado</option>
+                                <option value="pedidos-desc">Mais pedidos</option>
+                                <option value="ultima-desc">Compra mais recente</option>
+                                <option value="ultima-asc">Compra mais antiga</option>
+                                <option value="cadastro-desc">Cadastro mais recente</option>
+                            </select>
                         </div>
                     </div>
-                    <i class="fa-solid fa-gear text-gray-400 hover:text-gray-600"></i>
                 </div>
-            </div>
-        </aside>
 
-        <!-- Conteúdo Principal com o Visual Original -->
-        <main class="main-content">
-            <header class="top-header">
-                <div class="header-title-wrapper">
-                    <h1>Clientes</h1>
-                    <p>Gerencie e acompanhe os clientes da sua empresa.</p>
+                <!-- Métricas -->
+                <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-brand-purpleLight text-brand-purple flex items-center justify-center shrink-0"><i class="fa-solid fa-users"></i></div>
+                        <div><p class="text-xs font-bold text-gray-500">Total de Clientes</p><p id="mTotal" class="text-2xl font-extrabold text-gray-900">0</p></div>
+                    </div>
+                    <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-check"></i></div>
+                        <div><p class="text-xs font-bold text-gray-500">Clientes Ativos</p><p id="mAtivos" class="text-2xl font-extrabold text-gray-900">0</p></div>
+                    </div>
+                    <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus"></i></div>
+                        <div><p class="text-xs font-bold text-gray-500">Novos este mês</p><p id="mNovos" class="text-2xl font-extrabold text-gray-900">0</p></div>
+                    </div>
+                    <div class="bg-white px-5 py-4 rounded-2xl shadow-sm border border-brand-border flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-receipt"></i></div>
+                        <div><p class="text-xs font-bold text-gray-500">Ticket Médio</p><p id="mTicket" class="text-2xl font-extrabold text-gray-900">R$ 0,00</p></div>
+                    </div>
                 </div>
-                <button class="btn-primary" id="btnCadastrar">
-                    <i class="fa-solid fa-plus"></i> Cadastrar Cliente
-                </button>
-            </header>
 
-            <section class="filters-card">
-                <div class="filters-header">
-                    <div class="filters-title">
-                        <i class="fa-solid fa-filter"></i> Filtros
+                <!-- Lista -->
+                <div class="bg-white rounded-2xl shadow-sm border border-brand-border overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs min-w-[1250px]">
+                            <thead class="bg-gray-50 text-gray-500 border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-3 font-bold">Cliente</th>
+                                    <th class="px-4 py-3 font-bold">Tipo</th>
+                                    <th class="px-4 py-3 font-bold">Documento</th>
+                                    <th class="px-4 py-3 font-bold">Telefone</th>
+                                    <th class="px-4 py-3 font-bold">Cidade/UF</th>
+                                    <th class="px-4 py-3 font-bold">Revendedor</th>
+                                    <th class="px-4 py-3 font-bold text-center">Pedidos</th>
+                                    <th class="px-4 py-3 font-bold text-right">Total comprado</th>
+                                    <th class="px-4 py-3 font-bold">Última compra</th>
+                                    <th class="px-4 py-3 font-bold text-center">Status</th>
+                                    <th class="px-4 py-3 font-bold text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaClientes" class="divide-y divide-gray-100 font-medium text-gray-700"></tbody>
+                        </table>
                     </div>
-                    <button class="btn-clear" id="btnLimparFiltros">
-                        <i class="fa-solid fa-rotate-right"></i> Limpar Filtros
-                    </button>
-                </div>
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label for="searchCliente">Buscar cliente</label>
-                        <div class="search-input-wrapper">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="searchCliente" placeholder="Digite o nome, e-mail ou telefone">
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterStatus">Status</label>
-                        <select id="filterStatus">
-                            <option value="">Todos</option>
-                            <option value="Ativo">Ativo</option>
-                            <option value="Inativo">Inativo</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterCidade">Cidade</label>
-                        <select id="filterCidade">
-                            <option value="">Todas</option>
-                            <option value="São Paulo - SP">São Paulo - SP</option>
-                            <option value="Guarulhos - SP">Guarulhos - SP</option>
-                            <option value="Osasco - SP">Osasco - SP</option>
-                            <option value="São Bernardo do Campo - SP">São Bernardo do Campo - SP</option>
-                            <option value="Santo André - SP">Santo André - SP</option>
-                            <option value="Campinas - SP">Campinas - SP</option>
-                            <option value="Mauá - SP">Mauá - SP</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterTipo">Tipo de cliente</label>
-                        <select id="filterTipo">
-                            <option value="">Todos</option>
-                            <option value="Pessoa Física">Pessoa Física</option>
-                            <option value="Pessoa Jurídica">Pessoa Jurídica</option>
-                        </select>
-                    </div>
+                    <div id="paginacao"></div>
                 </div>
             </section>
-
-            <section class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-icon purple">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div class="metric-info">
-                        <span class="metric-label">Total de Clientes</span>
-                        <span class="metric-value" id="totalClientesCount">128</span>
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-icon green">
-                        <i class="fa-solid fa-user-check"></i>
-                    </div>
-                    <div class="metric-info">
-                        <span class="metric-label">Clientes Ativos</span>
-                        <span class="metric-value" id="clientesAtivosCount">118</span>
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-icon yellow">
-                        <i class="fa-solid fa-user-slash"></i>
-                    </div>
-                    <div class="metric-info">
-                        <span class="metric-label">Clientes Inativos</span>
-                        <span class="metric-value" id="clientesInativosCount">8</span>
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-icon gray">
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                    <div class="metric-info">
-                        <span class="metric-label">Novos este mês</span>
-                        <span class="metric-value">12</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="table-card">
-                <div class="table-responsive">
-                    <table class="clients-table">
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Tipo</th>
-                                <th>Contato</th>
-                                <th>Cidade</th>
-                                <th>Última Compra</th>
-                                <th>Status</th>
-                                <th class="text-right">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="clientsTableBody"></tbody>
-                    </table>
-                </div>
-
-                <div class="table-footer">
-                    <span class="pagination-info" id="paginationInfo">Mostrando 1 a 5 de 128 clientes</span>
-                    <div class="pagination-controls"></div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <div class="modal-overlay" id="clientModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Detalhes do Cliente</h3>
-                <button class="modal-close" id="closeModalBtn">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBodyContent"></div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="modalCloseAction">Fechar</button>
-            </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Script JavaScript Original -->
     <script src="../JS/JSclientes.js"></script>
 </body>
 </html>

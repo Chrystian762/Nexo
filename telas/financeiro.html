@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro - Nexo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../JS/nexo-tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
+</head>
+<body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
+    <aside id="nexo-sidebar"></aside>
+    <main class="flex-1 relative overflow-y-auto w-full h-full">
+        <div class="max-w-[1400px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
+
+            <!-- Cabeçalho -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-brand-textMain">Financeiro</h1>
+                    <p class="text-brand-textMuted mt-1">Contas a pagar e receber, receitas, despesas, pagamentos e fluxo de caixa.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="btn-nova-receita" class="nexo-btn nexo-btn-primario"><i class="fa-solid fa-arrow-trend-up"></i> Nova receita</button>
+                    <button type="button" id="btn-nova-despesa" class="nexo-btn nexo-btn-secundario"><i class="fa-solid fa-arrow-trend-down text-red-500"></i> Nova despesa</button>
+                    <button type="button" id="btn-exportar" class="nexo-btn nexo-btn-secundario"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+                </div>
+            </div>
+
+            <!-- Filtro de período global -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-6">
+                <div class="flex flex-col lg:flex-row lg:items-end gap-4">
+                    <div class="lg:w-64">
+                        <label class="nexo-label" for="f-periodo">Período</label>
+                        <select id="f-periodo" class="nexo-input">
+                            <option value="mes">Este mês</option>
+                            <option value="mesPassado">Mês passado</option>
+                            <option value="30">Últimos 30 dias</option>
+                            <option value="90">Últimos 90 dias</option>
+                            <option value="ano">Este ano</option>
+                            <option value="personalizado">Personalizado</option>
+                        </select>
+                    </div>
+                    <div id="bloco-datas" class="hidden grid-cols-2 gap-3 lg:w-96">
+                        <div>
+                            <label class="nexo-label" for="f-ini">De</label>
+                            <input type="date" id="f-ini" class="nexo-input">
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-fim">Até</label>
+                            <input type="date" id="f-fim" class="nexo-input">
+                        </div>
+                    </div>
+                    <p id="txt-periodo" class="text-sm text-brand-textMuted lg:ml-auto"></p>
+                </div>
+                <p class="text-xs text-gray-400 mt-3">Lançamentos pagos entram no período pela data de pagamento. Os em aberto entram pelo vencimento.</p>
+            </div>
+
+            <!-- Dashboard -->
+            <section aria-label="Dashboard financeiro" class="mb-6">
+                <div id="kpis" class="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 gap-3 md:gap-4 mb-4"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                        <h2 class="font-bold text-gray-900">Receitas x despesas por mês</h2>
+                        <p class="text-xs text-gray-500 mb-3">Últimos 6 meses, valores realizados (pela data de pagamento). Não depende do filtro de período.</p>
+                        <div class="relative h-64"><canvas id="grafico-meses" aria-label="Gráfico de barras de receitas e despesas por mês" role="img"></canvas></div>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                        <h2 class="font-bold text-gray-900">Despesas por categoria</h2>
+                        <p class="text-xs text-gray-500 mb-3">No período selecionado.</p>
+                        <div class="relative h-64"><canvas id="grafico-categorias" aria-label="Gráfico de rosca de despesas por categoria" role="img"></canvas></div>
+                        <p id="vazio-categorias" class="hidden text-sm text-gray-500 text-center py-16">Sem despesas no período.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Abas -->
+            <div class="flex gap-1 overflow-x-auto border-b border-gray-200 mb-4" role="tablist" id="abas">
+                <button type="button" role="tab" data-aba="receber" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2"><i class="fa-solid fa-arrow-trend-up mr-1"></i> Contas a receber</button>
+                <button type="button" role="tab" data-aba="pagar" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2"><i class="fa-solid fa-arrow-trend-down mr-1"></i> Contas a pagar</button>
+                <button type="button" role="tab" data-aba="todos" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2"><i class="fa-solid fa-list mr-1"></i> Todos os lançamentos</button>
+                <button type="button" role="tab" data-aba="fluxo" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2"><i class="fa-solid fa-chart-line mr-1"></i> Fluxo de caixa</button>
+            </div>
+
+            <!-- Painel das listas -->
+            <section id="painel-lista">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="sm:col-span-2 lg:col-span-1">
+                            <label class="nexo-label" for="f-busca">Buscar por descrição</label>
+                            <input type="search" id="f-busca" class="nexo-input" placeholder="Ex.: aluguel, pedido 1020">
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-status">Status</label>
+                            <select id="f-status" class="nexo-input">
+                                <option value="">Todos</option>
+                                <option>Pago</option>
+                                <option>Pendente</option>
+                                <option>Atrasado</option>
+                                <option>Cancelado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-categoria">Categoria</label>
+                            <select id="f-categoria" class="nexo-input"><option value="">Todas</option></select>
+                        </div>
+                        <div class="flex items-end">
+                            <button type="button" id="btn-limpar" class="nexo-btn nexo-btn-secundario w-full"><i class="fa-solid fa-eraser"></i> Limpar filtros</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div id="resumo-lista" class="px-5 py-3 border-b border-gray-100 text-sm text-gray-600"></div>
+                    <div id="lista"></div>
+                    <div id="paginacao"></div>
+                </div>
+            </section>
+
+            <!-- Painel do fluxo de caixa -->
+            <section id="painel-fluxo" class="hidden space-y-4">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                        <div>
+                            <h2 class="font-bold text-gray-900">Saldo acumulado</h2>
+                            <p class="text-xs text-gray-500">Entradas e saídas realizadas (pela data de pagamento) no período.</p>
+                        </div>
+                        <div class="sm:w-48">
+                            <label class="nexo-label" for="f-agrupar">Agrupar por</label>
+                            <select id="f-agrupar" class="nexo-input">
+                                <option value="dia">Dia</option>
+                                <option value="semana">Semana</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="relative h-64"><canvas id="grafico-fluxo" aria-label="Gráfico de linha do saldo acumulado" role="img"></canvas></div>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="px-5 py-4 border-b border-gray-100"><h2 class="font-bold text-gray-900">Fluxo realizado</h2></div>
+                    <div id="tabela-fluxo"></div>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-bold text-gray-900">Projeção dos próximos 30 dias</h2>
+                        <p class="text-xs text-gray-500">Lançamentos pendentes pelo vencimento. Os vencidos entram na primeira linha, partindo do saldo realizado até hoje.</p>
+                    </div>
+                    <div id="tabela-projecao"></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script src="../JS/financeiro.js"></script>
+</body>
+</html>

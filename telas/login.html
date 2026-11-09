@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar - Nexo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../JS/nexo-tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
+</head>
+
+<body class="bg-brand-bg text-brand-textMain min-h-screen font-sans">
+
+    <div class="min-h-screen grid lg:grid-cols-2">
+
+        <!-- Lado esquerdo: apresentacao (so em telas grandes) -->
+        <section class="hidden lg:flex flex-col justify-between bg-gradient-to-br from-brand-purple via-purple-700 to-brand-darkblue text-white p-12 relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-white/10"></div>
+            <div class="absolute bottom-10 -left-20 w-64 h-64 rounded-full bg-white/5"></div>
+            <div class="relative">
+                <div class="inline-flex bg-white rounded-2xl px-5 py-3 shadow-lg">
+                    <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="h-10 w-auto">
+                </div>
+            </div>
+            <div class="relative max-w-md">
+                <h1 class="text-4xl font-extrabold leading-tight mb-4">Gestão completa do seu negócio em um só lugar.</h1>
+                <p class="text-purple-100 text-lg">Pedidos, estoque, clientes, revendedores e financeiro integrados, com relatórios em tempo real.</p>
+                <ul class="mt-8 space-y-3 text-purple-100">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-300"></i> Controle de estoque com alertas</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-300"></i> Fluxo de caixa e contas a pagar/receber</li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-circle-check text-emerald-300"></i> Relatórios de vendas por período, marca e vendedor</li>
+                </ul>
+            </div>
+            <p class="relative text-sm text-purple-200">© <span id="ano"></span> Nexo ERP</p>
+        </section>
+
+        <!-- Lado direito: formulario -->
+        <section class="flex items-center justify-center p-6 sm:p-10">
+            <div class="w-full max-w-md fade-in">
+                <div class="lg:hidden flex justify-center mb-8">
+                    <img src="../assets/img/logoNexo.png" alt="Logo Nexo" class="h-12 w-auto">
+                </div>
+
+                <!-- Formulario de login -->
+                <div id="painel-login">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-1">Bem-vindo de volta</h2>
+                    <p class="text-brand-textMuted mb-8">Entre com seu e-mail e senha para acessar o sistema.</p>
+
+                    <div id="erro-login" class="hidden mb-5 flex items-start gap-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3" role="alert">
+                        <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                        <span id="erro-login-texto"></span>
+                    </div>
+
+                    <form id="form-login" novalidate class="space-y-5">
+                        <div>
+                            <label for="email" class="nexo-label">Usuário (e-mail)</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input id="email" name="email" type="email" autocomplete="username" placeholder="seu@email.com" class="nexo-input" style="padding-left:2.5rem">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="senha" class="nexo-label !mb-0">Senha</label>
+                                <button type="button" id="link-recuperar" class="text-xs font-semibold text-brand-purple hover:underline">Esqueci minha senha</button>
+                            </div>
+                            <div class="relative">
+                                <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input id="senha" name="senha" type="password" autocomplete="current-password" placeholder="Sua senha" class="nexo-input" style="padding-left:2.5rem;padding-right:2.75rem">
+                                <button type="button" id="mostrar-senha" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-lg text-gray-400 hover:text-gray-700" aria-label="Mostrar senha" aria-pressed="false">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                            <p id="caps-aviso" class="hidden text-xs text-amber-600 mt-1"><i class="fa-solid fa-triangle-exclamation"></i> Caps Lock está ativado.</p>
+                        </div>
+
+                        <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none">
+                            <input id="lembrar" name="lembrar" type="checkbox" class="w-4 h-4 accent-brand-purple rounded">
+                            Lembrar do meu acesso neste computador
+                        </label>
+
+                        <button id="btn-entrar" type="submit" class="nexo-btn nexo-btn-primario w-full !py-3 text-base">
+                            <span id="btn-entrar-texto">Entrar</span>
+                            <i id="btn-entrar-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+                        </button>
+                    </form>
+
+                    <div class="mt-8 p-4 bg-purple-50 border border-purple-100 rounded-xl text-sm text-gray-600">
+                        <p class="font-semibold text-gray-800 mb-1"><i class="fa-solid fa-circle-info text-brand-purple"></i> Acesso de demonstração</p>
+                        <p>Administrador: <b>admin@nexo.com</b> / <b>admin123</b></p>
+                        <p>Vendedor: <b>ana@nexo.com</b> / <b>ana123</b></p>
+                    </div>
+                </div>
+
+                <!-- Recuperacao de senha -->
+                <div id="painel-recuperar" class="hidden">
+                    <button type="button" id="voltar-login" class="text-sm font-semibold text-gray-500 hover:text-brand-purple mb-6"><i class="fa-solid fa-arrow-left"></i> Voltar ao login</button>
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-1">Recuperar senha</h2>
+                    <p class="text-brand-textMuted mb-8">Informe o e-mail cadastrado. Enviaremos um link para você criar uma nova senha.</p>
+
+                    <div id="ok-recuperar" class="hidden mb-5 flex items-start gap-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-xl px-4 py-3" role="status">
+                        <i class="fa-solid fa-circle-check mt-0.5"></i>
+                        <span id="ok-recuperar-texto"></span>
+                    </div>
+
+                    <form id="form-recuperar" novalidate class="space-y-5">
+                        <div>
+                            <label for="email-recuperar" class="nexo-label">E-mail</label>
+                            <input id="email-recuperar" name="emailRecuperar" type="email" placeholder="seu@email.com" class="nexo-input">
+                        </div>
+                        <button id="btn-recuperar" type="submit" class="nexo-btn nexo-btn-primario w-full !py-3 text-base">
+                            <span>Enviar link de recuperação</span>
+                            <i id="btn-recuperar-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function () {
+            Nexo.ui.injetarEstilos();
+            document.getElementById('ano').textContent = new Date().getFullYear();
+
+            var params = new URLSearchParams(location.search);
+            /* sem ?volta=, vai para a pagina inicial escolhida em Configuracoes > Preferencias */
+            var prefs = Nexo.db.lerObjeto('configuracoes', {}).preferencias || {};
+            var destino = params.get('volta') || prefs.paginaInicial || 'home.html';
+            /* so aceita destino interno (arquivo .html desta pasta) */
+            if (!/^[\w-]+\.html([?#].*)?$/.test(destino)) destino = 'home.html';
+
+            /* ja logado: segue direto */
+            if (Nexo.auth.usuarioAtual()) { location.replace(destino); return; }
+
+            var form = document.getElementById('form-login');
+            var email = document.getElementById('email');
+            var senha = document.getElementById('senha');
+            var lembrar = document.getElementById('lembrar');
+            var btn = document.getElementById('btn-entrar');
+            var erroBox = document.getElementById('erro-login');
+
+            var lembrado = Nexo.auth.emailLembrado();
+            if (lembrado) { email.value = lembrado; lembrar.checked = true; senha.focus(); }
+            else email.focus();
+
+            function mostrarErro(msg) {
+                document.getElementById('erro-login-texto').textContent = msg;
+                erroBox.classList.remove('hidden');
+                erroBox.classList.add('flex');
+            }
+            function limparErro() {
+                erroBox.classList.add('hidden');
+                erroBox.classList.remove('flex');
+                email.classList.remove('erro');
+                senha.classList.remove('erro');
+            }
+            function carregando(sim) {
+                btn.disabled = sim;
+                email.disabled = sim;
+                senha.disabled = sim;
+                document.getElementById('btn-entrar-texto').textContent = sim ? 'Entrando...' : 'Entrar';
+                document.getElementById('btn-entrar-spinner').classList.toggle('hidden', !sim);
+            }
+
+            /* Mostrar/ocultar senha */
+            var olho = document.getElementById('mostrar-senha');
+            olho.addEventListener('click', function () {
+                var visivel = senha.type === 'text';
+                senha.type = visivel ? 'password' : 'text';
+                olho.setAttribute('aria-pressed', String(!visivel));
+                olho.setAttribute('aria-label', visivel ? 'Mostrar senha' : 'Ocultar senha');
+                olho.innerHTML = '<i class="fa-solid ' + (visivel ? 'fa-eye' : 'fa-eye-slash') + '"></i>';
+                senha.focus();
+            });
+
+            /* Aviso de Caps Lock */
+            senha.addEventListener('keyup', function (e) {
+                if (e.getModifierState) document.getElementById('caps-aviso').classList.toggle('hidden', !e.getModifierState('CapsLock'));
+            });
+            [email, senha].forEach(function (el) { el.addEventListener('input', limparErro); });
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                limparErro();
+                if (!Nexo.validar.obrigatorio(email.value) || !Nexo.validar.email(email.value)) {
+                    email.classList.add('erro');
+                    mostrarErro('Informe um e-mail válido.');
+                    email.focus();
+                    return;
+                }
+                if (!Nexo.validar.obrigatorio(senha.value)) {
+                    senha.classList.add('erro');
+                    mostrarErro('Informe a senha.');
+                    senha.focus();
+                    return;
+                }
+                carregando(true);
+                /* pequeno atraso para simular a autenticacao no servidor */
+                setTimeout(function () {
+                    var r = Nexo.auth.login(email.value, senha.value, lembrar.checked);
+                    if (r.ok) {
+                        document.getElementById('btn-entrar-texto').textContent = 'Bem-vindo, ' + r.usuario.nome.split(' ')[0] + '!';
+                        location.href = destino;
+                    } else {
+                        carregando(false);
+                        senha.value = '';
+                        senha.classList.add('erro');
+                        mostrarErro(r.erro);
+                        senha.focus();
+                    }
+                }, 700);
+            });
+
+            /* Recuperacao de senha */
+            var painelLogin = document.getElementById('painel-login');
+            var painelRec = document.getElementById('painel-recuperar');
+            var emailRec = document.getElementById('email-recuperar');
+            document.getElementById('link-recuperar').addEventListener('click', function () {
+                painelLogin.classList.add('hidden');
+                painelRec.classList.remove('hidden');
+                document.getElementById('ok-recuperar').classList.add('hidden');
+                emailRec.value = email.value;
+                emailRec.focus();
+            });
+            document.getElementById('voltar-login').addEventListener('click', function () {
+                painelRec.classList.add('hidden');
+                painelLogin.classList.remove('hidden');
+                email.focus();
+            });
+            document.getElementById('form-recuperar').addEventListener('submit', function (e) {
+                e.preventDefault();
+                emailRec.classList.remove('erro');
+                if (!Nexo.validar.email(emailRec.value)) {
+                    emailRec.classList.add('erro');
+                    emailRec.focus();
+                    return;
+                }
+                var b = document.getElementById('btn-recuperar');
+                b.disabled = true;
+                document.getElementById('btn-recuperar-spinner').classList.remove('hidden');
+                setTimeout(function () {
+                    Nexo.auth.recuperarSenha(emailRec.value);
+                    b.disabled = false;
+                    document.getElementById('btn-recuperar-spinner').classList.add('hidden');
+                    /* mesma mensagem para e-mail existente ou nao, para nao revelar quem tem conta */
+                    document.getElementById('ok-recuperar-texto').textContent = 'Se ' + emailRec.value.trim() + ' estiver cadastrado, você receberá um link de recuperação em alguns minutos.';
+                    var ok = document.getElementById('ok-recuperar');
+                    ok.classList.remove('hidden');
+                    ok.classList.add('flex');
+                }, 800);
+            });
+        })();
+    </script>
+</body>
+
+</html>

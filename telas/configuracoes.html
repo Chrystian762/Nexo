@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Nexo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../JS/nexo-tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
+</head>
+<body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
+    <aside id="nexo-sidebar"></aside>
+    <main class="flex-1 relative overflow-y-auto w-full h-full">
+        <div class="max-w-[1400px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
+
+            <div class="mb-6">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-brand-textMain">Configurações</h1>
+                <p class="text-brand-textMuted mt-1">Usuários, permissões, notificações e preferências de funcionamento do sistema.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 items-start">
+
+                <!-- Menu de seções: lateral no desktop, abas rolando na horizontal no celular -->
+                <nav id="menu-secoes" aria-label="Seções de configuração"
+                     class="w-full md:w-64 md:shrink-0 flex md:flex-col gap-1 overflow-x-auto md:overflow-visible bg-white rounded-2xl border border-gray-100 shadow-sm p-2 md:sticky md:top-0">
+                    <a href="#perfil" data-secao="perfil" class="item-secao"><i class="fa-solid fa-user w-5 text-center"></i> Meu perfil</a>
+                    <a href="#usuarios" data-secao="usuarios" class="item-secao"><i class="fa-solid fa-users-gear w-5 text-center"></i> Usuários</a>
+                    <a href="#permissoes" data-secao="permissoes" class="item-secao"><i class="fa-solid fa-user-shield w-5 text-center"></i> Permissões</a>
+                    <a href="#notificacoes" data-secao="notificacoes" class="item-secao"><i class="fa-solid fa-bell w-5 text-center"></i> Notificações</a>
+                    <a href="#preferencias" data-secao="preferencias" class="item-secao"><i class="fa-solid fa-sliders w-5 text-center"></i> Preferências</a>
+                    <a href="#geral" data-secao="geral" class="item-secao"><i class="fa-solid fa-gear w-5 text-center"></i> Gerais</a>
+                </nav>
+
+                <!-- Conteúdo das seções (montado por configuracoes.js) -->
+                <div class="flex-1 min-w-0 w-full">
+                    <section id="sec-perfil" class="secao hidden"></section>
+                    <section id="sec-usuarios" class="secao hidden"></section>
+                    <section id="sec-permissoes" class="secao hidden"></section>
+                    <section id="sec-notificacoes" class="secao hidden"></section>
+                    <section id="sec-preferencias" class="secao hidden"></section>
+                    <section id="sec-geral" class="secao hidden"></section>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <script src="../JS/configuracoes.js"></script>
+</body>
+</html>
