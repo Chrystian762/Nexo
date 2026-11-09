@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque - Nexo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../JS/nexo-tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
+</head>
+<body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
+    <aside id="nexo-sidebar"></aside>
+    <main class="flex-1 relative overflow-y-auto w-full h-full">
+        <div class="max-w-[1400px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
+
+            <!-- Cabeçalho -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-brand-textMain">Estoque</h1>
+                    <p class="text-brand-textMuted mt-1">Entradas, saídas, ajustes e produtos que precisam de reposição.</p>
+                </div>
+                <button type="button" id="btn-nova-mov" class="nexo-btn nexo-btn-primario">
+                    <i class="fa-solid fa-plus"></i> Nova movimentação
+                </button>
+            </div>
+
+            <!-- Cards de resumo -->
+            <div id="cards" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-4 mb-6"></div>
+
+            <!-- Gráfico: entradas x saídas por semana -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-1">
+                    <h2 class="font-bold text-gray-900">Entradas x saídas por semana</h2>
+                    <span class="text-xs text-brand-textMuted">Últimas 8 semanas (unidades, sem ajustes)</span>
+                </div>
+                <div class="relative h-52"><canvas id="grafico-semanas" aria-label="Gráfico de entradas e saídas por semana"></canvas></div>
+            </div>
+
+            <!-- Abas -->
+            <div class="flex gap-1 border-b border-gray-200 mb-5 overflow-x-auto" id="abas" role="tablist">
+                <button type="button" data-aba="posicao" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2">Posição de estoque</button>
+                <button type="button" data-aba="movimentacoes" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2">Movimentações</button>
+                <button type="button" data-aba="baixo" class="aba px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2">Estoque baixo <span id="contagem-baixo" class="ml-1 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"></span></button>
+            </div>
+
+            <!-- Aba: posição -->
+            <section id="aba-posicao" class="hidden">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 border-b border-gray-100">
+                        <div class="relative lg:col-span-2">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input id="pos-busca" type="search" class="nexo-input !pl-9" placeholder="Buscar por nome ou SKU" aria-label="Buscar produto">
+                        </div>
+                        <select id="pos-categoria" class="nexo-input" aria-label="Categoria"></select>
+                        <select id="pos-situacao" class="nexo-input" aria-label="Situação">
+                            <option value="">Todas as situações</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Estoque baixo">Estoque baixo</option>
+                            <option value="Sem estoque">Sem estoque</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto"><table class="w-full text-sm min-w-[980px]">
+                        <thead class="text-left text-xs uppercase text-gray-500 bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3">Produto</th><th class="px-4 py-3">SKU</th><th class="px-4 py-3">Categoria</th>
+                                <th class="px-4 py-3 text-right">Disponível</th><th class="px-4 py-3 text-right">Mínimo</th>
+                                <th class="px-4 py-3">Situação</th><th class="px-4 py-3 text-right">Valor a custo</th>
+                                <th class="px-4 py-3">Última mov.</th><th class="px-4 py-3 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pos-corpo" class="divide-y divide-gray-50"></tbody>
+                    </table></div>
+                    <div id="pos-pag"></div>
+                </div>
+            </section>
+
+            <!-- Aba: movimentações -->
+            <section id="aba-movimentacoes" class="hidden">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 border-b border-gray-100">
+                        <select id="mov-tipo" class="nexo-input" aria-label="Tipo">
+                            <option value="">Todos os tipos</option><option>Entrada</option><option>Saída</option><option>Ajuste</option>
+                        </select>
+                        <select id="mov-produto" class="nexo-input lg:col-span-2" aria-label="Produto"></select>
+                        <input id="mov-de" type="date" class="nexo-input" aria-label="Data inicial">
+                        <input id="mov-ate" type="date" class="nexo-input" aria-label="Data final">
+                    </div>
+                    <div class="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100">
+                        <span id="mov-resumo" class="text-sm text-brand-textMuted"></span>
+                        <button type="button" id="mov-csv" class="nexo-btn nexo-btn-secundario"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+                    </div>
+                    <div class="overflow-x-auto"><table class="w-full text-sm min-w-[980px]">
+                        <thead class="text-left text-xs uppercase text-gray-500 bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3">Data</th><th class="px-4 py-3">Produto</th><th class="px-4 py-3">Tipo</th>
+                                <th class="px-4 py-3 text-right">Quantidade</th><th class="px-4 py-3 text-right">Saldo</th>
+                                <th class="px-4 py-3">Motivo</th><th class="px-4 py-3">Referência</th><th class="px-4 py-3">Usuário</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mov-corpo" class="divide-y divide-gray-50"></tbody>
+                    </table></div>
+                    <div id="mov-pag"></div>
+                </div>
+            </section>
+
+            <!-- Aba: estoque baixo -->
+            <section id="aba-baixo" class="hidden">
+                <div id="baixo-lista" class="space-y-4"></div>
+            </section>
+        </div>
+    </main>
+    <script src="../JS/estoque.js"></script>
+</body>
+</html>

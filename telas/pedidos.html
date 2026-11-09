@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Nexo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../JS/nexo-tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../JS/nexo-data.js"></script>
+    <script src="../JS/nexo-layout.js"></script>
+</head>
+<body class="bg-brand-bg text-brand-textMain h-screen overflow-hidden flex flex-col md:flex-row font-sans">
+    <aside id="nexo-sidebar"></aside>
+    <main class="flex-1 relative overflow-y-auto w-full h-full">
+        <div class="max-w-[1400px] mx-auto p-4 md:p-8 w-full min-h-full pb-24 fade-in">
+
+            <!-- ============ VISTA: LISTA DE PEDIDOS ============ -->
+            <section id="vista-lista">
+                <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900">Pedidos</h1>
+                        <p class="text-brand-textMuted mt-1">Acompanhe pedidos, pagamentos e entregas.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" id="btn-exportar" class="nexo-btn nexo-btn-secundario"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+                        <button type="button" id="btn-novo" class="nexo-btn nexo-btn-primario"><i class="fa-solid fa-plus"></i> Novo pedido</button>
+                    </div>
+                </header>
+
+                <!-- Cards de resumo -->
+                <div id="cards-resumo" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6"></div>
+
+                <!-- Contadores por status (clicaveis) -->
+                <div id="contadores-status" class="flex flex-wrap gap-2 mb-4"></div>
+
+                <!-- Busca e filtros -->
+                <form id="form-filtros" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mb-4" autocomplete="off" onsubmit="return false">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="nexo-label" for="f-busca">Buscar</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                <input id="f-busca" type="search" class="nexo-input" style="padding-left:2.2rem" placeholder="Nº do pedido ou nome do cliente">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-status">Status do pedido</label>
+                            <select id="f-status" class="nexo-input"></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-pgto-status">Status do pagamento</label>
+                            <select id="f-pgto-status" class="nexo-input">
+                                <option value="">Todos</option>
+                                <option>Pago</option>
+                                <option>Pendente</option>
+                                <option>Cancelado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-forma">Forma de pagamento</label>
+                            <select id="f-forma" class="nexo-input"></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-vendedor">Vendedor</label>
+                            <select id="f-vendedor" class="nexo-input"></select>
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-inicio">Data inicial</label>
+                            <input id="f-inicio" type="date" class="nexo-input">
+                        </div>
+                        <div>
+                            <label class="nexo-label" for="f-fim">Data final</label>
+                            <input id="f-fim" type="date" class="nexo-input">
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mt-3">
+                        <div class="sm:w-64">
+                            <label class="nexo-label" for="f-ordem">Ordenar por</label>
+                            <select id="f-ordem" class="nexo-input">
+                                <option value="data-desc">Data (mais recentes)</option>
+                                <option value="data-asc">Data (mais antigos)</option>
+                                <option value="total-desc">Total (maior primeiro)</option>
+                                <option value="total-asc">Total (menor primeiro)</option>
+                            </select>
+                        </div>
+                        <button type="button" id="btn-limpar" class="nexo-btn nexo-btn-secundario"><i class="fa-solid fa-eraser"></i> Limpar filtros</button>
+                    </div>
+                </form>
+
+                <!-- Tabela -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm min-w-[860px]">
+                            <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+                                <tr>
+                                    <th class="text-left font-semibold px-5 py-3">Pedido</th>
+                                    <th class="text-left font-semibold px-3 py-3">Data</th>
+                                    <th class="text-left font-semibold px-3 py-3">Cliente</th>
+                                    <th class="text-left font-semibold px-3 py-3">Vendedor</th>
+                                    <th class="text-right font-semibold px-3 py-3">Itens</th>
+                                    <th class="text-right font-semibold px-3 py-3">Total</th>
+                                    <th class="text-left font-semibold px-3 py-3">Pagamento</th>
+                                    <th class="text-left font-semibold px-3 py-3">Status</th>
+                                    <th class="px-3 py-3"><span class="sr-only">Ações</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-pedidos" class="divide-y divide-gray-50"></tbody>
+                        </table>
+                    </div>
+                    <div id="vazio-pedidos" class="hidden text-center py-14 px-4">
+                        <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-gray-50 text-gray-400 flex items-center justify-center text-xl"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <p class="font-bold text-gray-800">Nenhum pedido encontrado</p>
+                        <p class="text-sm text-gray-500 mt-1">Ajuste a busca ou limpe os filtros para ver outros pedidos.</p>
+                    </div>
+                    <div id="paginacao-pedidos"></div>
+                </div>
+            </section>
+
+            <!-- ============ VISTA: DETALHES DO PEDIDO ============ -->
+            <section id="vista-detalhe" class="hidden"></section>
+
+        </div>
+    </main>
+    <script src="../JS/pedidos.js"></script>
+</body>
+</html>
