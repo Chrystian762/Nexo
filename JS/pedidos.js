@@ -283,7 +283,7 @@
                 linhaInfo('E-mail', esc(cli.email)) +
                 linhaInfo('Telefone', esc(cli.telefone)) +
                 linhaInfo('Endereço', esc(enderecoTexto(cli.endereco))) +
-                linhaInfo('Revendedor', rev ? '<a class="text-brand-purple font-semibold hover:underline" href="revendedores.html?id=' + encodeURIComponent(rev.id) + '">' + esc(rev.nome) + '</a> (' + fmt.porcentagem(rev.desconto, 0) + ' de desconto)' : '') +
+                linhaInfo('Revendedor', rev ? (Nexo.auth.podeAcessar('revendedores') ? '<a class="text-brand-purple font-semibold hover:underline" href="revendedores.html?id=' + encodeURIComponent(rev.id) + '">' + esc(rev.nome) + '</a>' : '<span class="font-semibold">' + esc(rev.nome) + '</span>') + ' (' + fmt.porcentagem(rev.desconto, 0) + ' de desconto)' : '') +
                 linhaInfo('Vendedor', esc(p.vendedor)) +
                 '</dl>';
         } else {

@@ -284,7 +284,7 @@
         { id: 'estoque', nome: 'Estoque' },
         { id: 'fornecedores', nome: 'Fornecedores' },
         { id: 'clientes', nome: 'Clientes' },
-        { id: 'revendedores', nome: 'Revendedores' },
+        { id: 'revendedores', nome: 'Revendedores', somenteAdmin: true },
         { id: 'financeiro', nome: 'Financeiro' },
         { id: 'relatorios', nome: 'Relatórios' },
         { id: 'configuracoes', nome: 'Configurações' }
@@ -343,6 +343,8 @@
             var u = usuario || auth.usuarioAtual();
             if (!u) return false;
             if (u.perfil === 'Administrador') return true;
+            /* modulos exclusivos do Administrador (ex.: Revendedores) nunca liberam para outro perfil */
+            if (MODULOS.some(function (m) { return m.id === modulo && m.somenteAdmin; })) return false;
             /* Inicio e Configuracoes (perfil e senha do proprio usuario) ficam sempre liberados */
             if (modulo === 'inicio' || modulo === 'configuracoes') return true;
             var perm = db.lerObjeto('permissoes', {});
@@ -789,7 +791,7 @@
         ];
         usuarios.forEach(function (u) { u.criadoEm = diaISO(400); u.ultimoAcesso = diaISO(inteiro(0, 20)); db.inserir('usuarios', u); });
         db.gravarObjeto('permissoes', {
-            Vendedor: ['inicio', 'pedidos', 'produtos', 'clientes', 'revendedores', 'relatorios'],
+            Vendedor: ['inicio', 'pedidos', 'produtos', 'clientes', 'relatorios'],
             Estoquista: ['inicio', 'produtos', 'estoque', 'fornecedores', 'relatorios'],
             Financeiro: ['inicio', 'pedidos', 'financeiro', 'relatorios', 'fornecedores', 'clientes']
         });

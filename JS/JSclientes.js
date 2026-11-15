@@ -519,7 +519,7 @@
             campo('Cidade/UF', e.cidade ? esc(e.cidade + (e.uf ? ' - ' + e.uf : '')) : '') + campo('CEP', esc(e.cep)) + '</div></div>' +
 
             '  <div class="' + card + '">' + titulo('fa-handshake', 'Revendedor vinculado') +
-            (rev ? '<p class="text-sm"><a href="revendedores.html?id=' + esc(rev.id) + '" class="font-bold text-brand-purple hover:underline">' + esc(rev.nome) + '</a> ' + Nexo.ui.badgeStatus(rev.status) + '</p>' +
+            (rev ? '<p class="text-sm">' + (Nexo.auth.podeAcessar('revendedores') ? '<a href="revendedores.html?id=' + esc(rev.id) + '" class="font-bold text-brand-purple hover:underline">' + esc(rev.nome) + '</a>' : '<span class="font-bold text-gray-900">' + esc(rev.nome) + '</span>') + ' ' + Nexo.ui.badgeStatus(rev.status) + '</p>' +
                 '<p class="text-xs text-gray-500 mt-1">Desconto: ' + esc(rev.desconto) + '% &middot; Condição: ' + esc(rev.condicaoPagamento) + '</p>'
                 : '<p class="text-sm text-gray-400">Nenhum revendedor vinculado.</p>') + '</div>' +
             '</div>' +

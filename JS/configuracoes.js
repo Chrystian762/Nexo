@@ -350,16 +350,19 @@
         var linhas = Nexo.consultas.MODULOS.map(function (m) {
             var fixo = m.id === 'inicio';
             var celulas = perfis.map(function (p) {
+                if (m.somenteAdmin) {
+                    return '<td class="px-4 py-3 text-center"><input type="checkbox" disabled class="w-5 h-5 accent-purple-600 opacity-60" title="Somente o Administrador" aria-label="' + esc(p + ': ' + m.nome + ' (somente o Administrador)') + '"></td>';
+                }
                 var marcado = fixo || (perm[p] || []).indexOf(m.id) !== -1;
                 return '<td class="px-4 py-3 text-center"><input type="checkbox" data-perfil="' + esc(p) + '" data-modulo="' + esc(m.id) + '" class="w-5 h-5 accent-purple-600"' +
                     (marcado ? ' checked' : '') + (fixo ? ' disabled title="O Início está sempre liberado"' : '') + ' aria-label="' + esc(p + ': ' + m.nome) + '"></td>';
             }).join('');
-            return '<tr class="hover:bg-gray-50/60"><td class="px-4 py-3 font-semibold text-gray-800">' + esc(m.nome) + '</td>' +
+            return '<tr class="hover:bg-gray-50/60"><td class="px-4 py-3 font-semibold text-gray-800">' + esc(m.nome) + (m.somenteAdmin ? ' <span class="text-xs font-normal text-gray-400">(somente Administrador)</span>' : '') + '</td>' +
                 '<td class="px-4 py-3 text-center"><input type="checkbox" checked disabled class="w-5 h-5 accent-purple-600 opacity-60" aria-label="Administrador: ' + esc(m.nome) + '"></td>' + celulas + '</tr>';
         }).join('');
 
         alvo.innerHTML = cartao('Permissões por perfil',
-            'Marque os módulos que cada perfil pode acessar. O Administrador sempre tem acesso a tudo e o Início está sempre liberado.',
+            'Marque os módulos que cada perfil pode acessar. O Administrador sempre tem acesso a tudo, o Início está sempre liberado e Revendedores é exclusivo do Administrador.',
             '<form id="form-permissoes"><div class="overflow-x-auto -mx-5 md:-mx-6"><table class="w-full text-sm min-w-[620px]">' +
             '<thead class="bg-gray-50 text-xs uppercase text-gray-500"><tr>' + cabecalho + '</tr></thead>' +
             '<tbody class="divide-y divide-gray-100">' + linhas + '</tbody></table></div>' +

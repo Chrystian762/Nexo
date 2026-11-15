@@ -60,7 +60,7 @@
             ordem: { chave: 'faturamento', dir: 'desc' },
             vazio: 'Nenhum dado de revendedor para os filtros selecionados.',
             colunas: [
-                { chave: 'nome', titulo: 'Revendedor', alinhar: 'left', render: function (l) { return l.id ? '<a href="revendedores.html?id=' + encodeURIComponent(l.id) + '" class="font-bold text-gray-900 hover:text-brand-purple">' + esc(l.nome) + '</a>' : '<span class="font-medium text-gray-500">' + esc(l.nome) + '</span>'; }, csv: function (l) { return l.nome; } },
+                { chave: 'nome', titulo: 'Revendedor', alinhar: 'left', render: function (l) { return l.id && Nexo.auth.podeAcessar('revendedores') ? '<a href="revendedores.html?id=' + encodeURIComponent(l.id) + '" class="font-bold text-gray-900 hover:text-brand-purple">' + esc(l.nome) + '</a>' : '<span class="font-medium text-gray-500">' + esc(l.nome) + '</span>'; }, csv: function (l) { return l.nome; } },
                 { chave: 'clientes', titulo: 'Clientes', alinhar: 'center', total: 'soma', formatar: fmt.numero },
                 { chave: 'pedidos', titulo: 'Pedidos no período', alinhar: 'center', total: 'soma', formatar: fmt.numero },
                 { chave: 'faturamento', titulo: 'Faturamento', alinhar: 'right', total: 'soma', formatar: fmt.moeda },
