@@ -456,7 +456,7 @@
             '<div class="sm:col-span-2"><label class="nexo-label" for="n-cliente">Cliente *</label>' +
             '<input id="n-cliente" name="cliente" list="n-lista-clientes" class="nexo-input" placeholder="Digite para buscar o cliente">' +
             '<datalist id="n-lista-clientes">' + clientes.map(function (c) { return '<option value="' + esc(rotuloCliente(c)) + '"></option>'; }).join('') + '</datalist></div>' +
-            '<div><label class="nexo-label" for="n-revendedor">Revendedor</label><select id="n-revendedor" name="revendedor" class="nexo-input"><option value="">Sem revendedor</option>' +
+            '<div><label class="nexo-label" for="n-revendedor">Revendedor *</label><select id="n-revendedor" name="revendedor" class="nexo-input"><option value="">Selecione o revendedor</option>' +
             revendedores.map(function (r) { return '<option value="' + esc(r.id) + '">' + esc(r.nome + ' (' + r.desconto + '% de desconto)') + '</option>'; }).join('') + '</select></div>' +
             '<div><label class="nexo-label" for="n-vendedor">Vendedor *</label><select id="n-vendedor" name="vendedor" class="nexo-input">' +
             vendedores.map(function (v) { return '<option' + (usuarioAtual && usuarioAtual.nome === v ? ' selected' : '') + '>' + esc(v) + '</option>'; }).join('') + '</select></div>' +
@@ -658,6 +658,11 @@
         var cliente = porRotulo[form.cliente.value.trim()];
         if (!cliente) erros.cliente = 'Selecione um cliente da lista.';
         if (!form.vendedor.value) erros.vendedor = 'Selecione o vendedor.';
+        /* carteira: o pedido sai pelo revendedor do cliente */
+        if (!form.revendedor.value) erros.revendedor = 'Selecione o revendedor.';
+        else if (cliente && cliente.revendedorId && cliente.revendedorId !== form.revendedor.value) {
+            erros.revendedor = 'Este cliente pertence à carteira de outro revendedor.';
+        }
 
         /* itens */
         var itens = [];
@@ -702,7 +707,7 @@
 
         var r = Nexo.ops.criarPedido({
             clienteId: cliente.id,
-            revendedorId: form.revendedor.value || null,
+            revendedorId: form.revendedor.value,
             vendedor: form.vendedor.value,
             itens: itens,
             desconto: desconto,

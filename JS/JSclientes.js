@@ -239,7 +239,7 @@
         var e = c.endereco || {};
         var v = function (x) { return esc(x === undefined || x === null ? '' : x); };
         var revendedores = Nexo.db.listar('revendedores').filter(function (r) { return r.status === 'Ativo' || r.id === c.revendedorId; });
-        var optsRev = '<option value="">Nenhum</option>' + revendedores.map(function (r) {
+        var optsRev = '<option value="">Selecione o revendedor</option>' + revendedores.map(function (r) {
             return '<option value="' + esc(r.id) + '"' + (r.id === c.revendedorId ? ' selected' : '') + '>' + esc(r.nome) + ' (' + r.desconto + '% de desconto)' + (r.status !== 'Ativo' ? ' - inativo' : '') + '</option>';
         }).join('');
 
@@ -277,7 +277,7 @@
 
             '<div><h3 class="text-sm font-bold text-gray-900 mb-3"><i class="fa-solid fa-handshake text-brand-purple mr-2"></i>Relacionamento</h3>' +
             '<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">' +
-            '<div><label class="nexo-label">Revendedor vinculado</label><select name="revendedorId" class="nexo-input">' + optsRev + '</select></div>' +
+            '<div><label class="nexo-label">Revendedor vinculado *</label><select name="revendedorId" class="nexo-input">' + optsRev + '</select></div>' +
             '<div><label class="nexo-label">Status</label><select name="status" class="nexo-input"><option value="Ativo"' + (c.status !== 'Inativo' ? ' selected' : '') + '>Ativo</option><option value="Inativo"' + (c.status === 'Inativo' ? ' selected' : '') + '>Inativo</option></select></div>' +
             '<div class="sm:col-span-2"><label class="nexo-label">Observações</label><textarea name="observacoes" rows="3" class="nexo-input">' + v(c.observacoes) + '</textarea></div>' +
             '</div></div>' +
@@ -312,6 +312,8 @@
     /* Valida os dados do formulário. Retorna {erros}. */
     function validarCliente(d, idAtual) {
         var erros = {};
+        /* carteira: todo cliente pertence a um revendedor */
+        if (!d.revendedorId) erros.revendedorId = 'Selecione o revendedor.';
         var pj = d.tipo === 'PJ';
         if (pj) {
             if (!d.razaoSocial) erros.razaoSocial = 'Informe a razão social.';
@@ -371,7 +373,7 @@
                             telefone: d.telefone,
                             whatsapp: d.whatsapp,
                             endereco: { cep: d.cep, logradouro: d.logradouro, numero: d.numero, complemento: d.complemento, bairro: d.bairro, cidade: d.cidade, uf: d.uf },
-                            revendedorId: d.revendedorId || null,
+                            revendedorId: d.revendedorId,
                             observacoes: d.observacoes,
                             status: d.status
                         };

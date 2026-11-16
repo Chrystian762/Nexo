@@ -22,7 +22,7 @@
     'use strict';
 
     var PREFIXO = 'nexo_';
-    var VERSAO_DADOS = '3';
+    var VERSAO_DADOS = '4';
 
     var COLECOES = [
         'categorias', 'produtos', 'clientes', 'revendedores', 'fornecedores',
@@ -446,13 +446,19 @@
 
         /*
          * Cria um pedido completo: valida estoque, baixa estoque e gera a receita no financeiro.
-         * dados: {clienteId, revendedorId?, vendedor, itens:[{produtoId, quantidade, precoUnitario}],
+         * dados: {clienteId, revendedorId, vendedor, itens:[{produtoId, quantidade, precoUnitario}],
          *         desconto, frete, pagamento:{forma, parcelas, vencimento?, pago:boolean},
          *         entrega:{tipo, endereco, transportadora, previsao}, observacoes}
          */
         criarPedido: function (dados, opcoes) {
             opcoes = opcoes || {};
             if (!dados.clienteId) return { ok: false, erro: 'Selecione o cliente.' };
+            /* Todo pedido e lancado por um revendedor, para um cliente da carteira dele */
+            if (!dados.revendedorId) return { ok: false, erro: 'Selecione o revendedor.' };
+            var cliPedido = db.obter('clientes', dados.clienteId);
+            if (cliPedido && cliPedido.revendedorId && cliPedido.revendedorId !== dados.revendedorId) {
+                return { ok: false, erro: 'Este cliente pertence à carteira de outro revendedor.' };
+            }
             if (!dados.itens || !dados.itens.length) return { ok: false, erro: 'Adicione pelo menos um produto.' };
             var i, it, p;
             /* agrega quantidades por produto para validar */
@@ -489,7 +495,7 @@
                 numero: proximoNumero('pedido', 1000),
                 data: data,
                 clienteId: dados.clienteId,
-                revendedorId: dados.revendedorId || null,
+                revendedorId: dados.revendedorId,
                 vendedor: dados.vendedor || usuario,
                 itens: itens,
                 desconto: Number(dados.desconto) || 0,
@@ -922,6 +928,15 @@
                 status: 'Ativo',
                 criadoEm: diaISO(inteiro(190, 420))
             }));
+        });
+
+        /* Carteira: todo cliente pertence a um revendedor. Quem nao sorteou um
+           recebe o seu por ordem (sem consumir o gerador, para manter os demais dados) */
+        var revAtivos = ['rev_1', 'rev_2', 'rev_3', 'rev_4'];
+        clientes.forEach(function (c, i) {
+            if (c.revendedorId) return;
+            c.revendedorId = revAtivos[i % revAtivos.length];
+            db.atualizar('clientes', c.id, { revendedorId: c.revendedorId });
         });
 
         /* Estoque inicial (entrada ha 200 dias) */
