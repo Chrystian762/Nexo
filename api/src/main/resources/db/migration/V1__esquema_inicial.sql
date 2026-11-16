@@ -1,315 +1,325 @@
 -- =====================================================================
 -- NEXO ERP · Esquema inicial (PostgreSQL)
--- Modelo físico gerado a partir do modelo lógico em docs/banco-de-dados.md
--- Convenções: tabelas no singular, snake_case, chave primária "id",
--- chave estrangeira "<tabela>_id", valores monetários em NUMERIC(12,2).
+-- Modelo físico. Modelos conceitual e lógico em docs/banco-de-dados.md
+-- e em docs/brmodelo/ (arquivos do brModelo).
+--
+-- Padrão de nomes: tabelas no singular; colunas com prefixo mnemônico
+-- e sufixo com o nome da tabela (ex.: nm_produto, vl_preco_produto).
+--   id_  identificador (chave primária; na chave estrangeira mantém o nome da PK de origem)
+--   cd_  código ou documento (SKU, CPF/CNPJ, CEP, telefone)
+--   nm_  nome ou texto curto        ds_  descrição ou texto longo
+--   nr_  número                      sg_  sigla (UF, PF/PJ)
+--   vl_  valor em reais              pc_  percentual
+--   qt_  quantidade                  dt_  data ou data e hora
+--   tp_  tipo (lista fechada)        fl_  situação ou flag (status, ativo)
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
 -- Empresa (uma linha só) e configurações
 -- ---------------------------------------------------------------------
 CREATE TABLE empresa (
-    id                   SMALLINT     PRIMARY KEY DEFAULT 1 CHECK (id = 1),
-    razao_social         VARCHAR(150) NOT NULL,
-    nome_fantasia        VARCHAR(150),
-    cnpj                 VARCHAR(18)  NOT NULL,
-    inscricao_estadual   VARCHAR(20),
-    inscricao_municipal  VARCHAR(20),
-    regime_tributario    VARCHAR(40),
-    cnae                 VARCHAR(150),
-    data_abertura        DATE,
-    email                VARCHAR(120),
-    email_financeiro     VARCHAR(120),
-    telefone             VARCHAR(20),
-    whatsapp             VARCHAR(20),
-    site                 VARCHAR(120),
-    responsavel          VARCHAR(100),
-    cep                  VARCHAR(9),
-    logradouro           VARCHAR(150),
-    numero               VARCHAR(10),
-    complemento          VARCHAR(60),
-    bairro               VARCHAR(80),
-    cidade               VARCHAR(80),
-    uf                   CHAR(2)
+    id_empresa                      SMALLINT     PRIMARY KEY DEFAULT 1 CHECK (id_empresa = 1),
+    nm_razao_social_empresa         VARCHAR(150) NOT NULL,
+    nm_fantasia_empresa             VARCHAR(150),
+    cd_cnpj_empresa                 VARCHAR(18)  NOT NULL,
+    cd_inscricao_estadual_empresa   VARCHAR(20),
+    cd_inscricao_municipal_empresa  VARCHAR(20),
+    nm_regime_tributario_empresa    VARCHAR(40),
+    ds_cnae_empresa                 VARCHAR(150),
+    dt_abertura_empresa             DATE,
+    nm_email_empresa                VARCHAR(120),
+    nm_email_financeiro_empresa     VARCHAR(120),
+    cd_telefone_empresa             VARCHAR(20),
+    cd_whatsapp_empresa             VARCHAR(20),
+    nm_site_empresa                 VARCHAR(120),
+    nm_responsavel_empresa          VARCHAR(100),
+    cd_cep_empresa                  VARCHAR(9),
+    nm_logradouro_empresa           VARCHAR(150),
+    nr_endereco_empresa             VARCHAR(10),
+    ds_complemento_empresa          VARCHAR(60),
+    nm_bairro_empresa               VARCHAR(80),
+    nm_cidade_empresa               VARCHAR(80),
+    sg_uf_empresa                   CHAR(2)
 );
 
 CREATE TABLE configuracao (
-    chave  VARCHAR(40) PRIMARY KEY,          -- notificacoes, preferencias, geral
-    valor  JSONB       NOT NULL
+    nm_chave_configuracao  VARCHAR(40) PRIMARY KEY,   -- notificacoes, preferencias, geral
+    ds_valor_configuracao  JSONB       NOT NULL
 );
 
 -- ---------------------------------------------------------------------
 -- Usuários e permissões
 -- ---------------------------------------------------------------------
 CREATE TABLE usuario (
-    id             BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nome           VARCHAR(100) NOT NULL,
-    email          VARCHAR(120) NOT NULL UNIQUE,
-    senha_hash     VARCHAR(100) NOT NULL,     -- BCrypt, nunca a senha pura
-    perfil         VARCHAR(20)  NOT NULL CHECK (perfil IN ('Administrador', 'Vendedor', 'Estoquista', 'Financeiro')),
-    ativo          BOOLEAN      NOT NULL DEFAULT TRUE,
-    ultimo_acesso  TIMESTAMPTZ,
-    criado_em      TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    atualizado_em  TIMESTAMPTZ
+    id_usuario                BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nm_usuario                VARCHAR(100) NOT NULL,
+    nm_email_usuario          VARCHAR(120) NOT NULL UNIQUE,
+    ds_senha_hash_usuario     VARCHAR(100) NOT NULL,     -- BCrypt, nunca a senha pura
+    nm_perfil_usuario         VARCHAR(20)  NOT NULL
+                              CHECK (nm_perfil_usuario IN ('Administrador', 'Vendedor', 'Estoquista', 'Financeiro')),
+    fl_ativo_usuario          BOOLEAN      NOT NULL DEFAULT TRUE,
+    dt_ultimo_acesso_usuario  TIMESTAMPTZ,
+    dt_criacao_usuario        TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    dt_atualizacao_usuario    TIMESTAMPTZ
 );
 
 -- Quais módulos cada perfil (menos o Administrador, que acessa tudo) pode abrir.
 -- Revendedores fica de fora por regra: é exclusivo do Administrador.
 CREATE TABLE permissao_perfil (
-    perfil  VARCHAR(20) NOT NULL CHECK (perfil IN ('Vendedor', 'Estoquista', 'Financeiro')),
-    modulo  VARCHAR(20) NOT NULL CHECK (modulo IN ('inicio', 'empresa', 'pedidos', 'produtos', 'estoque', 'fornecedores',
-                                                   'clientes', 'financeiro', 'relatorios', 'configuracoes')),
-    PRIMARY KEY (perfil, modulo)
+    nm_perfil_permissao  VARCHAR(20) NOT NULL CHECK (nm_perfil_permissao IN ('Vendedor', 'Estoquista', 'Financeiro')),
+    nm_modulo_permissao  VARCHAR(20) NOT NULL
+                         CHECK (nm_modulo_permissao IN ('inicio', 'empresa', 'pedidos', 'produtos', 'estoque', 'fornecedores',
+                                                        'clientes', 'financeiro', 'relatorios', 'configuracoes')),
+    PRIMARY KEY (nm_perfil_permissao, nm_modulo_permissao)
 );
 
 -- ---------------------------------------------------------------------
 -- Catálogo: categoria, marca, fornecedor, produto
 -- ---------------------------------------------------------------------
 CREATE TABLE categoria (
-    id     BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nome   VARCHAR(60) NOT NULL UNIQUE,
-    icone  VARCHAR(40)
+    id_categoria        BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nm_categoria        VARCHAR(60) NOT NULL UNIQUE,
+    nm_icone_categoria  VARCHAR(40)
 );
 
 CREATE TABLE marca (
-    id    BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nome  VARCHAR(60) NOT NULL UNIQUE
+    id_marca  BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nm_marca  VARCHAR(60) NOT NULL UNIQUE
 );
 
 CREATE TABLE fornecedor (
-    id                  BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    razao_social        VARCHAR(150) NOT NULL,
-    nome_fantasia       VARCHAR(150),
-    cnpj                VARCHAR(18)  NOT NULL UNIQUE,
-    contato             VARCHAR(100),
-    email               VARCHAR(120),
-    telefone            VARCHAR(20),
-    cep                 VARCHAR(9),
-    logradouro          VARCHAR(150),
-    numero              VARCHAR(10),
-    complemento         VARCHAR(60),
-    bairro              VARCHAR(80),
-    cidade              VARCHAR(80),
-    uf                  CHAR(2),
-    prazo_entrega_dias  INTEGER      CHECK (prazo_entrega_dias >= 0),
-    condicao_pagamento  VARCHAR(40),
-    status              VARCHAR(10)  NOT NULL DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Inativo')),
-    observacoes         TEXT,
-    criado_em           TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    atualizado_em       TIMESTAMPTZ
+    id_fornecedor                     BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nm_razao_social_fornecedor        VARCHAR(150) NOT NULL,
+    nm_fantasia_fornecedor            VARCHAR(150),
+    cd_cnpj_fornecedor                VARCHAR(18)  NOT NULL UNIQUE,
+    nm_contato_fornecedor             VARCHAR(100),
+    nm_email_fornecedor               VARCHAR(120),
+    cd_telefone_fornecedor            VARCHAR(20),
+    cd_cep_fornecedor                 VARCHAR(9),
+    nm_logradouro_fornecedor          VARCHAR(150),
+    nr_endereco_fornecedor            VARCHAR(10),
+    ds_complemento_fornecedor         VARCHAR(60),
+    nm_bairro_fornecedor              VARCHAR(80),
+    nm_cidade_fornecedor              VARCHAR(80),
+    sg_uf_fornecedor                  CHAR(2),
+    qt_prazo_entrega_fornecedor       INTEGER      CHECK (qt_prazo_entrega_fornecedor >= 0),   -- em dias
+    ds_condicao_pagamento_fornecedor  VARCHAR(40),
+    fl_status_fornecedor              VARCHAR(10)  NOT NULL DEFAULT 'Ativo' CHECK (fl_status_fornecedor IN ('Ativo', 'Inativo')),
+    ds_observacao_fornecedor          TEXT,
+    dt_criacao_fornecedor             TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    dt_atualizacao_fornecedor         TIMESTAMPTZ
 );
 
 -- Um fornecedor trabalha com várias marcas e uma marca pode vir de vários fornecedores (N:N)
 CREATE TABLE fornecedor_marca (
-    fornecedor_id  BIGINT NOT NULL REFERENCES fornecedor (id) ON DELETE CASCADE,
-    marca_id       BIGINT NOT NULL REFERENCES marca (id),
-    PRIMARY KEY (fornecedor_id, marca_id)
+    id_fornecedor  BIGINT NOT NULL REFERENCES fornecedor (id_fornecedor) ON DELETE CASCADE,
+    id_marca       BIGINT NOT NULL REFERENCES marca (id_marca),
+    PRIMARY KEY (id_fornecedor, id_marca)
 );
 
 CREATE TABLE produto (
-    id              BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    sku             VARCHAR(30)   NOT NULL UNIQUE,
-    codigo_barras   VARCHAR(14)   UNIQUE,
-    nome            VARCHAR(150)  NOT NULL,
-    descricao       TEXT,
-    categoria_id    BIGINT        NOT NULL REFERENCES categoria (id),
-    marca_id        BIGINT        NOT NULL REFERENCES marca (id),
-    fornecedor_id   BIGINT        REFERENCES fornecedor (id),
-    volume          VARCHAR(20),
-    preco           NUMERIC(12,2) NOT NULL CHECK (preco >= 0),
-    custo           NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (custo >= 0),
-    estoque         INTEGER       NOT NULL DEFAULT 0,
-    estoque_minimo  INTEGER       NOT NULL DEFAULT 0 CHECK (estoque_minimo >= 0),
-    validade        DATE,
-    lote            VARCHAR(20),
-    status          VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Inativo')),
-    criado_em       TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    atualizado_em   TIMESTAMPTZ
+    id_produto                 BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    cd_sku_produto             VARCHAR(30)   NOT NULL UNIQUE,
+    cd_barras_produto          VARCHAR(14)   UNIQUE,
+    nm_produto                 VARCHAR(150)  NOT NULL,
+    ds_produto                 TEXT,
+    id_categoria               BIGINT        NOT NULL REFERENCES categoria (id_categoria),
+    id_marca                   BIGINT        NOT NULL REFERENCES marca (id_marca),
+    id_fornecedor              BIGINT        REFERENCES fornecedor (id_fornecedor),
+    ds_volume_produto          VARCHAR(20),
+    vl_preco_produto           NUMERIC(12,2) NOT NULL CHECK (vl_preco_produto >= 0),
+    vl_custo_produto           NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (vl_custo_produto >= 0),
+    qt_estoque_produto         INTEGER       NOT NULL DEFAULT 0,
+    qt_estoque_minimo_produto  INTEGER       NOT NULL DEFAULT 0 CHECK (qt_estoque_minimo_produto >= 0),
+    dt_validade_produto        DATE,
+    cd_lote_produto            VARCHAR(20),
+    fl_status_produto          VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (fl_status_produto IN ('Ativo', 'Inativo')),
+    dt_criacao_produto         TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    dt_atualizacao_produto     TIMESTAMPTZ
 );
-CREATE INDEX ix_produto_categoria ON produto (categoria_id);
-CREATE INDEX ix_produto_marca ON produto (marca_id);
+CREATE INDEX ix_produto_categoria ON produto (id_categoria);
+CREATE INDEX ix_produto_marca ON produto (id_marca);
 
 -- ---------------------------------------------------------------------
 -- Revendedor e cliente
 -- ---------------------------------------------------------------------
 CREATE TABLE revendedor (
-    id                  BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nome                VARCHAR(150)  NOT NULL,
-    documento           VARCHAR(18)   NOT NULL UNIQUE,      -- CPF ou CNPJ
-    email               VARCHAR(120),
-    telefone            VARCHAR(20),
-    cep                 VARCHAR(9),
-    logradouro          VARCHAR(150),
-    numero              VARCHAR(10),
-    complemento         VARCHAR(60),
-    bairro              VARCHAR(80),
-    cidade              VARCHAR(80),
-    uf                  CHAR(2),
-    desconto_pct        NUMERIC(5,2)  NOT NULL DEFAULT 0 CHECK (desconto_pct BETWEEN 0 AND 100),
-    comissao_pct        NUMERIC(5,2)  NOT NULL DEFAULT 0 CHECK (comissao_pct BETWEEN 0 AND 100),
-    condicao_pagamento  VARCHAR(40),
-    limite_credito      NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (limite_credito >= 0),
-    status              VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Inativo')),
-    observacoes         TEXT,
-    criado_em           TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    atualizado_em       TIMESTAMPTZ
+    id_revendedor                     BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nm_revendedor                     VARCHAR(150)  NOT NULL,
+    cd_documento_revendedor           VARCHAR(18)   NOT NULL UNIQUE,      -- CPF ou CNPJ
+    nm_email_revendedor               VARCHAR(120),
+    cd_telefone_revendedor            VARCHAR(20),
+    cd_cep_revendedor                 VARCHAR(9),
+    nm_logradouro_revendedor          VARCHAR(150),
+    nr_endereco_revendedor            VARCHAR(10),
+    ds_complemento_revendedor         VARCHAR(60),
+    nm_bairro_revendedor              VARCHAR(80),
+    nm_cidade_revendedor              VARCHAR(80),
+    sg_uf_revendedor                  CHAR(2),
+    pc_desconto_revendedor            NUMERIC(5,2)  NOT NULL DEFAULT 0 CHECK (pc_desconto_revendedor BETWEEN 0 AND 100),
+    pc_comissao_revendedor            NUMERIC(5,2)  NOT NULL DEFAULT 0 CHECK (pc_comissao_revendedor BETWEEN 0 AND 100),
+    ds_condicao_pagamento_revendedor  VARCHAR(40),
+    vl_limite_credito_revendedor      NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (vl_limite_credito_revendedor >= 0),
+    fl_status_revendedor              VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (fl_status_revendedor IN ('Ativo', 'Inativo')),
+    ds_observacao_revendedor          TEXT,
+    dt_criacao_revendedor             TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    dt_atualizacao_revendedor         TIMESTAMPTZ
 );
 
 CREATE TABLE cliente (
-    id               BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    tipo             CHAR(2)      NOT NULL CHECK (tipo IN ('PF', 'PJ')),
-    nome             VARCHAR(150) NOT NULL,
-    razao_social     VARCHAR(150),                          -- só PJ
-    documento        VARCHAR(18)  NOT NULL UNIQUE,          -- CPF (PF) ou CNPJ (PJ)
-    email            VARCHAR(120),
-    telefone         VARCHAR(20),
-    data_nascimento  DATE,                                  -- só PF
-    responsavel      VARCHAR(100),                          -- só PJ
-    cep              VARCHAR(9),
-    logradouro       VARCHAR(150),
-    numero           VARCHAR(10),
-    complemento      VARCHAR(60),
-    bairro           VARCHAR(80),
-    cidade           VARCHAR(80),
-    uf               CHAR(2),
-    revendedor_id    BIGINT       REFERENCES revendedor (id), -- cada cliente tem no máximo 1 revendedor
-    status           VARCHAR(10)  NOT NULL DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Inativo')),
-    observacoes      TEXT,
-    criado_em        TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    atualizado_em    TIMESTAMPTZ
+    id_cliente               BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    sg_tipo_pessoa_cliente   CHAR(2)      NOT NULL CHECK (sg_tipo_pessoa_cliente IN ('PF', 'PJ')),
+    nm_cliente               VARCHAR(150) NOT NULL,
+    nm_razao_social_cliente  VARCHAR(150),                        -- só PJ
+    cd_documento_cliente     VARCHAR(18)  NOT NULL UNIQUE,        -- CPF (PF) ou CNPJ (PJ)
+    nm_email_cliente         VARCHAR(120),
+    cd_telefone_cliente      VARCHAR(20),
+    dt_nascimento_cliente    DATE,                                -- só PF
+    nm_responsavel_cliente   VARCHAR(100),                        -- só PJ
+    cd_cep_cliente           VARCHAR(9),
+    nm_logradouro_cliente    VARCHAR(150),
+    nr_endereco_cliente      VARCHAR(10),
+    ds_complemento_cliente   VARCHAR(60),
+    nm_bairro_cliente        VARCHAR(80),
+    nm_cidade_cliente        VARCHAR(80),
+    sg_uf_cliente            CHAR(2),
+    id_revendedor            BIGINT       REFERENCES revendedor (id_revendedor),  -- no máximo 1 revendedor por cliente
+    fl_status_cliente        VARCHAR(10)  NOT NULL DEFAULT 'Ativo' CHECK (fl_status_cliente IN ('Ativo', 'Inativo')),
+    ds_observacao_cliente    TEXT,
+    dt_criacao_cliente       TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    dt_atualizacao_cliente   TIMESTAMPTZ
 );
-CREATE INDEX ix_cliente_revendedor ON cliente (revendedor_id);
+CREATE INDEX ix_cliente_revendedor ON cliente (id_revendedor);
 
 CREATE TABLE comentario_cliente (
-    id          BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    cliente_id  BIGINT      NOT NULL REFERENCES cliente (id) ON DELETE CASCADE,
-    usuario_id  BIGINT      REFERENCES usuario (id),
-    texto       TEXT        NOT NULL,
-    criado_em   TIMESTAMPTZ NOT NULL DEFAULT now()
+    id_comentario  BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_cliente     BIGINT      NOT NULL REFERENCES cliente (id_cliente) ON DELETE CASCADE,
+    id_usuario     BIGINT      REFERENCES usuario (id_usuario),
+    ds_comentario  TEXT        NOT NULL,
+    dt_comentario  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- ---------------------------------------------------------------------
 -- Vendas: pedido, itens e histórico de status
 -- ---------------------------------------------------------------------
 CREATE TABLE pedido (
-    id                BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    numero            INTEGER       NOT NULL UNIQUE,
-    data              TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    cliente_id        BIGINT        NOT NULL REFERENCES cliente (id),
-    revendedor_id     BIGINT        REFERENCES revendedor (id),
-    vendedor_id       BIGINT        REFERENCES usuario (id),
-    status            VARCHAR(20)   NOT NULL DEFAULT 'Novo'
-                      CHECK (status IN ('Novo', 'Em separação', 'Enviado', 'Entregue', 'Cancelado')),
-    subtotal          NUMERIC(12,2) NOT NULL DEFAULT 0,
-    desconto          NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (desconto >= 0),
-    frete             NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (frete >= 0),
-    total             NUMERIC(12,2) NOT NULL DEFAULT 0,
-    forma_pagamento   VARCHAR(20)   NOT NULL
-                      CHECK (forma_pagamento IN ('Pix', 'Cartão de crédito', 'Cartão de débito', 'Boleto', 'Dinheiro')),
-    parcelas          SMALLINT      NOT NULL DEFAULT 1 CHECK (parcelas BETWEEN 1 AND 24),
-    tipo_entrega      VARCHAR(20)   NOT NULL DEFAULT 'Transportadora' CHECK (tipo_entrega IN ('Transportadora', 'Retirada na loja')),
-    transportadora    VARCHAR(60),
-    endereco_entrega  VARCHAR(250),
-    codigo_rastreio   VARCHAR(40),
-    previsao_entrega  DATE,
-    observacoes       TEXT,
-    criado_em         TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    atualizado_em     TIMESTAMPTZ
+    id_pedido                   BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nr_pedido                   INTEGER       NOT NULL UNIQUE,
+    dt_pedido                   TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    id_cliente                  BIGINT        NOT NULL REFERENCES cliente (id_cliente),
+    id_revendedor               BIGINT        REFERENCES revendedor (id_revendedor),
+    id_usuario_vendedor         BIGINT        REFERENCES usuario (id_usuario),
+    fl_status_pedido            VARCHAR(20)   NOT NULL DEFAULT 'Novo'
+                                CHECK (fl_status_pedido IN ('Novo', 'Em separação', 'Enviado', 'Entregue', 'Cancelado')),
+    vl_subtotal_pedido          NUMERIC(12,2) NOT NULL DEFAULT 0,
+    vl_desconto_pedido          NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (vl_desconto_pedido >= 0),
+    vl_frete_pedido             NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (vl_frete_pedido >= 0),
+    vl_total_pedido             NUMERIC(12,2) NOT NULL DEFAULT 0,
+    tp_forma_pagamento_pedido   VARCHAR(20)   NOT NULL
+                                CHECK (tp_forma_pagamento_pedido IN ('Pix', 'Cartão de crédito', 'Cartão de débito', 'Boleto', 'Dinheiro')),
+    qt_parcelas_pedido          SMALLINT      NOT NULL DEFAULT 1 CHECK (qt_parcelas_pedido BETWEEN 1 AND 24),
+    tp_entrega_pedido           VARCHAR(20)   NOT NULL DEFAULT 'Transportadora'
+                                CHECK (tp_entrega_pedido IN ('Transportadora', 'Retirada na loja')),
+    nm_transportadora_pedido    VARCHAR(60),
+    ds_endereco_entrega_pedido  VARCHAR(250),
+    cd_rastreio_pedido          VARCHAR(40),
+    dt_previsao_entrega_pedido  DATE,
+    ds_observacao_pedido        TEXT,
+    dt_criacao_pedido           TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    dt_atualizacao_pedido       TIMESTAMPTZ
 );
-CREATE INDEX ix_pedido_cliente ON pedido (cliente_id);
-CREATE INDEX ix_pedido_data ON pedido (data);
+CREATE INDEX ix_pedido_cliente ON pedido (id_cliente);
+CREATE INDEX ix_pedido_data ON pedido (dt_pedido);
 
 -- Itens guardam preço e custo do momento da venda (o preço do produto pode mudar depois)
 CREATE TABLE item_pedido (
-    pedido_id       BIGINT        NOT NULL REFERENCES pedido (id) ON DELETE CASCADE,
-    produto_id      BIGINT        NOT NULL REFERENCES produto (id),
-    quantidade      INTEGER       NOT NULL CHECK (quantidade > 0),
-    preco_unitario  NUMERIC(12,2) NOT NULL CHECK (preco_unitario >= 0),
-    custo_unitario  NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (custo_unitario >= 0),
-    PRIMARY KEY (pedido_id, produto_id)
+    id_pedido                BIGINT        NOT NULL REFERENCES pedido (id_pedido) ON DELETE CASCADE,
+    id_produto               BIGINT        NOT NULL REFERENCES produto (id_produto),
+    qt_item_pedido           INTEGER       NOT NULL CHECK (qt_item_pedido > 0),
+    vl_unitario_item_pedido  NUMERIC(12,2) NOT NULL CHECK (vl_unitario_item_pedido >= 0),
+    vl_custo_item_pedido     NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (vl_custo_item_pedido >= 0),
+    PRIMARY KEY (id_pedido, id_produto)
 );
 
 CREATE TABLE historico_pedido (
-    id          BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    pedido_id   BIGINT      NOT NULL REFERENCES pedido (id) ON DELETE CASCADE,
-    status      VARCHAR(20) NOT NULL,
-    usuario_id  BIGINT      REFERENCES usuario (id),
-    observacao  TEXT,
-    data        TIMESTAMPTZ NOT NULL DEFAULT now()
+    id_historico_pedido             BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_pedido                       BIGINT      NOT NULL REFERENCES pedido (id_pedido) ON DELETE CASCADE,
+    fl_status_historico_pedido      VARCHAR(20) NOT NULL,
+    nm_usuario_historico_pedido     VARCHAR(100),                -- nome de quem mudou o status (registro histórico)
+    ds_observacao_historico_pedido  TEXT,
+    dt_historico_pedido             TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- ---------------------------------------------------------------------
 -- Compras de fornecedores
 -- ---------------------------------------------------------------------
 CREATE TABLE compra (
-    id                BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    numero            INTEGER       NOT NULL UNIQUE,
-    fornecedor_id     BIGINT        NOT NULL REFERENCES fornecedor (id),
-    data              TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    nota_fiscal       VARCHAR(30),
-    total             NUMERIC(12,2) NOT NULL DEFAULT 0,
-    status            VARCHAR(10)   NOT NULL DEFAULT 'Pendente' CHECK (status IN ('Pendente', 'Recebida')),
-    data_recebimento  TIMESTAMPTZ,
-    criado_em         TIMESTAMPTZ   NOT NULL DEFAULT now()
+    id_compra              BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nr_compra              INTEGER       NOT NULL UNIQUE,
+    id_fornecedor          BIGINT        NOT NULL REFERENCES fornecedor (id_fornecedor),
+    dt_compra              TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    cd_nota_fiscal_compra  VARCHAR(30),
+    vl_total_compra        NUMERIC(12,2) NOT NULL DEFAULT 0,
+    fl_status_compra       VARCHAR(10)   NOT NULL DEFAULT 'Pendente' CHECK (fl_status_compra IN ('Pendente', 'Recebida')),
+    dt_recebimento_compra  TIMESTAMPTZ,
+    dt_criacao_compra      TIMESTAMPTZ   NOT NULL DEFAULT now()
 );
 
 CREATE TABLE item_compra (
-    compra_id       BIGINT        NOT NULL REFERENCES compra (id) ON DELETE CASCADE,
-    produto_id      BIGINT        NOT NULL REFERENCES produto (id),
-    quantidade      INTEGER       NOT NULL CHECK (quantidade > 0),
-    custo_unitario  NUMERIC(12,2) NOT NULL CHECK (custo_unitario >= 0),
-    PRIMARY KEY (compra_id, produto_id)
+    id_compra             BIGINT        NOT NULL REFERENCES compra (id_compra) ON DELETE CASCADE,
+    id_produto            BIGINT        NOT NULL REFERENCES produto (id_produto),
+    qt_item_compra        INTEGER       NOT NULL CHECK (qt_item_compra > 0),
+    vl_custo_item_compra  NUMERIC(12,2) NOT NULL CHECK (vl_custo_item_compra >= 0),
+    PRIMARY KEY (id_compra, id_produto)
 );
 
 -- ---------------------------------------------------------------------
 -- Estoque: toda entrada, saída ou ajuste vira uma movimentação
 -- ---------------------------------------------------------------------
 CREATE TABLE movimentacao_estoque (
-    id              BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    produto_id      BIGINT      NOT NULL REFERENCES produto (id),
-    tipo            VARCHAR(10) NOT NULL CHECK (tipo IN ('Entrada', 'Saída', 'Ajuste')),
-    quantidade      INTEGER     NOT NULL,                  -- no Ajuste pode ser negativa (diferença)
-    saldo_anterior  INTEGER     NOT NULL,
-    saldo_atual     INTEGER     NOT NULL,
-    motivo          VARCHAR(120),
-    referencia      VARCHAR(60),                           -- ex.: "Pedido #1023", "Compra #512"
-    pedido_id       BIGINT      REFERENCES pedido (id),
-    compra_id       BIGINT      REFERENCES compra (id),
-    usuario_id      BIGINT      REFERENCES usuario (id),
-    data            TIMESTAMPTZ NOT NULL DEFAULT now()
+    id_movimentacao                 BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_produto                      BIGINT      NOT NULL REFERENCES produto (id_produto),
+    tp_movimentacao                 VARCHAR(10) NOT NULL CHECK (tp_movimentacao IN ('Entrada', 'Saída', 'Ajuste')),
+    qt_movimentacao                 INTEGER     NOT NULL,        -- no Ajuste pode ser negativa (diferença)
+    qt_saldo_anterior_movimentacao  INTEGER     NOT NULL,
+    qt_saldo_atual_movimentacao     INTEGER     NOT NULL,
+    ds_motivo_movimentacao          VARCHAR(120),
+    ds_referencia_movimentacao      VARCHAR(60),                 -- ex.: "Pedido #1023", "Compra #512"
+    id_usuario                      BIGINT      REFERENCES usuario (id_usuario),
+    dt_movimentacao                 TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-CREATE INDEX ix_movimentacao_produto ON movimentacao_estoque (produto_id, data);
+CREATE INDEX ix_movimentacao_produto ON movimentacao_estoque (id_produto, dt_movimentacao);
 
 -- ---------------------------------------------------------------------
 -- Financeiro: contas a receber (Receita) e a pagar (Despesa)
 -- ---------------------------------------------------------------------
 CREATE TABLE lancamento (
-    id               BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    tipo             VARCHAR(10)   NOT NULL CHECK (tipo IN ('Receita', 'Despesa')),
-    descricao        VARCHAR(200)  NOT NULL,
-    categoria        VARCHAR(60)   NOT NULL,
-    valor            NUMERIC(12,2) NOT NULL CHECK (valor > 0),
-    vencimento       DATE          NOT NULL,
-    data_pagamento   DATE,                                 -- NULL = em aberto
-    forma_pagamento  VARCHAR(20),
-    pedido_id        BIGINT        UNIQUE REFERENCES pedido (id),  -- receita gerada por um pedido (1:1)
-    compra_id        BIGINT        UNIQUE REFERENCES compra (id),  -- despesa gerada por uma compra (1:1)
-    status           VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Cancelado')),
-    criado_em        TIMESTAMPTZ   NOT NULL DEFAULT now(),
-    atualizado_em    TIMESTAMPTZ,
-    CHECK (NOT (pedido_id IS NOT NULL AND compra_id IS NOT NULL))
+    id_lancamento                  BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tp_lancamento                  VARCHAR(10)   NOT NULL CHECK (tp_lancamento IN ('Receita', 'Despesa')),
+    ds_lancamento                  VARCHAR(200)  NOT NULL,
+    nm_categoria_lancamento        VARCHAR(60)   NOT NULL,
+    vl_lancamento                  NUMERIC(12,2) NOT NULL CHECK (vl_lancamento > 0),
+    dt_vencimento_lancamento       DATE          NOT NULL,
+    dt_pagamento_lancamento        DATE,                          -- NULL = em aberto
+    tp_forma_pagamento_lancamento  VARCHAR(20),
+    id_pedido                      BIGINT        UNIQUE REFERENCES pedido (id_pedido),  -- receita gerada por um pedido (1:1)
+    id_compra                      BIGINT        UNIQUE REFERENCES compra (id_compra),  -- despesa gerada por uma compra (1:1)
+    fl_status_lancamento           VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (fl_status_lancamento IN ('Ativo', 'Cancelado')),
+    dt_criacao_lancamento          TIMESTAMPTZ   NOT NULL DEFAULT now(),
+    dt_atualizacao_lancamento      TIMESTAMPTZ,
+    CHECK (NOT (id_pedido IS NOT NULL AND id_compra IS NOT NULL))
 );
-CREATE INDEX ix_lancamento_vencimento ON lancamento (vencimento);
+CREATE INDEX ix_lancamento_vencimento ON lancamento (dt_vencimento_lancamento);
 
 -- ---------------------------------------------------------------------
 -- Log de atividades (alimenta "Atividades recentes" no Início)
 -- ---------------------------------------------------------------------
 CREATE TABLE atividade (
-    id          BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    tipo        VARCHAR(20)  NOT NULL,
-    texto       VARCHAR(250) NOT NULL,
-    link        VARCHAR(150),
-    usuario_id  BIGINT       REFERENCES usuario (id),
-    data        TIMESTAMPTZ  NOT NULL DEFAULT now()
+    id_atividade       BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tp_atividade       VARCHAR(20)  NOT NULL,
+    ds_atividade       VARCHAR(250) NOT NULL,
+    ds_link_atividade  VARCHAR(150),
+    id_usuario         BIGINT       REFERENCES usuario (id_usuario),
+    dt_atividade       TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
-CREATE INDEX ix_atividade_data ON atividade (data DESC);
+CREATE INDEX ix_atividade_data ON atividade (dt_atividade DESC);

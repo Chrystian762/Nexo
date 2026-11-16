@@ -1,258 +1,72 @@
 # Banco de dados do Nexo ERP
 
 Banco: **PostgreSQL**. API: **Java com Spring Boot** (pasta `api/`).
-O esquema real fica em `api/src/main/resources/db/migration/V1__esquema_inicial.sql` (modelo físico) e é criado pelo Flyway quando a API sobe.
 
-Os diagramas abaixo são desenhados pelo GitHub (Mermaid). Para a apresentação, dá para refazer os dois no brModelo seguindo exatamente estas entidades e cardinalidades.
+| Modelo | Arquivo |
+|---|---|
+| Conceitual (brModelo) | [`brmodelo/nexo-modelo-conceitual.brM3`](brmodelo/nexo-modelo-conceitual.brM3) |
+| Lógico (brModelo) | [`brmodelo/nexo-modelo-logico.brM3`](brmodelo/nexo-modelo-logico.brM3) |
+| Físico (SQL) | [`../api/src/main/resources/db/migration/V1__esquema_inicial.sql`](../api/src/main/resources/db/migration/V1__esquema_inicial.sql) |
+
+Os `.brM3` abrem no **brModelo 3.3** (Arquivo > Abrir). O lógico é gerado a partir do SQL, então os três modelos sempre batem. Para regenerar depois de mudar o banco, ver [`brmodelo/gerador/README.md`](brmodelo/gerador/README.md).
 
 ---
 
 ## 1. Modelo conceitual
 
-Entidades (retângulos), relacionamentos (losangos) e cardinalidades (mínima, máxima).
+![Modelo conceitual](brmodelo/nexo-modelo-conceitual.png)
 
-```mermaid
-flowchart LR
-    CATEGORIA[CATEGORIA]
-    MARCA[MARCA]
-    FORNECEDOR[FORNECEDOR]
-    PRODUTO[PRODUTO]
-    REVENDEDOR[REVENDEDOR]
-    CLIENTE[CLIENTE]
-    PEDIDO[PEDIDO]
-    COMPRA[COMPRA]
-    MOV[MOVIMENTAÇÃO DE ESTOQUE]
-    LANC[LANÇAMENTO FINANCEIRO]
-    USUARIO[USUÁRIO]
+17 entidades e 19 relacionamentos. Atributo com círculo preenchido é identificador.
 
-    CATEGORIA ---|"(1,1)"| r1{classifica} ---|"(0,n)"| PRODUTO
-    MARCA ---|"(1,1)"| r2{identifica} ---|"(0,n)"| PRODUTO
-    FORNECEDOR ---|"(0,1)"| r3{fornece} ---|"(0,n)"| PRODUTO
-    FORNECEDOR ---|"(0,n)"| r4{trabalha com} ---|"(1,n)"| MARCA
-    REVENDEDOR ---|"(0,1)"| r5{atende} ---|"(0,n)"| CLIENTE
-    CLIENTE ---|"(1,1)"| r6{faz} ---|"(0,n)"| PEDIDO
-    REVENDEDOR ---|"(0,1)"| r7{intermedia} ---|"(0,n)"| PEDIDO
-    USUARIO ---|"(0,1)"| r8{vende} ---|"(0,n)"| PEDIDO
-    PEDIDO ---|"(0,n)"| r9{contém<br/>qtd, preço, custo} ---|"(1,n)"| PRODUTO
-    FORNECEDOR ---|"(1,1)"| r10{recebe} ---|"(0,n)"| COMPRA
-    COMPRA ---|"(0,n)"| r11{inclui<br/>qtd, custo} ---|"(1,n)"| PRODUTO
-    PRODUTO ---|"(1,1)"| r12{movimenta} ---|"(0,n)"| MOV
-    PEDIDO ---|"(0,1)"| r13{gera receita} ---|"(0,1)"| LANC
-    COMPRA ---|"(0,1)"| r14{gera despesa} ---|"(0,1)"| LANC
-```
+Leitura das principais regras (a cardinalidade fica junto da entidade a que se refere):
 
-Leitura das principais regras:
-
-- Um **cliente** tem no máximo 1 revendedor; um **revendedor** atende vários clientes (1:N).
-- **Pedido** e **produto** são N:N, resolvido pela entidade associativa **item do pedido** (quantidade, preço e custo do momento da venda).
-- **Compra** e **produto** também são N:N, resolvido por **item da compra**.
-- Fornecedor e marca são N:N (um fornecedor vende várias marcas e uma marca pode vir de vários fornecedores).
-- Cada pedido gera 1 lançamento de receita; cada compra gera 1 lançamento de despesa. Existem lançamentos avulsos (aluguel, salários).
-- Toda venda, compra recebida ou ajuste vira uma **movimentação de estoque**, com saldo anterior e atual (rastreabilidade).
-
-Entidades de apoio (fora do diagrama para não poluir): EMPRESA (uma linha), CONFIGURAÇÃO, PERMISSÃO DO PERFIL, COMENTÁRIO DO CLIENTE, HISTÓRICO DO PEDIDO e ATIVIDADE (log).
-
----
+- Um **cliente** tem no máximo 1 revendedor; um **revendedor** atende vários clientes (1:N, relacionamento *atende*).
+- **Pedido** e **produto** são N:N pelo relacionamento *contém*, com os atributos quantidade, preço unitário e custo do momento da venda.
+- **Compra** e **produto** são N:N pelo relacionamento *inclui*, com quantidade e custo.
+- **Fornecedor** e **marca** são N:N (*trabalha com*).
+- Cada pedido gera no máximo 1 lançamento de receita (*gera receita*) e cada compra gera no máximo 1 lançamento de despesa (*gera despesa*). Há lançamentos avulsos (aluguel, salários).
+- Toda entrada, saída ou ajuste de estoque vira uma **movimentação** do produto (*movimenta*), feita por um usuário (*opera*).
+- **Usuário** vende pedidos, escreve comentários de cliente e realiza atividades (log).
+- **Empresa**, **configuração** e **permissão do perfil** são entidades isoladas (dados do sistema).
 
 ## 2. Modelo lógico
 
-PK = chave primária, FK = chave estrangeira, UK = valor único. Endereço aparece como colunas (cep, logradouro, numero, complemento, bairro, cidade, uf) nas tabelas que têm endereço.
+![Modelo lógico](brmodelo/nexo-modelo-logico.png)
 
-```mermaid
-erDiagram
-    CATEGORIA ||--o{ PRODUTO : classifica
-    MARCA ||--o{ PRODUTO : identifica
-    FORNECEDOR |o--o{ PRODUTO : fornece
-    FORNECEDOR ||--o{ FORNECEDOR_MARCA : ""
-    MARCA ||--o{ FORNECEDOR_MARCA : ""
-    REVENDEDOR |o--o{ CLIENTE : atende
-    CLIENTE ||--o{ COMENTARIO_CLIENTE : tem
-    CLIENTE ||--o{ PEDIDO : faz
-    REVENDEDOR |o--o{ PEDIDO : intermedia
-    USUARIO |o--o{ PEDIDO : vende
-    PEDIDO ||--|{ ITEM_PEDIDO : contem
-    PRODUTO ||--o{ ITEM_PEDIDO : ""
-    PEDIDO ||--o{ HISTORICO_PEDIDO : registra
-    FORNECEDOR ||--o{ COMPRA : recebe
-    COMPRA ||--|{ ITEM_COMPRA : inclui
-    PRODUTO ||--o{ ITEM_COMPRA : ""
-    PRODUTO ||--o{ MOVIMENTACAO_ESTOQUE : movimenta
-    PEDIDO |o--o| LANCAMENTO : "gera receita"
-    COMPRA |o--o| LANCAMENTO : "gera despesa"
-    USUARIO |o--o{ ATIVIDADE : registra
-
-    CATEGORIA {
-        bigint id PK
-        varchar nome UK
-        varchar icone
-    }
-    MARCA {
-        bigint id PK
-        varchar nome UK
-    }
-    FORNECEDOR {
-        bigint id PK
-        varchar razao_social
-        varchar nome_fantasia
-        varchar cnpj UK
-        varchar contato
-        varchar email
-        varchar telefone
-        int prazo_entrega_dias
-        varchar condicao_pagamento
-        varchar status
-    }
-    FORNECEDOR_MARCA {
-        bigint fornecedor_id PK,FK
-        bigint marca_id PK,FK
-    }
-    PRODUTO {
-        bigint id PK
-        varchar sku UK
-        varchar codigo_barras UK
-        varchar nome
-        bigint categoria_id FK
-        bigint marca_id FK
-        bigint fornecedor_id FK
-        varchar volume
-        numeric preco
-        numeric custo
-        int estoque
-        int estoque_minimo
-        date validade
-        varchar lote
-        varchar status
-    }
-    REVENDEDOR {
-        bigint id PK
-        varchar nome
-        varchar documento UK
-        varchar email
-        varchar telefone
-        numeric desconto_pct
-        numeric comissao_pct
-        varchar condicao_pagamento
-        numeric limite_credito
-        varchar status
-    }
-    CLIENTE {
-        bigint id PK
-        char tipo "PF ou PJ"
-        varchar nome
-        varchar razao_social
-        varchar documento UK
-        varchar email
-        varchar telefone
-        date data_nascimento
-        varchar responsavel
-        bigint revendedor_id FK
-        varchar status
-    }
-    COMENTARIO_CLIENTE {
-        bigint id PK
-        bigint cliente_id FK
-        bigint usuario_id FK
-        text texto
-        timestamptz criado_em
-    }
-    USUARIO {
-        bigint id PK
-        varchar nome
-        varchar email UK
-        varchar senha_hash
-        varchar perfil
-        boolean ativo
-    }
-    PEDIDO {
-        bigint id PK
-        int numero UK
-        timestamptz data
-        bigint cliente_id FK
-        bigint revendedor_id FK
-        bigint vendedor_id FK
-        varchar status
-        numeric subtotal
-        numeric desconto
-        numeric frete
-        numeric total
-        varchar forma_pagamento
-        smallint parcelas
-        varchar tipo_entrega
-        varchar codigo_rastreio
-    }
-    ITEM_PEDIDO {
-        bigint pedido_id PK,FK
-        bigint produto_id PK,FK
-        int quantidade
-        numeric preco_unitario
-        numeric custo_unitario
-    }
-    HISTORICO_PEDIDO {
-        bigint id PK
-        bigint pedido_id FK
-        varchar status
-        bigint usuario_id FK
-        timestamptz data
-    }
-    COMPRA {
-        bigint id PK
-        int numero UK
-        bigint fornecedor_id FK
-        timestamptz data
-        varchar nota_fiscal
-        numeric total
-        varchar status
-    }
-    ITEM_COMPRA {
-        bigint compra_id PK,FK
-        bigint produto_id PK,FK
-        int quantidade
-        numeric custo_unitario
-    }
-    MOVIMENTACAO_ESTOQUE {
-        bigint id PK
-        bigint produto_id FK
-        varchar tipo
-        int quantidade
-        int saldo_anterior
-        int saldo_atual
-        varchar motivo
-        bigint usuario_id FK
-        timestamptz data
-    }
-    LANCAMENTO {
-        bigint id PK
-        varchar tipo "Receita ou Despesa"
-        varchar descricao
-        varchar categoria
-        numeric valor
-        date vencimento
-        date data_pagamento
-        bigint pedido_id FK,UK
-        bigint compra_id FK,UK
-        varchar status
-    }
-    ATIVIDADE {
-        bigint id PK
-        varchar tipo
-        varchar texto
-        bigint usuario_id FK
-        timestamptz data
-    }
-```
-
-Tabelas de apoio sem relacionamento no diagrama: `empresa` (uma linha só), `configuracao` (chave e valor JSON) e `permissao_perfil` (perfil, módulo).
+20 tabelas, 200 colunas e 22 chaves estrangeiras. As N:N viraram as tabelas associativas `fornecedor_marca`, `item_compra` e `item_pedido`, com chave primária composta.
 
 ---
 
-## 3. Decisões de modelagem
+## 3. Padrão de nomes (mnemônicos)
+
+Tabelas no singular. Colunas com prefixo mnemônico e sufixo com o nome da tabela (ex.: `nm_produto`, `vl_preco_produto`). A chave estrangeira mantém o nome da chave primária de origem (ex.: `produto.id_categoria`).
+
+| Prefixo | Significado | Exemplo |
+|---|---|---|
+| `id_` | identificador (chave) | `id_produto` |
+| `cd_` | código ou documento | `cd_sku_produto`, `cd_cnpj_fornecedor`, `cd_cep_cliente` |
+| `nm_` | nome ou texto curto | `nm_cliente`, `nm_email_usuario` |
+| `ds_` | descrição ou texto longo | `ds_observacao_pedido` |
+| `nr_` | número | `nr_pedido`, `nr_endereco_cliente` |
+| `sg_` | sigla | `sg_uf_cliente`, `sg_tipo_pessoa_cliente` |
+| `vl_` | valor em reais | `vl_preco_produto` |
+| `pc_` | percentual | `pc_desconto_revendedor` |
+| `qt_` | quantidade | `qt_estoque_produto` |
+| `dt_` | data ou data e hora | `dt_pedido` |
+| `tp_` | tipo (lista fechada) | `tp_movimentacao`, `tp_forma_pagamento_pedido` |
+| `fl_` | situação ou flag | `fl_status_pedido`, `fl_ativo_usuario` |
+
+## 4. Decisões de modelagem
 
 | Decisão | Motivo |
 |---|---|
-| Categoria e marca viraram tabelas | Evita "Shampoo" e "shampoo" como categorias diferentes e permite filtrar e agrupar nos relatórios |
-| Cliente com no máximo 1 revendedor (FK em `cliente`) | É como o sistema funciona hoje: na tela de cliente se escolhe um revendedor ou nenhum |
+| Categoria e marca viraram tabelas | Evita "Shampoo" e "shampoo" como categorias diferentes e permite agrupar nos relatórios |
+| Cliente com no máximo 1 revendedor (FK `cliente.id_revendedor`) | É como o sistema funciona: na tela de cliente se escolhe um revendedor ou nenhum |
 | Produto ligado ao pedido, não direto ao revendedor | O revendedor vende produtos por meio dos pedidos; a ligação direta duplicaria informação |
 | Preço e custo copiados no item do pedido | O preço do produto muda; o pedido antigo precisa manter o valor da venda |
-| Estoque atual em `produto.estoque` e histórico em `movimentacao_estoque` | Consulta rápida do saldo e rastreio de cada entrada e saída |
-| Senha guardada como hash BCrypt | Hoje a senha fica em texto puro no navegador |
+| Estoque atual em `produto.qt_estoque_produto` e histórico em `movimentacao_estoque` | Consulta rápida do saldo e rastreio de cada entrada e saída |
+| Movimentação guarda a origem como texto (`ds_referencia_movimentacao`, ex.: "Pedido #1023") | É o que o sistema já faz e evita duas chaves estrangeiras opcionais |
+| Histórico do pedido guarda o nome de quem mudou o status | Registro histórico: continua certo mesmo se o usuário for renomeado ou desativado |
+| Endereço em colunas na própria tabela | Cada cliente, revendedor, fornecedor e a empresa têm um endereço só |
+| Senha guardada como hash BCrypt (`ds_senha_hash_usuario`) | Hoje a senha fica em texto puro no navegador |
 | Revendedores fora de `permissao_perfil` | Regra do grupo: o módulo é exclusivo do Administrador |
