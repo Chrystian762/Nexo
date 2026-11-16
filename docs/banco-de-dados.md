@@ -16,7 +16,7 @@ Os `.brM3` abrem no **brModelo 3.3** (Arquivo > Abrir). O lógico é gerado a pa
 
 ![Modelo conceitual](brmodelo/nexo-modelo-conceitual.png)
 
-17 entidades e 18 relacionamentos. Atributo com círculo preenchido é identificador.
+18 entidades e 19 relacionamentos. Atributo com círculo preenchido é identificador.
 
 Leitura das principais regras (a cardinalidade fica junto da entidade a que se refere):
 
@@ -27,7 +27,8 @@ Leitura das principais regras (a cardinalidade fica junto da entidade a que se r
 - **Compra** e **produto** são N:N pelo relacionamento *inclui*, com quantidade e custo.
 - **Fornecedor** e **marca** são N:N (*trabalha com*).
 - Cada pedido gera no máximo 1 lançamento de receita (*gera receita*) e cada compra gera no máximo 1 lançamento de despesa (*gera despesa*). Há lançamentos avulsos (aluguel, salários).
-- Toda entrada, saída ou ajuste de estoque vira uma **movimentação** do produto (*movimenta*), feita por um usuário (*opera*).
+- Cada **produto** tem vários **lotes** (*possui*), cada um com código, fabricação, validade e saldo próprios.
+- Toda entrada, saída ou ajuste de estoque vira uma **movimentação** de um lote (*afeta*), feita por um usuário (*opera*). A venda baixa primeiro o lote que vence antes (FEFO).
 - **Usuário** realiza atividades (log) e opera movimentações de estoque.
 - **Empresa**, **configuração** e **permissão do perfil** são entidades isoladas (dados do sistema).
 
@@ -35,7 +36,7 @@ Leitura das principais regras (a cardinalidade fica junto da entidade a que se r
 
 ![Modelo lógico](brmodelo/nexo-modelo-logico.png)
 
-20 tabelas, 200 colunas e 21 chaves estrangeiras. As N:N viraram as tabelas associativas `fornecedor_marca`, `item_compra` e `item_pedido`, com chave primária composta.
+21 tabelas, 206 colunas e 22 chaves estrangeiras. As N:N viraram as tabelas associativas `fornecedor_marca`, `item_compra` e `item_pedido`, com chave primária composta.
 
 ---
 
@@ -71,7 +72,9 @@ Tabelas no singular. Colunas com prefixo mnemônico e sufixo com o nome da tabel
 | Sem herança (especialização) entre produto, revendedor e cliente | Herança vale para "é um tipo de"; aqui é dependência de existência, que as cardinalidades já mostram |
 | Produto ligado ao pedido, não direto ao revendedor | O revendedor vende produtos por meio dos pedidos; a ligação direta duplicaria informação |
 | Preço e custo copiados no item do pedido | O preço do produto muda; o pedido antigo precisa manter o valor da venda |
-| Estoque atual em `produto.qt_estoque_produto` e histórico em `movimentacao_estoque` | Consulta rápida do saldo e rastreio de cada entrada e saída |
+| Estoque por lote (`lote.qt_saldo_lote`) e total em `produto.qt_estoque_produto` | Validade e rastreio por lote; o total no produto evita somar os lotes a cada tela |
+| Movimentação aponta o lote, não o produto | O produto já vem do lote; guardar os dois seria redundante |
+| Baixa FEFO (vence primeiro, sai primeiro) e bloqueio sem saldo em lote válido | Evita vender produto vencido e perda por validade |
 | Movimentação guarda a origem como texto (`ds_referencia_movimentacao`, ex.: "Pedido #1023") | É o que o sistema já faz e evita duas chaves estrangeiras opcionais |
 | Histórico do pedido guarda o nome de quem mudou o status | Registro histórico: continua certo mesmo se o usuário for renomeado ou desativado |
 | Endereço em colunas na própria tabela | Cada cliente, revendedor, fornecedor e a empresa têm um endereço só |

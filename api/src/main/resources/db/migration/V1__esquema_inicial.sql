@@ -103,10 +103,8 @@ CREATE TABLE produto (
     ds_volume_produto          VARCHAR(20),
     vl_preco_produto           NUMERIC(12,2) NOT NULL CHECK (vl_preco_produto >= 0),
     vl_custo_produto           NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (vl_custo_produto >= 0),
-    qt_estoque_produto         INTEGER       NOT NULL DEFAULT 0,
+    qt_estoque_produto         INTEGER       NOT NULL DEFAULT 0,   -- soma dos saldos dos lotes (atualizada a cada movimentação)
     qt_estoque_minimo_produto  INTEGER       NOT NULL DEFAULT 0 CHECK (qt_estoque_minimo_produto >= 0),
-    dt_validade_produto        DATE,
-    cd_lote_produto            VARCHAR(20),
     fl_status_produto          VARCHAR(10)   NOT NULL DEFAULT 'Ativo' CHECK (fl_status_produto IN ('Ativo', 'Inativo')),
     dt_criacao_produto         TIMESTAMPTZ   NOT NULL DEFAULT now(),
     dt_atualizacao_produto     TIMESTAMPTZ
@@ -277,21 +275,40 @@ CREATE TABLE item_compra (
 );
 
 -- ---------------------------------------------------------------------
+-- Lotes: cada entrada de mercadoria forma um lote com validade e saldo próprios.
+-- A venda baixa primeiro o lote que vence antes (FEFO) e o pedido é bloqueado
+-- quando a soma dos lotes válidos não cobre a quantidade.
+-- ---------------------------------------------------------------------
+CREATE TABLE lote (
+    id_lote               BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id_produto            BIGINT      NOT NULL REFERENCES produto (id_produto),
+    cd_lote               VARCHAR(30) NOT NULL,                  -- código impresso pelo fabricante
+    dt_fabricacao_lote    DATE,
+    dt_validade_lote      DATE        NOT NULL,
+    qt_inicial_lote       INTEGER     NOT NULL CHECK (qt_inicial_lote > 0),
+    qt_saldo_lote         INTEGER     NOT NULL CHECK (qt_saldo_lote >= 0),
+    dt_entrada_lote       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (id_produto, cd_lote),
+    CHECK (qt_saldo_lote <= qt_inicial_lote)
+);
+CREATE INDEX ix_lote_validade ON lote (id_produto, dt_validade_lote);
+
+-- ---------------------------------------------------------------------
 -- Estoque: toda entrada, saída ou ajuste vira uma movimentação
 -- ---------------------------------------------------------------------
 CREATE TABLE movimentacao_estoque (
     id_movimentacao                 BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_produto                      BIGINT      NOT NULL REFERENCES produto (id_produto),
     tp_movimentacao                 VARCHAR(10) NOT NULL CHECK (tp_movimentacao IN ('Entrada', 'Saída', 'Ajuste')),
     qt_movimentacao                 INTEGER     NOT NULL,        -- no Ajuste pode ser negativa (diferença)
     qt_saldo_anterior_movimentacao  INTEGER     NOT NULL,
     qt_saldo_atual_movimentacao     INTEGER     NOT NULL,
     ds_motivo_movimentacao          VARCHAR(120),
     ds_referencia_movimentacao      VARCHAR(60),                 -- ex.: "Pedido #1023", "Compra #512"
+    id_lote                         BIGINT      NOT NULL REFERENCES lote (id_lote),  -- lote movimentado (o produto vem do lote)
     id_usuario                      BIGINT      REFERENCES usuario (id_usuario),
     dt_movimentacao                 TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-CREATE INDEX ix_movimentacao_produto ON movimentacao_estoque (id_produto, dt_movimentacao);
+CREATE INDEX ix_movimentacao_lote ON movimentacao_estoque (id_lote, dt_movimentacao);
 
 -- ---------------------------------------------------------------------
 -- Financeiro: contas a receber (Receita) e a pagar (Despesa)

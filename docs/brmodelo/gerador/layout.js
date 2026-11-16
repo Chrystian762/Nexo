@@ -13,13 +13,15 @@ module.exports = { "entidades": [
   },
   { "nome": "LANCAMENTO", "x": 2440, "y": 40, "extra": 30, "attrs": [ "*id_lancamento", "tp_lancamento", "ds_lancamento", "nm_categoria_lancamento", "vl_lancamento", "dt_vencimento_lancamento", "dt_pagamento_lancamento", "tp_forma_pagamento_lancamento", "fl_status_lancamento" ]
   },
-  { "nome": "PRODUTO", "x": 1160, "y": 640, "extra": 60, "attrs": [ "*id_produto", "cd_sku_produto", "cd_barras_produto", "nm_produto", "ds_produto", "ds_volume_produto", "vl_preco_produto", "vl_custo_produto", "qt_estoque_produto", "qt_estoque_minimo_produto", "dt_validade_produto", "cd_lote_produto", "fl_status_produto" ]
+  { "nome": "PRODUTO", "x": 1160, "y": 640, "extra": 60, "attrs": [ "*id_produto", "cd_sku_produto", "cd_barras_produto", "nm_produto", "ds_produto", "ds_volume_produto", "vl_preco_produto", "vl_custo_produto", "qt_estoque_produto", "qt_estoque_minimo_produto", "fl_status_produto" ]
   },
   { "nome": "PEDIDO", "x": 2440, "y": 640, "extra": 40, "attrs": [ "*id_pedido", "nr_pedido", "dt_pedido", "fl_status_pedido", "vl_subtotal_pedido", "vl_desconto_pedido", "vl_frete_pedido", "vl_total_pedido", "tp_forma_pagamento_pedido", "qt_parcelas_pedido", "tp_entrega_pedido", "nm_transportadora_pedido", "ds_endereco_entrega_pedido", "cd_rastreio_pedido", "dt_previsao_entrega_pedido", "ds_observacao_pedido" ]
   },
   { "nome": "HISTORICO_PEDIDO", "x": 3080, "y": 640, "extra": 0, "attrs": [ "*id_historico_pedido", "fl_status_historico_pedido", "nm_usuario_historico_pedido", "ds_observacao_historico_pedido", "dt_historico_pedido" ]
   },
-  { "nome": "MOVIMENTACAO_ESTOQUE", "x": 700, "y": 1150, "extra": 40, "attrs": [ "*id_movimentacao", "tp_movimentacao", "qt_movimentacao", "qt_saldo_anterior_movimentacao", "qt_saldo_atual_movimentacao", "ds_motivo_movimentacao", "ds_referencia_movimentacao", "dt_movimentacao" ]
+  { "nome": "MOVIMENTACAO_ESTOQUE", "x": 40, "y": 1150, "extra": 40, "attrs": [ "*id_movimentacao", "tp_movimentacao", "qt_movimentacao", "qt_saldo_anterior_movimentacao", "qt_saldo_atual_movimentacao", "ds_motivo_movimentacao", "ds_referencia_movimentacao", "dt_movimentacao" ]
+  },
+  { "nome": "LOTE", "x": 700, "y": 1150, "extra": 60, "attrs": [ "*id_lote", "cd_lote", "dt_fabricacao_lote", "dt_validade_lote", "qt_inicial_lote", "qt_saldo_lote", "dt_entrada_lote" ]
   },
   { "nome": "USUARIO", "x": 1800, "y": 1400, "extra": 40, "attrs": [ "*id_usuario", "nm_usuario", "nm_email_usuario", "ds_senha_hash_usuario", "nm_perfil_usuario", "fl_ativo_usuario", "dt_ultimo_acesso_usuario" ]
   },
@@ -31,11 +33,11 @@ module.exports = { "entidades": [
   },
   { "nome": "ATIVIDADE", "x": 1160, "y": 1700, "extra": 0, "attrs": [ "*id_atividade", "tp_atividade", "ds_atividade", "ds_link_atividade", "dt_atividade" ]
   },
-  { "nome": "EMPRESA", "x": 40, "y": 1500, "extra": 0, "attrs": [ "*id_empresa", "nm_razao_social_empresa", "nm_fantasia_empresa", "cd_cnpj_empresa", "cd_inscricao_estadual_empresa", "cd_inscricao_municipal_empresa", "nm_regime_tributario_empresa", "ds_cnae_empresa", "dt_abertura_empresa", "nm_email_empresa", "nm_email_financeiro_empresa", "cd_telefone_empresa", "cd_whatsapp_empresa", "nm_site_empresa", "nm_responsavel_empresa", "cd_cep_empresa", "nm_logradouro_empresa", "nr_endereco_empresa", "ds_complemento_empresa", "nm_bairro_empresa", "nm_cidade_empresa", "sg_uf_empresa" ]
+  { "nome": "EMPRESA", "x": 40, "y": 1800, "extra": 0, "attrs": [ "*id_empresa", "nm_razao_social_empresa", "nm_fantasia_empresa", "cd_cnpj_empresa", "cd_inscricao_estadual_empresa", "cd_inscricao_municipal_empresa", "nm_regime_tributario_empresa", "ds_cnae_empresa", "dt_abertura_empresa", "nm_email_empresa", "nm_email_financeiro_empresa", "cd_telefone_empresa", "cd_whatsapp_empresa", "nm_site_empresa", "nm_responsavel_empresa", "cd_cep_empresa", "nm_logradouro_empresa", "nr_endereco_empresa", "ds_complemento_empresa", "nm_bairro_empresa", "nm_cidade_empresa", "sg_uf_empresa" ]
   },
-  { "nome": "CONFIGURACAO", "x": 600, "y": 1500, "extra": 0, "attrs": [ "*nm_chave_configuracao", "ds_valor_configuracao" ]
+  { "nome": "CONFIGURACAO", "x": 600, "y": 1800, "extra": 0, "attrs": [ "*nm_chave_configuracao", "ds_valor_configuracao" ]
   },
-  { "nome": "PERMISSAO_PERFIL", "x": 600, "y": 1650, "extra": 0, "attrs": [ "*nm_perfil_permissao", "*nm_modulo_permissao" ]
+  { "nome": "PERMISSAO_PERFIL", "x": 600, "y": 1950, "extra": 0, "attrs": [ "*nm_perfil_permissao", "*nm_modulo_permissao" ]
   } ], "relacionamentos": [
   { "nome": "classifica", "x": 300, "y": 775, "ligs": [
     [ "CATEGORIA", "B", 0.5, "L", "11" ],
@@ -73,10 +75,6 @@ module.exports = { "entidades": [
     [ "PRODUTO", "B", 0.8, "L", "1n" ],
     [ "PEDIDO", "L", 0.93, "T", "0n" ] ]
   },
-  { "nome": "movimenta", "x": 700, "y": 1000, "ligs": [
-    [ "PRODUTO", "B", 0.2, "R", "11" ],
-    [ "MOVIMENTACAO_ESTOQUE", "T", 0.5, "B", "0n" ] ]
-  },
   { "nome": "registra", "x": 2880, "y": 949, "ligs": [
     [ "PEDIDO", "R", 0.97, "L", "11" ],
     [ "HISTORICO_PEDIDO", "B", 0.5, "R", "1n" ] ]
@@ -88,10 +86,6 @@ module.exports = { "entidades": [
   { "nome": "realiza", "x": 1450, "y": 1466, "ligs": [
     [ "USUARIO", "L", 0.5, "R", "01" ],
     [ "ATIVIDADE", "T", 0.5, "L", "0n" ] ]
-  },
-  { "nome": "opera", "x": 1300, "y": 1300, "ligs": [
-    [ "MOVIMENTACAO_ESTOQUE", "R", 0.9, "L", "0n" ],
-    [ "USUARIO", "L", 0.2, "R", "01" ] ]
   },
   { "nome": "solicita", "x": 2440, "y": 1200, "ligs": [
     [ "CLIENTE", "T", 0.5, "B", "11" ],
@@ -108,6 +102,18 @@ module.exports = { "entidades": [
   { "nome": "acessa", "x": 1800, "y": 2150, "ligs": [
     [ "USUARIO", "B", 0.5, "T", "01" ],
     [ "REVENDEDOR", "B", 0.5, "R", "01" ] ]
-  } ], "escalaLogico": [ 1, 1.3 ], "ajusteTabelas": { "categoria": [ 0, 500 ], "fornecedor_marca": [ -150, 0 ], "usuario": [ 1280, 840 ], "comentario_cliente": [ 0, 240 ]
+  },
+  { "nome": "possui", "x": 700, "y": 1000, "ligs": [
+    [ "PRODUTO", "B", 0.2, "R", "11" ],
+    [ "LOTE", "T", 0.5, "B", "0n" ] ]
+  },
+  { "nome": "afeta", "x": 500, "y": 1305, "ligs": [
+    [ "LOTE", "L", 0.89, "R", "11" ],
+    [ "MOVIMENTACAO_ESTOQUE", "R", 0.9, "L", "0n" ] ]
+  },
+  { "nome": "opera", "x": 40, "y": 1450, "ligs": [
+    [ "MOVIMENTACAO_ESTOQUE", "B", 0.5, "T", "0n" ],
+    [ "USUARIO", "L", 0.2, "R", "01" ] ]
+  } ], "escalaLogico": [ 1, 1.3 ], "ajusteTabelas": { "categoria": [ 0, 500 ], "fornecedor_marca": [ -150, 0 ], "usuario": [ 1280, 840 ], "comentario_cliente": [ 0, 240 ], "lote": [ 0, -260 ]
  }
 };
