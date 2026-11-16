@@ -48,32 +48,6 @@ CREATE TABLE configuracao (
 );
 
 -- ---------------------------------------------------------------------
--- Usuários e permissões
--- ---------------------------------------------------------------------
-CREATE TABLE usuario (
-    id_usuario                BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nm_usuario                VARCHAR(100) NOT NULL,
-    nm_email_usuario          VARCHAR(120) NOT NULL UNIQUE,
-    ds_senha_hash_usuario     VARCHAR(100) NOT NULL,     -- BCrypt, nunca a senha pura
-    nm_perfil_usuario         VARCHAR(20)  NOT NULL
-                              CHECK (nm_perfil_usuario IN ('Administrador', 'Vendedor', 'Estoquista', 'Financeiro')),
-    fl_ativo_usuario          BOOLEAN      NOT NULL DEFAULT TRUE,
-    dt_ultimo_acesso_usuario  TIMESTAMPTZ,
-    dt_criacao_usuario        TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    dt_atualizacao_usuario    TIMESTAMPTZ
-);
-
--- Quais módulos cada perfil (menos o Administrador, que acessa tudo) pode abrir.
--- Revendedores fica de fora por regra: é exclusivo do Administrador.
-CREATE TABLE permissao_perfil (
-    nm_perfil_permissao  VARCHAR(20) NOT NULL CHECK (nm_perfil_permissao IN ('Vendedor', 'Estoquista', 'Financeiro')),
-    nm_modulo_permissao  VARCHAR(20) NOT NULL
-                         CHECK (nm_modulo_permissao IN ('inicio', 'empresa', 'pedidos', 'produtos', 'estoque', 'fornecedores',
-                                                        'clientes', 'financeiro', 'relatorios', 'configuracoes')),
-    PRIMARY KEY (nm_perfil_permissao, nm_modulo_permissao)
-);
-
--- ---------------------------------------------------------------------
 -- Catálogo: categoria, marca, fornecedor, produto
 -- ---------------------------------------------------------------------
 CREATE TABLE categoria (
@@ -166,12 +140,41 @@ CREATE TABLE revendedor (
     dt_atualizacao_revendedor         TIMESTAMPTZ
 );
 
+-- ---------------------------------------------------------------------
+-- Usuários e permissões
+-- ---------------------------------------------------------------------
+CREATE TABLE usuario (
+    id_usuario                BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nm_usuario                VARCHAR(100) NOT NULL,
+    nm_email_usuario          VARCHAR(120) NOT NULL UNIQUE,
+    ds_senha_hash_usuario     VARCHAR(100) NOT NULL,     -- BCrypt, nunca a senha pura
+    nm_perfil_usuario         VARCHAR(20)  NOT NULL
+                              CHECK (nm_perfil_usuario IN ('Administrador', 'Revendedor', 'Estoquista', 'Financeiro')),
+    id_revendedor             BIGINT       UNIQUE REFERENCES revendedor (id_revendedor),  -- conta do revendedor (1:1)
+    fl_ativo_usuario          BOOLEAN      NOT NULL DEFAULT TRUE,
+    dt_ultimo_acesso_usuario  TIMESTAMPTZ,
+    dt_criacao_usuario        TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    dt_atualizacao_usuario    TIMESTAMPTZ,
+    -- perfil Revendedor exige o vínculo com o cadastro do revendedor; os outros perfis não têm vínculo
+    CHECK ((nm_perfil_usuario = 'Revendedor') = (id_revendedor IS NOT NULL))
+);
+
+-- Quais módulos cada perfil (menos o Administrador, que acessa tudo) pode abrir.
+-- Revendedores fica de fora por regra: é exclusivo do Administrador.
+CREATE TABLE permissao_perfil (
+    nm_perfil_permissao  VARCHAR(20) NOT NULL CHECK (nm_perfil_permissao IN ('Revendedor', 'Estoquista', 'Financeiro')),
+    nm_modulo_permissao  VARCHAR(20) NOT NULL
+                         CHECK (nm_modulo_permissao IN ('inicio', 'empresa', 'pedidos', 'produtos', 'estoque', 'fornecedores',
+                                                        'clientes', 'financeiro', 'relatorios', 'configuracoes')),
+    PRIMARY KEY (nm_perfil_permissao, nm_modulo_permissao)
+);
+
 CREATE TABLE cliente (
     id_cliente               BIGINT       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     sg_tipo_pessoa_cliente   CHAR(2)      NOT NULL CHECK (sg_tipo_pessoa_cliente IN ('PF', 'PJ')),
     nm_cliente               VARCHAR(150) NOT NULL,
     nm_razao_social_cliente  VARCHAR(150),                        -- só PJ
-    cd_documento_cliente     VARCHAR(18)  NOT NULL UNIQUE,        -- CPF (PF) ou CNPJ (PJ)
+    cd_documento_cliente     VARCHAR(18)  NOT NULL,               -- CPF (PF) ou CNPJ (PJ)
     nm_email_cliente         VARCHAR(120),
     cd_telefone_cliente      VARCHAR(20),
     dt_nascimento_cliente    DATE,                                -- só PF
@@ -183,32 +186,32 @@ CREATE TABLE cliente (
     nm_bairro_cliente        VARCHAR(80),
     nm_cidade_cliente        VARCHAR(80),
     sg_uf_cliente            CHAR(2),
-    id_revendedor            BIGINT       REFERENCES revendedor (id_revendedor),  -- no máximo 1 revendedor por cliente
+    id_revendedor            BIGINT       NOT NULL REFERENCES revendedor (id_revendedor),  -- carteira: o cliente pertence a 1 revendedor
     fl_status_cliente        VARCHAR(10)  NOT NULL DEFAULT 'Ativo' CHECK (fl_status_cliente IN ('Ativo', 'Inativo')),
     ds_observacao_cliente    TEXT,
     dt_criacao_cliente       TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    dt_atualizacao_cliente   TIMESTAMPTZ
+    dt_atualizacao_cliente   TIMESTAMPTZ,
+    UNIQUE (id_revendedor, cd_documento_cliente)   -- o mesmo CPF/CNPJ pode estar na carteira de revendedores diferentes
 );
-CREATE INDEX ix_cliente_revendedor ON cliente (id_revendedor);
 
 CREATE TABLE comentario_cliente (
     id_comentario  BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_cliente     BIGINT      NOT NULL REFERENCES cliente (id_cliente) ON DELETE CASCADE,
-    id_usuario     BIGINT      REFERENCES usuario (id_usuario),
+    nm_autor_comentario  VARCHAR(100),   -- nome de quem escreveu (registro histórico)
     ds_comentario  TEXT        NOT NULL,
     dt_comentario  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- ---------------------------------------------------------------------
--- Vendas: pedido, itens e histórico de status
+-- Vendas: o cliente pede ao revendedor por fora do sistema (WhatsApp etc.)
+-- e o revendedor lança o pedido no site, escolhendo o cliente e os produtos
 -- ---------------------------------------------------------------------
 CREATE TABLE pedido (
     id_pedido                   BIGINT        GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nr_pedido                   INTEGER       NOT NULL UNIQUE,
     dt_pedido                   TIMESTAMPTZ   NOT NULL DEFAULT now(),
     id_cliente                  BIGINT        NOT NULL REFERENCES cliente (id_cliente),
-    id_revendedor               BIGINT        REFERENCES revendedor (id_revendedor),
-    id_usuario_vendedor         BIGINT        REFERENCES usuario (id_usuario),
+    id_revendedor               BIGINT        NOT NULL REFERENCES revendedor (id_revendedor),  -- quem lançou o pedido
     fl_status_pedido            VARCHAR(20)   NOT NULL DEFAULT 'Novo'
                                 CHECK (fl_status_pedido IN ('Novo', 'Em separação', 'Enviado', 'Entregue', 'Cancelado')),
     vl_subtotal_pedido          NUMERIC(12,2) NOT NULL DEFAULT 0,

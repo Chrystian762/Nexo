@@ -16,24 +16,26 @@ Os `.brM3` abrem no **brModelo 3.3** (Arquivo > Abrir). O lógico é gerado a pa
 
 ![Modelo conceitual](brmodelo/nexo-modelo-conceitual.png)
 
-17 entidades e 19 relacionamentos. Atributo com círculo preenchido é identificador.
+17 entidades e 18 relacionamentos. Atributo com círculo preenchido é identificador.
 
 Leitura das principais regras (a cardinalidade fica junto da entidade a que se refere):
 
-- Um **cliente** tem no máximo 1 revendedor; um **revendedor** atende vários clientes (1:N, relacionamento *atende*).
+- **Como o pedido acontece:** o cliente pede ao revendedor por fora do sistema (WhatsApp etc.). No site, o **revendedor** entra com a conta dele e **lança** o pedido, escolhendo o cliente e os produtos. Por isso o pedido tem sempre 1 revendedor (*lanca*) e 1 cliente (*solicita*).
+- Cada **cliente** pertence à carteira de 1 revendedor (*atende*: revendedor (1,1), cliente (0,n)).
+- Cada **revendedor** pode ter 1 conta de **usuário** com perfil Revendedor (*acessa*, 1:1). O módulo Revendedores (cadastro, desconto, crédito) é só do Administrador.
 - **Pedido** e **produto** são N:N pelo relacionamento *contém*, com os atributos quantidade, preço unitário e custo do momento da venda.
 - **Compra** e **produto** são N:N pelo relacionamento *inclui*, com quantidade e custo.
 - **Fornecedor** e **marca** são N:N (*trabalha com*).
 - Cada pedido gera no máximo 1 lançamento de receita (*gera receita*) e cada compra gera no máximo 1 lançamento de despesa (*gera despesa*). Há lançamentos avulsos (aluguel, salários).
 - Toda entrada, saída ou ajuste de estoque vira uma **movimentação** do produto (*movimenta*), feita por um usuário (*opera*).
-- **Usuário** vende pedidos, escreve comentários de cliente e realiza atividades (log).
+- **Usuário** realiza atividades (log) e opera movimentações de estoque.
 - **Empresa**, **configuração** e **permissão do perfil** são entidades isoladas (dados do sistema).
 
 ## 2. Modelo lógico
 
 ![Modelo lógico](brmodelo/nexo-modelo-logico.png)
 
-20 tabelas, 200 colunas e 22 chaves estrangeiras. As N:N viraram as tabelas associativas `fornecedor_marca`, `item_compra` e `item_pedido`, com chave primária composta.
+20 tabelas, 200 colunas e 21 chaves estrangeiras. As N:N viraram as tabelas associativas `fornecedor_marca`, `item_compra` e `item_pedido`, com chave primária composta.
 
 ---
 
@@ -61,7 +63,12 @@ Tabelas no singular. Colunas com prefixo mnemônico e sufixo com o nome da tabel
 | Decisão | Motivo |
 |---|---|
 | Categoria e marca viraram tabelas | Evita "Shampoo" e "shampoo" como categorias diferentes e permite agrupar nos relatórios |
-| Cliente com no máximo 1 revendedor (FK `cliente.id_revendedor`) | É como o sistema funciona: na tela de cliente se escolhe um revendedor ou nenhum |
+| Cliente na carteira de 1 revendedor (`cliente.id_revendedor` obrigatório) | O revendedor atende os próprios clientes e só deve ver os dele |
+| CPF/CNPJ único por revendedor (`UNIQUE (id_revendedor, cd_documento_cliente)`) | A mesma pessoa pode comprar de dois revendedores; cada um a cadastra na sua carteira |
+| Pedido com revendedor e cliente obrigatórios | Quem lança o pedido no site é o revendedor, sempre para um cliente da carteira |
+| Revendedor com conta de usuário (`usuario.id_revendedor`, 1:1) e perfil Revendedor | Permite ao revendedor entrar no site; uma regra (CHECK) exige o vínculo só nesse perfil |
+| Comentário do cliente guarda o nome do autor | Registro histórico, igual ao histórico do pedido |
+| Sem herança (especialização) entre produto, revendedor e cliente | Herança vale para "é um tipo de"; aqui é dependência de existência, que as cardinalidades já mostram |
 | Produto ligado ao pedido, não direto ao revendedor | O revendedor vende produtos por meio dos pedidos; a ligação direta duplicaria informação |
 | Preço e custo copiados no item do pedido | O preço do produto muda; o pedido antigo precisa manter o valor da venda |
 | Estoque atual em `produto.qt_estoque_produto` e histórico em `movimentacao_estoque` | Consulta rápida do saldo e rastreio de cada entrada e saída |
